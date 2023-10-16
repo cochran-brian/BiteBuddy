@@ -1,20 +1,33 @@
 import { StatusBar } from 'expo-status-bar';
-import { Keyboard, StyleSheet, Text, View, Pressable, TextInput, KeyboardAvoidingView } from 'react-native';
+import { Keyboard, StyleSheet, Text, View, Pressable, TextInput, KeyboardAvoidingView, TouchableHighlight } from 'react-native';
 import { useFonts } from 'expo-font';
 import { useState } from 'react';
 import colors from '../config/colors';
+import HomeScreen from './HomeScreen';
 
-export default function AuthScreen() {
+export default function AuthScreen({navigation}) {
 
   const [signingIn,setSigningIn] = useState(true);
   const [email, setEmail] = useState("");
 
   const [fontsLoaded] = useFonts({
-      'Open Sans': require('../assets/fonts/OpenSans-ExtraBold.ttf'),
-  });
+     'Open Sans': require('../assets/fonts/OpenSans-ExtraBold.ttf'),
+ });
 
     if(!fontsLoaded){
         return null;
+    }
+
+    function onSubmitPressed(){
+      if(signingIn){
+        
+        //TODO handle the user signing in with existing account
+      }else{
+        
+        //TODO handle the user creating a new account
+      }
+
+      navigation.navigate('Home');
     }
 
     
@@ -22,7 +35,7 @@ export default function AuthScreen() {
     
 
     // <KeyboardAvoidingView behavior='padding'>
-    <Pressable styles={styles.container} onPress={() => Keyboard.dismiss()}>
+    <Pressable style={styles.container} onPress={() => Keyboard.dismiss()}>
       
       <Text style={styles.header}>BITE BUDDY</Text>
         <View style={{flexDirection: 'row'}}>
@@ -44,9 +57,16 @@ export default function AuthScreen() {
         <View style={[styles.viewTextInput, {marginTop: 11}]}>
           <TextInput style={styles.textInput} onChangeText={(email) => setEmail(email)} placeholder='Enter password' autoCapitalize='none' keyboardType='default' />
         </View>
-        
-        
+
+        <View style={{flex: 1, justifyContent: 'flex-end'}}>
+         <TouchableHighlight style= {styles.bottomButton} onPress={onSubmitPressed} underlayColor={colors.primaryDark}>
+          <Text style={{color: 'white', fontFamily: 'Open Sans', fontSize: 20}}>SUBMIT</Text>
+         </TouchableHighlight>
+        </View>
       </Pressable>
+
+     
+
       // </KeyboardAvoidingView>
   );
 }
@@ -56,12 +76,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
+    
   },
   header:{
     color: 'black',
     fontFamily: 'Open Sans',
     fontSize: 50,
     marginTop: 80,
+    alignSelf: 'center'
   },
   viewSelectButton:{
     width: 136,
@@ -69,7 +91,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop:94,
-    marginBottom: 0
+    marginBottom: 0,
+    alignSelf: 'center'
+    
   },
   viewChangeText:{
     color: 'white',
@@ -92,4 +116,13 @@ const styles = StyleSheet.create({
     fontWeight: 300,
     paddingLeft: 10,
   },
+  bottomButton:{
+    width: 344,
+    height: 54,
+    borderRadius: 10,
+    marginBottom: 14,
+    backgroundColor: colors.primary,
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
 });
