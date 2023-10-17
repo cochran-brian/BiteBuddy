@@ -1,57 +1,28 @@
-import { StatusBar } from 'expo-status-bar';
 import { Keyboard, StyleSheet, Text, View, Pressable, TextInput, KeyboardAvoidingView, TouchableHighlight } from 'react-native';
 import { useFonts } from 'expo-font';
-import { useState } from 'react';
 import colors from '../config/colors';
-import HomeScreen from './HomeScreen';
-import { db, auth } from '../../firebase/config';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { addDoc, collection } from '@firebase/firestore';
+import SignInScreen from "./SignInScreen";
+import RegisterScreen from './RegisterScreen';
+import { useState } from 'react';
 
 export default function AuthScreen({navigation}) {
-  
-  const [signingIn,setSigningIn] = useState(true);
-  const [email, setEmail] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [password, setPassword] = useState("");
+
+  const [signingIn, setSigningIn] = useState(true);
 
   const [fontsLoaded] = useFonts({
      'Open Sans': require('../assets/fonts/OpenSans-ExtraBold.ttf'),
  });
 
-    if(!fontsLoaded){
-        return null;
-    }
+  if(!fontsLoaded){
+      return null;
+  }
 
-    async function onSubmitPressed(){
-      if(signingIn){
-        
-        //TODO handle the user signing in with existing account
-      }else{
-        try{
-          const user = await createUserWithEmailAndPassword(auth, email, password)
-          //const uid = user.uid;
-          // any additional data we want to database ex pfp or full name
-          const data = {
-              //id: uid,
-              email,
-              phoneNumber
-          };
-          try{
-            const usersRef = collection(db, "users");
-            const doc = await addDoc(usersRef, data);
-          } catch(error) {
-            //implement error shenaniganz
-            alert(error);
-            return;
-          }
-        } catch(error){
-          alert(error);
-          return;
-        }
+  const changeDisplay = () => {
+    if(signingIn) {
+      return <SignInScreen/>
+    } else {
+      return <RegisterScreen/>
     }
-    navigation.navigate("Home");
-    alert("success!")
   }
 
     
@@ -70,23 +41,9 @@ export default function AuthScreen({navigation}) {
                 <Text style={[styles.viewChangeText, {color: signingIn? 'black' : 'white'}]}>Sign Up</Text>
               </Pressable>
         </View>
-      
         
-        <View style={[styles.viewTextInput, {marginTop: 123}]}>
-          <TextInput style={styles.textInput} onChangeText={(email) => setEmail(email)} placeholder='Enter email' autoCapitalize='none' keyboardType='email-address' />
-        </View>
-        <View style={[styles.viewTextInput, {marginTop: 11}]}>
-          <TextInput style={styles.textInput} onChangeText={(phoneNumber) => setPhoneNumber(phoneNumber)} placeholder='Enter phone number' autoCapitalize='none' keyboardType='phone-pad' />
-        </View>
-        <View style={[styles.viewTextInput, {marginTop: 11}]}>
-          <TextInput style={styles.textInput} onChangeText={(password) => setPassword(password)} placeholder='Enter password' autoCapitalize='none' keyboardType='default' />
-        </View>
-
-        <View style={{flex: 1, justifyContent: 'flex-end'}}>
-         <TouchableHighlight style= {styles.bottomButton} onPress={onSubmitPressed} underlayColor={colors.primaryDark}>
-          <Text style={{color: 'white', fontFamily: 'Open Sans', fontSize: 20}}>SUBMIT</Text>
-         </TouchableHighlight>
-        </View>
+        {changeDisplay()}
+        
       </Pressable>
 
      
@@ -123,30 +80,5 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: 'Open Sans',
     fontSize: 16
-  },
-  viewTextInput:{
-    width: 270,
-    height: 54,
-    borderRadius: 10,
-    borderColor: 'black',
-    borderWidth: 2,
-    background: 'white',
-  },
-  textInput:{
-    fontFamily: 'Open Sans',
-    width: '100%',
-    height: '100%',
-    fontSize: 14,
-    fontWeight: 300,
-    paddingLeft: 10,
-  },
-  bottomButton:{
-    width: 344,
-    height: 54,
-    borderRadius: 10,
-    marginBottom: 14,
-    backgroundColor: colors.primary,
-    alignItems: 'center',
-    justifyContent: 'center'
   }
 });
