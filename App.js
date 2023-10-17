@@ -1,6 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import ScreenHandler from './app/ScreenHandler.js'
+import { auth } from './firebase/config.js';
+import HomeScreen from './app/screens/HomeScreen.js';
 
 //import { useFonts } from 'expo-font';
 
@@ -15,9 +17,14 @@ export default function App() {
   //   <ScreenHandler/>
   //   );
   // }
+  if(auth.currentUser){
   return (
-    <ScreenHandler/>
-  )
+    <HomeScreen/>
+  )}else{
+    return(
+      <ScreenHandler/>
+    )
+  }
 }
 
 const styles = StyleSheet.create({

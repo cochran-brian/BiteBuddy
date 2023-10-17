@@ -50,7 +50,7 @@ export default function AuthScreen({navigation}) {
           return;
         }
     }
-    //navigation.navigate("Home");
+    navigation.navigate("Home");
     alert("success!")
   }
 
