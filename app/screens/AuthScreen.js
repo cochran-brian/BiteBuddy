@@ -4,11 +4,16 @@ import { useFonts } from 'expo-font';
 import { useState } from 'react';
 import colors from '../config/colors';
 import HomeScreen from './HomeScreen';
+import { db, auth } from '../../firebase/config';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { addDoc, collection } from '@firebase/firestore';
 
 export default function AuthScreen({navigation}) {
-
+  
   const [signingIn,setSigningIn] = useState(true);
   const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [password, setPassword] = useState("");
 
   const [fontsLoaded] = useFonts({
      'Open Sans': require('../assets/fonts/OpenSans-ExtraBold.ttf'),
@@ -18,17 +23,36 @@ export default function AuthScreen({navigation}) {
         return null;
     }
 
-    function onSubmitPressed(){
+    async function onSubmitPressed(){
       if(signingIn){
         
         //TODO handle the user signing in with existing account
       }else{
-        
-        //TODO handle the user creating a new account
-      }
-
-      navigation.navigate('Home');
+        try{
+          const user = await createUserWithEmailAndPassword(auth, email, password)
+          //const uid = user.uid;
+          // any additional data we want to database ex pfp or full name
+          const data = {
+              //id: uid,
+              email,
+              phoneNumber
+          };
+          try{
+            const usersRef = collection(db, "users");
+            const doc = await addDoc(usersRef, data);
+          } catch(error) {
+            //implement error shenaniganz
+            alert(error);
+            return;
+          }
+        } catch(error){
+          alert(error);
+          return;
+        }
     }
+    //navigation.navigate("Home");
+    alert("success!")
+  }
 
     
   return (
@@ -52,10 +76,10 @@ export default function AuthScreen({navigation}) {
           <TextInput style={styles.textInput} onChangeText={(email) => setEmail(email)} placeholder='Enter email' autoCapitalize='none' keyboardType='email-address' />
         </View>
         <View style={[styles.viewTextInput, {marginTop: 11}]}>
-          <TextInput style={styles.textInput} onChangeText={(email) => setEmail(email)} placeholder='Enter phone number' autoCapitalize='none' keyboardType='phone-pad' />
+          <TextInput style={styles.textInput} onChangeText={(phoneNumber) => setPhoneNumber(phoneNumber)} placeholder='Enter phone number' autoCapitalize='none' keyboardType='phone-pad' />
         </View>
         <View style={[styles.viewTextInput, {marginTop: 11}]}>
-          <TextInput style={styles.textInput} onChangeText={(email) => setEmail(email)} placeholder='Enter password' autoCapitalize='none' keyboardType='default' />
+          <TextInput style={styles.textInput} onChangeText={(password) => setPassword(password)} placeholder='Enter password' autoCapitalize='none' keyboardType='default' />
         </View>
 
         <View style={{flex: 1, justifyContent: 'flex-end'}}>
