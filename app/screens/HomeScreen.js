@@ -11,16 +11,16 @@ export default function HomeScreen() {
 
     <View style= {styles.recBox}>
       <Text style={{fontFamily: 'Open Sans', fontSize: 20}}>FOOD NEAR YOU</Text>
-      <SimplePlaceView margTop={11} imageUri={'https://asset-cdn.schoology.com/system/files/imagecache/profile_reg/pictures/picture-95e36dc30f43e2e1e133573eb4fbbd7b_6504c03ebd0bd.jpg?1694810174'}/>
-      <SimplePlaceView margTop={11} imageUri={'https://asset-cdn.schoology.com/system/files/imagecache/profile_tiny/pictures/picture-95e36dc30f43e2e1e133573eb4fbbd7b_6504c03ebd0bd.jpg?1694810174'}/>
+      <SimplePlaceView margTop={15} imageUri={'https://asset-cdn.schoology.com/system/files/imagecache/profile_reg/pictures/picture-95e36dc30f43e2e1e133573eb4fbbd7b_6504c03ebd0bd.jpg?1694810174'}/>
+      <SimplePlaceView margTop={11} imageUri={'https://sds-platform-private.s3-us-east-2.amazonaws.com/uploads/49_blog_image_1.png'}/>
     </View>
 
-    <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
-      <View style={{height: 3, width: 100, backgroundColor: 'black'}}/>
+    <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 15}}>
+      <View style={{height: 3, width: 130, backgroundColor: 'black'}}/>
        <Pressable style={{width: 97, height: 32, backgroundColor: colors.primary, borderRadius: 10, justifyContent: 'center', alignItems: 'center'}}>
         <Text style={{marginLeft: 10, marginRight: 10, color: 'white', fontFamily: 'Open Sans'}}>MORE →</Text>
        </Pressable>
-      <View style={{height: 3, width: 100, backgroundColor: 'black'}}/>
+      <View style={{height: 3, width: 130, backgroundColor: 'black'}}/>
     </View>
 
     <View>
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   },
   recBox:{
     width: Dimensions.get('screen').width - 80,
-    height: '35%',
+    height: '30%',
     marginTop: 43,
     marginLeft: 40,
     marginRight: 40,
