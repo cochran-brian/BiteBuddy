@@ -62,9 +62,9 @@ export default function AuthScreen({navigation}) {
   }
     
   return (
-    <>
-      <KeyboardAwareScrollView style={{height: "100%"}}>
-        <Pressable style={styles.container} onPress={() => Keyboard.dismiss()}>
+    <View style={styles.container}>
+      <KeyboardAwareScrollView>
+        <Pressable onPress={() => Keyboard.dismiss()}>
         
           <Text style={styles.header}>BITE BUDDY</Text>
             <View style={{flexDirection: 'row'}}>
@@ -86,7 +86,7 @@ export default function AuthScreen({navigation}) {
           <Text style={{color: 'white', fontFamily: 'Open Sans', fontSize: 20}}>SUBMIT</Text>
          </TouchableHighlight>
         </View>
-    </>
+    </View>
   
   );
 }
