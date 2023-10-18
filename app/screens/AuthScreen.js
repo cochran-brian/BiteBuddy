@@ -79,12 +79,6 @@ export default function AuthScreen({navigation}) {
             {changeDisplay()}
             
         </Pressable>
-
-        <View style={{flex: 1, justifyContent: 'flex-end'}}>
-         <TouchableHighlight style= {styles.bottomButton} onPress={onSubmitPressed} underlayColor={colors.primaryDark}>
-          <Text style={{color: 'white', fontFamily: 'Open Sans', fontSize: 20}}>SUBMIT</Text>
-         </TouchableHighlight>
-        </View>
       </KeyboardAwareScrollView>
     </View>
   

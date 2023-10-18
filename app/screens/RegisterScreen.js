@@ -49,6 +49,12 @@ export default function RegisterScreen({navigation}) {
         <View style={[styles.viewTextInput, {marginTop: 11}]}>
           <TextInput style={styles.textInput} onChangeText={(password) => setPassword(password)} placeholder='Enter password' autoCapitalize='none' keyboardType='default' />
         </View>
+
+        <View style={{flex: 1, justifyContent: 'flex-end'}}>
+         <TouchableHighlight style= {styles.bottomButton} onPress={onSubmitPressed} underlayColor={colors.primaryDark}>
+          <Text style={{color: 'white', fontFamily: 'Open Sans', fontSize: 20}}>SUBMIT</Text>
+         </TouchableHighlight>
+        </View>
       </View>
   );
 }
