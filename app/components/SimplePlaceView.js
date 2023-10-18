@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Text, StyleSheet, View, Image } from 'react-native';
+import {Rating} from 'react-native-ratings';
 
 function SimplePlaceView({imageUri, margTop}){
     return(
@@ -12,6 +13,10 @@ function SimplePlaceView({imageUri, margTop}){
             <Text style = {{fontFamily: 'Open Sans'}}>RESTURAUNT NAME</Text>
             <Text>ADDRESS</Text>
             <Text>DETIAL INFO</Text>
+            <Rating
+                readonly={true}
+                imageSize={25}
+            />
         </View>
     </View>
 
