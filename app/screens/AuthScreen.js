@@ -63,7 +63,7 @@ export default function AuthScreen({navigation}) {
     
   return (
     <>
-      <KeyboardAwareScrollView style={{flex:1}}>
+      <KeyboardAwareScrollView style={{height: "100%"}}>
         <Pressable style={styles.container} onPress={() => Keyboard.dismiss()}>
         
           <Text style={styles.header}>BITE BUDDY</Text>
