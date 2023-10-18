@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { db, auth } from '../../firebase/config';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { addDoc, collection } from '@firebase/firestore';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function RegisterScreen({navigation}) {
   
@@ -52,7 +53,7 @@ export default function RegisterScreen({navigation}) {
   return (
     
 
-    <KeyboardAvoidingView behavior='padding' style={styles.container}>
+    <KeyboardAwareScrollView>
         <View style={[styles.viewTextInput, {marginTop: 123}]}>
           <TextInput style={styles.textInput} onChangeText={(firstName) => setFirstName(firstName)} placeholder='Enter first name' autoCapitalize='true' keyboardType='none' />
         </View>
@@ -74,7 +75,7 @@ export default function RegisterScreen({navigation}) {
           <Text style={{color: 'white', fontFamily: 'Open Sans', fontSize: 20}}>SUBMIT</Text>
          </TouchableHighlight>
         </View>
-      </KeyboardAvoidingView>
+      </KeyboardAwareScrollView>
   );
 }
 

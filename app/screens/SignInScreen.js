@@ -34,7 +34,7 @@ export default function AuthScreen({navigation}) {
   return (
     
 
-    <KeyboardAwareScrollView style={styles.container}>
+    <KeyboardAwareScrollView>
       
         
         <View style={[styles.viewTextInput, {marginTop: 123}]}>
