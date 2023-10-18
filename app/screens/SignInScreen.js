@@ -4,6 +4,7 @@ import { useFonts } from 'expo-font';
 import { useState } from 'react';
 import { auth } from '../../firebase/config';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function AuthScreen({navigation}) {
   
@@ -33,7 +34,7 @@ export default function AuthScreen({navigation}) {
   return (
     
 
-    <KeyboardAvoidingView behavior='padding' style={styles.container}>
+    <KeyboardAwareScrollView style={styles.container}>
       
         
         <View style={[styles.viewTextInput, {marginTop: 123}]}>
@@ -48,7 +49,7 @@ export default function AuthScreen({navigation}) {
           <Text style={{color: 'white', fontFamily: 'Open Sans', fontSize: 20}}>SUBMIT</Text>
          </TouchableHighlight>
         </View>
-      </KeyboardAvoidingView>
+      </KeyboardAwareScrollView>
   );
 }
 
