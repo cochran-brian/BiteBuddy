@@ -19,11 +19,13 @@ export default function AuthScreen({navigation}) {
 
   const changeDisplay = () => {
     if(signingIn) {
-      return <SignInScreen/>
+      return <SignInScreen navigation={navigation}/>
     } else {
-      return <RegisterScreen/>
+      return <RegisterScreen navigation={navigation}/>
     }
   }
+
+  
 
     
   return (
