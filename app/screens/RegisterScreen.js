@@ -24,27 +24,7 @@ export default function RegisterScreen({navigation}) {
     }
 
     async function onSubmitPressed(){
-        try {
-          const user = await createUserWithEmailAndPassword(auth, email, password)
-          const data = {
-              firstName,
-              lastName,
-              email,
-              phoneNumber
-          };
-          try {
-            const usersRef = collection(db, "users");
-            const doc = await addDoc(usersRef, data);
-          } catch(error) {
-            alert(error);
-            return;
-          }
-        } catch(error) {
-          alert(error);
-          return;
-        }
-        navigation.navigate("Home");
-        alert("success!")
+        
     }
     
   
@@ -53,7 +33,7 @@ export default function RegisterScreen({navigation}) {
   return (
     
 
-    <KeyboardAwareScrollView>
+    <View style={styles.container}>
         <View style={[styles.viewTextInput, {marginTop: 123}]}>
           <TextInput style={styles.textInput} onChangeText={(firstName) => setFirstName(firstName)} placeholder='Enter first name' autoCapitalize='true' keyboardType='none' />
         </View>
@@ -69,13 +49,7 @@ export default function RegisterScreen({navigation}) {
         <View style={[styles.viewTextInput, {marginTop: 11}]}>
           <TextInput style={styles.textInput} onChangeText={(password) => setPassword(password)} placeholder='Enter password' autoCapitalize='none' keyboardType='default' />
         </View>
-
-        <View style={{flex: 1, justifyContent: 'flex-end'}}>
-         <TouchableHighlight style= {styles.bottomButton} onPress={onSubmitPressed} underlayColor={colors.primaryDark}>
-          <Text style={{color: 'white', fontFamily: 'Open Sans', fontSize: 20}}>SUBMIT</Text>
-         </TouchableHighlight>
-        </View>
-      </KeyboardAwareScrollView>
+      </View>
   );
 }
 

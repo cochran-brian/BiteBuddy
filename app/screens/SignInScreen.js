@@ -4,7 +4,6 @@ import { useFonts } from 'expo-font';
 import { useState } from 'react';
 import { auth } from '../../firebase/config';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function AuthScreen({navigation}) {
   
@@ -19,37 +18,18 @@ export default function AuthScreen({navigation}) {
         return null;
     }
 
-    async function onSubmitPressed(){
-        try {
-          const user = await signInWithEmailAndPassword(auth, email, password)
-        } catch (error) {
-          alert(error);
-          return;
-        }
-        navigation.navigate("Home");
-    alert("success!")
-    }
-
     
   return (
     
 
-    <KeyboardAwareScrollView>
-      
-        
+    <View style={styles.container}>
         <View style={[styles.viewTextInput, {marginTop: 123}]}>
           <TextInput style={styles.textInput} onChangeText={(email) => setEmail(email)} placeholder='Enter email' autoCapitalize='none' keyboardType='email-address' />
         </View>
         <View style={[styles.viewTextInput, {marginTop: 11}]}>
           <TextInput style={styles.textInput} onChangeText={(password) => setPassword(password)} placeholder='Enter password' autoCapitalize='none' keyboardType='default' />
         </View>
-
-        <View style={{flex: 1, justifyContent: 'flex-end'}}>
-         <TouchableHighlight style= {styles.bottomButton} onPress={onSubmitPressed} underlayColor={colors.primaryDark}>
-          <Text style={{color: 'white', fontFamily: 'Open Sans', fontSize: 20}}>SUBMIT</Text>
-         </TouchableHighlight>
-        </View>
-      </KeyboardAwareScrollView>
+      </View>
   );
 }
 
