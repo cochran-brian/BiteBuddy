@@ -1,4 +1,4 @@
-import { Keyboard, StyleSheet, Text, View, Pressable, TextInput, KeyboardAvoidingView, TouchableHighlight } from 'react-native';
+import { Keyboard, StyleSheet, Text, View, Pressable, TextInput, KeyboardAvoidingView, TouchableHighlight, ScrollView } from 'react-native';
 import { useFonts } from 'expo-font';
 import colors from '../config/colors';
 import SignInScreen from "./SignInScreen";
@@ -32,6 +32,7 @@ export default function AuthScreen({navigation}) {
     
 
   //<KeyboardAvoidingView behavior='padding' style={styles.container}>
+  <ScrollView>
     <Pressable style={styles.container} onPress={() => Keyboard.dismiss()}>
       
       <Text style={styles.header}>BITE BUDDY</Text>
@@ -47,6 +48,8 @@ export default function AuthScreen({navigation}) {
         {changeDisplay()}
         
       </Pressable>
+  </ScrollView>
+    
 
      
 
