@@ -52,7 +52,7 @@ export default function RegisterScreen({navigation}) {
   return (
     
 
-    <KeyboardAvoidingView behavior='padding'>
+    <KeyboardAvoidingView behavior='padding' style={styles.container}>
         <View style={[styles.viewTextInput, {marginTop: 123}]}>
           <TextInput style={styles.textInput} onChangeText={(firstName) => setFirstName(firstName)} placeholder='Enter first name' autoCapitalize='true' keyboardType='none' />
         </View>
@@ -79,6 +79,9 @@ export default function RegisterScreen({navigation}) {
 }
 
 const styles = StyleSheet.create({
+  container:{
+    alignItems: 'center'
+  },
   viewTextInput:{
     width: 270,
     height: 54,

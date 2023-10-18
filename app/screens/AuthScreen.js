@@ -29,7 +29,7 @@ export default function AuthScreen({navigation}) {
   return (
     
 
-    // <KeyboardAvoidingView behavior='padding'>
+  //<KeyboardAvoidingView behavior='padding' style={styles.container}>
     <Pressable style={styles.container} onPress={() => Keyboard.dismiss()}>
       
       <Text style={styles.header}>BITE BUDDY</Text>

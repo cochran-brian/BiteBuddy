@@ -33,7 +33,7 @@ export default function AuthScreen({navigation}) {
   return (
     
 
-    <KeyboardAvoidingView behavior='padding'>
+    <KeyboardAvoidingView behavior='padding' style={styles.container}>
       
         
         <View style={[styles.viewTextInput, {marginTop: 123}]}>
@@ -53,6 +53,9 @@ export default function AuthScreen({navigation}) {
 }
 
 const styles = StyleSheet.create({
+  container:{
+    alignItems: 'center'
+  },
   viewTextInput:{
     width: 270,
     height: 54,
