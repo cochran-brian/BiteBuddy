@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { auth } from '../../firebase/config';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
-export default function AuthScreen({navigation}) {
+export default function SignInScreen({navigation}) {
   
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

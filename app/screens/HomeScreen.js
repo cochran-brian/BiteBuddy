@@ -4,7 +4,7 @@ import colors from '../config/colors';
 import SimplePlaceView from '../components/SimplePlaceView';
 
 
-export default function HomeScreen() {
+export default function HomeScreen({navigation}) {
   return (
    <View style={styles.container}>
     <Text style={styles.header}>BITE BUDDY</Text>
@@ -24,7 +24,7 @@ export default function HomeScreen() {
     </View>
 
     <View>
-     <TouchableHighlight style={[styles.biteButtons, {marginTop: 55}]} underlayColor={colors.primaryDark} onPress={navigation.navigate("Create")}>
+     <TouchableHighlight style={[styles.biteButtons, {marginTop: 55}]} underlayColor={colors.primaryDark} onPress={() => {navigation.navigate("Create")}}>
       <Text style={styles.buttonText}>CREATE A BITE</Text>
      </TouchableHighlight>
 
