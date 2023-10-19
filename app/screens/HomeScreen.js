@@ -24,7 +24,7 @@ export default function HomeScreen() {
     </View>
 
     <View>
-     <TouchableHighlight style={[styles.biteButtons, {marginTop: 55}]} underlayColor={colors.primaryDark}>
+     <TouchableHighlight style={[styles.biteButtons, {marginTop: 55}]} underlayColor={colors.primaryDark} onPress={navigation.navigate("Create")}>
       <Text style={styles.buttonText}>CREATE A BITE</Text>
      </TouchableHighlight>
 
