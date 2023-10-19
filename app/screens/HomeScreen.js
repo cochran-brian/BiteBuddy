@@ -5,6 +5,28 @@ import SimplePlaceView from '../components/SimplePlaceView';
 
 
 export default function HomeScreen({navigation}) {
+
+  const [radius, setRadius] = useState(1500);
+  const [location, setLocation] = useState(null)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await fetch(`https://maps.googleapis.com/maps/api/place/nearbysearch/json
+        ?keyword=cruise
+        &location=${location}%2C${location} //location.lat location.long (make it an object)
+        &radius=${radius}
+        &type=restaurant
+        &key=${process.env.GOOGLE_MAPS_API_KEY}`)
+        
+      } catch (error) {
+        alert(error);
+      }
+    }
+
+    const data = fetchData();
+  })
+
   return (
    <View style={styles.container}>
     <Text style={styles.header}>BITE BUDDY</Text>
@@ -24,7 +46,7 @@ export default function HomeScreen({navigation}) {
     </View>
 
     <View>
-     <TouchableHighlight style={[styles.biteButtons, {marginTop: 55}]} underlayColor={colors.primaryDark} onPress={() => {navigation.navigate("Create")}}>
+     <TouchableHighlight style={[styles.biteButtons, {marginTop: 55}]} underlayColor={colors.primaryDark} onPress={() => navigation.navigate("Create")}>
       <Text style={styles.buttonText}>CREATE A BITE</Text>
      </TouchableHighlight>
 

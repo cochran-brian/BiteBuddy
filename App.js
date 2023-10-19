@@ -3,20 +3,14 @@ import { StyleSheet, Text, View } from 'react-native';
 import ScreenHandler from './app/ScreenHandler.js'
 import { auth } from './firebase/config.js';
 import HomeScreen from './app/screens/HomeScreen.js';
+import { configDotenv } from 'dotenv';
 
-//import { useFonts } from 'expo-font';
+
 
 export default function App() {
-  // const [fontsLoaded] = useFonts({
-  //   'Open-Sans': require('app/assets/fonts/OpenSans-ExtraBold.ttf'),
-  // });
 
+  configDotenv();
 
-  // if(fontsLoaded) {
-  //   return(
-  //   <ScreenHandler/>
-  //   );
-  // }
   if(auth.currentUser){
   return (
     <HomeScreen/>
