@@ -11,8 +11,8 @@ export default function HomeScreen() {
 
     <View style= {styles.recBox}>
       <Text style={{fontFamily: 'Open Sans', fontSize: 20}}>FOOD NEAR YOU</Text>
-      <SimplePlaceView margTop={15} imageUri={'https://asset-cdn.schoology.com/system/files/imagecache/profile_reg/pictures/picture-95e36dc30f43e2e1e133573eb4fbbd7b_6504c03ebd0bd.jpg?1694810174'}/>
-      <SimplePlaceView margTop={11} imageUri={'https://sds-platform-private.s3-us-east-2.amazonaws.com/uploads/49_blog_image_1.png'}/>
+      <SimplePlaceView margTop={15} rating={2} imageUri={'https://asset-cdn.schoology.com/system/files/imagecache/profile_reg/pictures/picture-95e36dc30f43e2e1e133573eb4fbbd7b_6504c03ebd0bd.jpg?1694810174'}/>
+      <SimplePlaceView margTop={11} rating={4} imageUri={'https://sds-platform-private.s3-us-east-2.amazonaws.com/uploads/49_blog_image_1.png'}/>
     </View>
 
     <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 15}}>

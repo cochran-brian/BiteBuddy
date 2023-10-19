@@ -1,5 +1,5 @@
 import colors from '../config/colors';
-import { Keyboard, StyleSheet, Text, View, Pressable, TextInput, KeyboardAvoidingView, TouchableHighlight } from 'react-native';
+import { Keyboard, StyleSheet, Text, View, Pressable, TextInput, KeyboardAvoidingView, TouchableHighlight, Dimensions } from 'react-native';
 import { useFonts } from 'expo-font';
 import { useState } from 'react';
 import { auth } from '../../firebase/config';
@@ -18,6 +18,17 @@ export default function AuthScreen({navigation}) {
         return null;
     }
 
+    async function onSubmitPressed(){
+      try {
+        const user = await signInWithEmailAndPassword(auth, email, password)
+      } catch (error) {
+        alert(error);
+        return;
+      }
+      navigation.navigate("Home");
+      alert("success!")
+    }
+
     
   return (
     
@@ -30,6 +41,8 @@ export default function AuthScreen({navigation}) {
           <TextInput style={styles.textInput} onChangeText={(password) => setPassword(password)} placeholder='Enter password' autoCapitalize='none' keyboardType='default' />
         </View>
 
+        <View style={styles.emptyView}/>
+
         <View style={{flex: 1, justifyContent: 'flex-end'}}>
          <TouchableHighlight style= {styles.bottomButton} onPress={onSubmitPressed} underlayColor={colors.primaryDark}>
           <Text style={{color: 'white', fontFamily: 'Open Sans', fontSize: 20}}>SUBMIT</Text>
@@ -41,7 +54,8 @@ export default function AuthScreen({navigation}) {
 
 const styles = StyleSheet.create({
   container:{
-    alignItems: 'center'
+    alignItems: 'center',
+    height: '75%' ,
   },
   viewTextInput:{
     width: 270,
@@ -50,6 +64,10 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 2,
     background: 'white',
+  },
+  emptyView:{
+    width: 270,
+    height: 195,
   },
   textInput:{
     fontFamily: 'Open Sans',
@@ -67,5 +85,5 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     alignItems: 'center',
     justifyContent: 'center'
-  }
+  },
 });

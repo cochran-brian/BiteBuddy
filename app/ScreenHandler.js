@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './screens/HomeScreen';
 import AuthScreen from './screens/AuthScreen';
+import CreateScreen from './screens/CreateScreen';
 import { useFonts } from 'expo-font';
 import { auth } from '../firebase/config';
 
@@ -27,6 +28,11 @@ const ScreenHandler = () => {
         <Stack.Screen
             name="Home"
             component={HomeScreen}
+            options={{headerShown: false}}
+        />
+        <Stack.Screen
+            name="Create"
+            component={CreateScreen}
             options={{headerShown: false}}
         />
      </Stack.Navigator>

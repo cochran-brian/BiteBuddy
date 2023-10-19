@@ -67,7 +67,7 @@ export default function AuthScreen({navigation}) {
         <Pressable onPress={() => Keyboard.dismiss()}>
         
           <Text style={styles.header}>BITE BUDDY</Text>
-            <View style={{flexDirection: 'row'}}>
+            <View style={{flexDirection: 'row', alignSelf: 'center'}}>
                   <Pressable onPress={() => setSigningIn(true)} style={[styles.viewSelectButton,{backgroundColor: signingIn? colors.primary : colors.neutral, borderTopLeftRadius: 20, borderBottomLeftRadius: 20}]}>
                     <Text style={[styles.viewChangeText, {color: signingIn? 'white' : 'black'}]}>Log In</Text>
                   </Pressable>
@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
+    justifyContent: 'center'
     
   },
   header:{

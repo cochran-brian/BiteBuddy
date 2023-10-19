@@ -24,7 +24,27 @@ export default function RegisterScreen({navigation}) {
     }
 
     async function onSubmitPressed(){
-        
+      try {
+        const user = await createUserWithEmailAndPassword(auth, email, password)
+        const data = {
+            firstName,
+            lastName,
+            email,
+            phoneNumber
+        };
+        try {
+          const usersRef = collection(db, "users");
+          const doc = await addDoc(usersRef, data);
+        } catch(error) {
+          alert(error);
+          return;
+        }
+      } catch(error) {
+        alert(error);
+        return;
+      }
+      navigation.navigate("Home");
+      alert("success!")
     }
     
   
@@ -61,7 +81,9 @@ export default function RegisterScreen({navigation}) {
 
 const styles = StyleSheet.create({
   container:{
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '75%'
   },
   viewTextInput:{
     width: 270,
