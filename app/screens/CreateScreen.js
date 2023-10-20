@@ -1,13 +1,20 @@
 import { Dimensions, StyleSheet, Text, TouchableHighlight, View, Pressable } from 'react-native';
 import colors from '../config/colors';
+import Slider from '@react-native-community/slider';
 
 
 
-export default function CreateScreen() {
+export default function CreateScreen({navigation}) {
     return(
         <View style={styles.container}>
             <Text style={styles.header}>CREATE A BITE</Text>
 
+
+            <View style={{marginTop: 80}}>
+              <Text style={styles.promptText}>HOW FAR ARE YOU WILLING TO TRAVEL?</Text>
+              <Slider
+                step={0.1}/>
+            </View>
 
             <View style={{flex: 1, justifyContent: 'flex-end'}}>
              <TouchableHighlight style= {styles.bottomButton} underlayColor={colors.primaryDark}>
@@ -41,4 +48,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
       },
+      promptText:{
+        fontFamily: 'Open Sans',
+        fontSize: 20,
+        width: 375,
+        textAlign: 'center'
+      }
 });

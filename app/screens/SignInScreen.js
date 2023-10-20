@@ -1,5 +1,5 @@
 import colors from '../config/colors';
-import { Keyboard, StyleSheet, Text, View, Pressable, TextInput, KeyboardAvoidingView, TouchableHighlight, Dimensions } from 'react-native';
+import { Keyboard, StyleSheet,Button, Text, View, Pressable, TextInput, KeyboardAvoidingView, TouchableHighlight, Dimensions } from 'react-native';
 import { useFonts } from 'expo-font';
 import { useState } from 'react';
 import { auth } from '../../firebase/config';
@@ -40,6 +40,12 @@ export default function SignInScreen({navigation}) {
         <View style={[styles.viewTextInput, {marginTop: 11}]}>
           <TextInput style={styles.textInput} onChangeText={(password) => setPassword(password)} placeholder='Enter password' autoCapitalize='none' keyboardType='default' />
         </View>
+
+
+        {// TEMPORARY BUTTON FOR DEV
+        } 
+        <Button title={"Bypass"} onPress={() => navigation.navigate("Home")}/>
+
 
         <View style={styles.emptyView}/>
 
