@@ -1,7 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
+import { useState, useEffect } from 'react';
 import { Dimensions, StyleSheet, Text, TouchableHighlight, View, Pressable } from 'react-native';
 import colors from '../config/colors';
 import SimplePlaceView from '../components/SimplePlaceView';
+import {GOOGLE_MAPS_API_KEY} from '@env';
 
 
 export default function HomeScreen({navigation}) {
