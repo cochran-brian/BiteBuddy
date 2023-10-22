@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Dimensions, StyleSheet, Text, TouchableHighlight, View, Pressable } from 'react-native';
 import colors from '../config/colors';
 import Slider from '@react-native-community/slider';
@@ -5,6 +6,9 @@ import Slider from '@react-native-community/slider';
 
 
 export default function CreateScreen({navigation}) {
+
+  const [slideValue, setSlideValue] = useState(0);
+
     return(
         <View style={styles.container}>
             <Text style={styles.header}>CREATE A BITE</Text>
@@ -13,7 +17,12 @@ export default function CreateScreen({navigation}) {
             <View style={{marginTop: 80}}>
               <Text style={styles.promptText}>HOW FAR ARE YOU WILLING TO TRAVEL?</Text>
               <Slider
-                step={0.1}/>
+                step={1}
+                minimumValue={5}
+                maximumValue={50}
+                onValueChange={(val) => setSlideValue(val)}
+              />
+              <Text style={{alignSelf: 'center', fontFamily: 'Open Sans', fontSize: 16}}>{slideValue} mi</Text>
             </View>
 
             <View style={{flex: 1, justifyContent: 'flex-end'}}>
