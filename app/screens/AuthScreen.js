@@ -12,6 +12,7 @@ export default function AuthScreen({navigation}) {
 
   const [fontsLoaded] = useFonts({
      'Open Sans': require('../assets/fonts/OpenSans-ExtraBold.ttf'),
+     'Open Sans Light': require('../assets/fonts/OpenSans-Regular.ttf'),
  });
 
   if(!fontsLoaded){

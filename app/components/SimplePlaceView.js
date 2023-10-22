@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Text, StyleSheet, View, Image } from 'react-native';
 import {AirbnbRating} from 'react-native-ratings';
 
-function SimplePlaceView({imageUri, rating, margTop}){
+function SimplePlaceView({imageUri, name, address, details, rating, margTop}){
     return(
     <View style={[styles.container, {marginTop: margTop}]}>
         <Image
@@ -10,12 +10,14 @@ function SimplePlaceView({imageUri, rating, margTop}){
             style={styles.image}>
         </Image>
         <View style={{flexDirection: 'column', height: 117, alignItems: 'left', marginTop: 15, marginLeft: 10}}>
-            <Text style = {{fontFamily: 'Open Sans'}}>RESTURAUNT NAME</Text>
-            <Text>ADDRESS</Text>
-            <Text style={{marginBottom: 5}}>DETIAL INFO</Text>
+           <View style={{marginLeft: 5}}>
+            <Text style = {{fontFamily: 'Open Sans', fontSize: 16}}>{name}</Text>
+            <Text style = {{fontFamily: 'Open Sans Light'}}>{address}</Text>
+            <Text style = {{fontFamily: 'Open Sans Light', marginBottom: 2}}>{details}</Text>
+           </View>
             <AirbnbRating
                 isDisabled={true}
-                size={25}
+                size={22}
                 showRating={false}
                 defaultRating={rating}
             />
