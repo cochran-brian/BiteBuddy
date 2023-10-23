@@ -4,12 +4,12 @@ import { getAuth, initializeAuth, getReactNativePersistence } from "firebase/aut
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 
 const firebaseConfig = {
-    apiKey: "AIzaSyBS2PTUvttrItlDXzBdxG5VX_zXe6q-PYY",
-    authDomain: "bitebuddy-68060.firebaseapp.com",
-    projectId: "bitebuddy-68060",
-    storageBucket: "bitebuddy-68060.appspot.com",
-    messagingSenderId: "436681960366",
-    appId: "1:436681960366:web:d2869df92d37505e49b63f"
+    apiKey: process.env.FIREBASE_API_KEY,
+    authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.FIREBASE_APP_ID
   };
 
   const firebaseApp = initializeApp(firebaseConfig);

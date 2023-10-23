@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import { Dimensions, StyleSheet, Text, TouchableHighlight, View, Pressable } from 'react-native';
 import colors from '../config/colors';
 import SimplePlaceView from '../components/SimplePlaceView';
-import {GOOGLE_MAPS_API_KEY} from '@env';
 
 
 export default function HomeScreen({navigation}) {
@@ -11,22 +10,33 @@ export default function HomeScreen({navigation}) {
   const [radius, setRadius] = useState(1500);
   const [location, setLocation] = useState(null)
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await fetch(`https://maps.googleapis.com/maps/api/place/nearbysearch/json
-        ?keyword=cruise
-        &location=${location}%2C${location} //location.lat location.long (make it an object)
-        &radius=${radius}
-        &type=restaurant
-        &key=${process.env.GOOGLE_MAPS_API_KEY}`)
-        
-      } catch (error) {
-        alert(error);
-      }
-    }
+  // const locateUser = async () => {
+  //   navigator.geolocation.getCurrentPosition(position => {
+  //     const loc = JSON.stringify(position);
+  //     setLocation({lat: loc.coords.latitude, long: loc.coords.longitude});
+  //   })
+  // }
 
+  const fetchData = async () => {
+    try {
+      const data = await fetch(`https://maps.googleapis.com/maps/api/place/nearbysearch/json
+      ?keyword=cruise
+      &location=${location.lat}%2C${location.long}
+      &radius=${radius}
+      &type=restaurant
+      &key=${process.env.GOOGLE_MAPS_API_KEY}`)
+
+    } catch (error) {
+      alert(error);
+    }
+  }
+
+  useEffect(() => {
+    //locateUser();
+    setLocation({lat: 42.095827505764824, long: -88.06465224618745}); //temporary for testing purposes
+    setRadius(1500);
     const data = fetchData();
+    console.log(data);
   })
 
   return (
