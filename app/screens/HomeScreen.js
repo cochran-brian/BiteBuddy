@@ -26,6 +26,7 @@ export default function HomeScreen({navigation}) {
       &radius=${radius}
       &type=restaurant
       &key=${process.env.GOOGLE_MAPS_API_KEY}`)
+      console.log(res)
       return res;
 
     } catch (error) {
@@ -38,6 +39,7 @@ export default function HomeScreen({navigation}) {
     setLocation({lat: 42.095827505764824, long: -88.06465224618745}); //temporary for testing purposes
     setRadius(1500);
     setData(fetchData());
+    
     console.log(data);
   })
 
