@@ -8,7 +8,8 @@ import SimplePlaceView from '../components/SimplePlaceView';
 export default function HomeScreen({navigation}) {
 
   const [radius, setRadius] = useState(1500);
-  const [location, setLocation] = useState(null)
+  const [location, setLocation] = useState(null);
+  const [data, setData] = useState(null);
 
   // const locateUser = async () => {
   //   navigator.geolocation.getCurrentPosition(position => {
@@ -19,12 +20,13 @@ export default function HomeScreen({navigation}) {
 
   const fetchData = async () => {
     try {
-      const data = await fetch(`https://maps.googleapis.com/maps/api/place/nearbysearch/json
+      const res = await fetch(`https://maps.googleapis.com/maps/api/place/nearbysearch/json
       ?keyword=cruise
       &location=${location.lat}%2C${location.long}
       &radius=${radius}
       &type=restaurant
       &key=${process.env.GOOGLE_MAPS_API_KEY}`)
+      return res;
 
     } catch (error) {
       alert(error);
@@ -35,7 +37,7 @@ export default function HomeScreen({navigation}) {
     //locateUser();
     setLocation({lat: 42.095827505764824, long: -88.06465224618745}); //temporary for testing purposes
     setRadius(1500);
-    const data = fetchData();
+    setData(fetchData());
     console.log(data);
   })
 
@@ -47,7 +49,7 @@ export default function HomeScreen({navigation}) {
       <Text style={{fontFamily: 'Open Sans', fontSize: 20}}>FOOD NEAR YOU</Text>
       <SimplePlaceView 
       margTop={15} 
-      name={'Big Ben Malik'}
+      name={data.name}
       address={'1032 Baller St'}
       details={'American'}
       rating={2} 
