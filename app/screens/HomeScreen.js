@@ -8,7 +8,8 @@ import SimplePlaceView from '../components/SimplePlaceView';
 export default function HomeScreen({navigation}) {
 
   const [radius, setRadius] = useState(1500);
-  const [location, setLocation] = useState(null);
+  const [locationLong, setLocationLong] = useState(null);
+  const [locationLat, setLocationLat] = useState(null);
   const [data, setData] = useState(null);
 
   // const locateUser = async () => {
@@ -20,15 +21,10 @@ export default function HomeScreen({navigation}) {
 
   const fetchData = async () => {
     try {
-      const res = await fetch(`https://maps.googleapis.com/maps/api/place/nearbysearch/json
-      ?keyword=cruise
-      &location=${location.lat}%2C${location.long}
-      &radius=${radius}
-      &type=restaurant
-      &key=${process.env.GOOGLE_MAPS_API_KEY}`)
-      console.log(res)
-      return res;
-
+      const res = await fetch(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${locationLat}%2C${locationLong}&radius=${radius}&type=restaurant&key=${process.env.GOOGLE_MAPS_API_KEY}`)
+      
+      console.log(JSON.stringify(res))
+      console.log(res.response)
     } catch (error) {
       alert(error);
     }
@@ -36,12 +32,14 @@ export default function HomeScreen({navigation}) {
 
   useEffect(() => {
     //locateUser();
-    setLocation({lat: 42.095827505764824, long: -88.06465224618745}); //temporary for testing purposes
+    //setLocation({lat: 42.095827505764824, long: -88.06465224618745});
+    setLocationLong(151.1957362);
+    setLocationLat(-33.8670522); //temporary for testing purposes
     setRadius(1500);
     setData(fetchData());
     
-    console.log(data);
-  })
+    console.log(JSON.stringify(data));
+  }, [])
 
   return (
    <View style={styles.container}>
@@ -51,7 +49,7 @@ export default function HomeScreen({navigation}) {
       <Text style={{fontFamily: 'Open Sans', fontSize: 20}}>FOOD NEAR YOU</Text>
       <SimplePlaceView 
       margTop={15} 
-      name={data.name}
+      name={'data.name'}
       address={'1032 Baller St'}
       details={'American'}
       rating={2} 
