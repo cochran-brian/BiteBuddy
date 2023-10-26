@@ -9,9 +9,12 @@ export default function HomeScreen({navigation}) {
   const [radius, setRadius] = useState(1500);
   const [locationLong, setLocationLong] = useState(null);
   const [locationLat, setLocationLat] = useState(null);
-  //const [nearPlaces, setNearPlaces] = useState(null);
+  const [done, setDone] = useState(undefined);
+  const [places, setPlaces] = useState(null);
 
-  var places;
+  const[imgArray, setImgArray] = useState([]);
+
+  
 
   // const locateUser = async () => {
   //   navigator.geolocation.getCurrentPosition(position => {
@@ -20,27 +23,65 @@ export default function HomeScreen({navigation}) {
   //   })
   // }
 
+  useEffect(() => {
+    setTimeout(() => {
+      const radius = '1000';
+      const lat = '42.095271881586406';
+      const long = '-88.06476939999999';
+      fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+lat+'%2C'+long+'&radius='+radius+'&type=restaurant&key=' + process.env.GOOGLE_MAPS_API_KEY)
+        .then((response) => response.json())
+        .then((json) => {
+          console.log(json);
+          setPlaces(json.results);
+        
+          var imRef = [];
+          for(var i = 0; i < 2; i++){
+            imRef.push(json.results[i].photos[0].photo_reference);
+          }
+          imRef.map(fetchImage);
+          console.log(imRef)
+        })
+        .catch((error) => console.log(error))
+    }, 2000);
+  }, []);
 
+  async function fetchImage(str){
+    fetch('https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference='+str+'&key='+process.env.GOOGLE_MAPS_API_KEY)
+    .then((response) => {
+      setImgArray(imgArray.push(response.url))
+      setDone(true);
+    })
   
-
-   async function fetchData(){
-        const radius = '1000';
-        const lat = '42.095271881586406';
-        const long = '-88.06476939999999';
-
-        const response = await fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+lat+'%2C'+long+'&radius='+radius+'&type=restaurant&key=' + process.env.GOOGLE_MAPS_API_KEY);
-        const data = await response.json();
-        
-        
-        //setNearPlaces(data.results);
-        places = data.results;
-        console.log(places)
+    .catch((error) => console.log("fetchImage: " + error))
   }
 
+
   
-  fetchData();
+
+  //  async function fetchData(){
+  //       const radius = '1000';
+  //       const lat = '42.095271881586406';
+  //       const long = '-88.06476939999999';
+
+  //       const response = await 
+  //       const data = await response.json();
+        
+        
+  //       //setNearPlaces(data.results);
+  //       places = data.results;
+  //       console.log(places)
+  // }
+
+  // fetchData();
+
 //TODO Wait until the fetchData method is done before the return statement executes
   return (
+    <>
+    {!done?(
+      <View style={[styles.container, {justifyContent: 'center'}]}>
+        <Text style={[styles.header, {marginTop: 0}]}>BITE BUDDY</Text>
+      </View>
+    ):(
    <View style={styles.container}>
     <Text style={styles.header}>BITE BUDDY</Text>
 
@@ -52,7 +93,7 @@ export default function HomeScreen({navigation}) {
       address={places? places[0].vicinity: 'Loading...'}
       details={places? places[0].user_ratings_total: 'Loading...'}
       rating={places? places[0].rating: 0} 
-      imageUri={places? places[0].icon : 'https://asset-cdn.schoology.com/system/files/imagecache/profile_reg/pictures/picture-95e36dc30f43e2e1e133573eb4fbbd7b_6504c03ebd0bd.jpg?1694810174'}/>
+      imageUri={places? imgArray[0]: 'https://asset-cdn.schoology.com/system/files/imagecache/profile_reg/pictures/picture-95e36dc30f43e2e1e133573eb4fbbd7b_6504c03ebd0bd.jpg?1694810174'}/>
 
       <SimplePlaceView 
       margTop={11} 
@@ -60,7 +101,7 @@ export default function HomeScreen({navigation}) {
       address={places? places[1].vicinity: 'Loading...'}
       details={places? places[1].user_ratings_total: 'Loading...'}
       rating={places? places[1].rating: 0} 
-      imageUri={places? places[1].icon : 'https://asset-cdn.schoology.com/system/files/imagecache/profile_reg/pictures/picture-95e36dc30f43e2e1e133573eb4fbbd7b_6504c03ebd0bd.jpg?1694810174'}/>
+      imageUri={places? imgArray[1]: 'https://asset-cdn.schoology.com/system/files/imagecache/profile_reg/pictures/picture-95e36dc30f43e2e1e133573eb4fbbd7b_6504c03ebd0bd.jpg?1694810174'}/>
     </View>
 
     <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 15}}>
@@ -89,7 +130,8 @@ export default function HomeScreen({navigation}) {
 
 
    </View>
-  );
+   )}
+  </>);
 }
 
 const styles = StyleSheet.create({
