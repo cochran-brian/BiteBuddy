@@ -4,13 +4,14 @@ import { Dimensions, StyleSheet, Text, TouchableHighlight, View, Pressable } fro
 import colors from '../config/colors';
 import SimplePlaceView from '../components/SimplePlaceView';
 
-
 export default function HomeScreen({navigation}) {
 
   const [radius, setRadius] = useState(1500);
   const [locationLong, setLocationLong] = useState(null);
   const [locationLat, setLocationLat] = useState(null);
-  const [data, setData] = useState(null);
+  const [nearPlaces, setNearPlaces] = useState(null);
+
+  var places;
 
   // const locateUser = async () => {
   //   navigator.geolocation.getCurrentPosition(position => {
@@ -19,28 +20,26 @@ export default function HomeScreen({navigation}) {
   //   })
   // }
 
-  const fetchData = async () => {
-    try {
-      const res = await fetch(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${locationLat}%2C${locationLong}&radius=${radius}&type=restaurant&key=${process.env.GOOGLE_MAPS_API_KEY}`)
-      
-      console.log(JSON.stringify(res))
-      console.log(res.response)
-    } catch (error) {
-      alert(error);
-    }
+
+  
+
+   async function fetchData(){
+        const radius = '1000';
+        const lat = '42.095271881586406';
+        const long = '-88.06476939999999';
+
+        const response = await fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+lat+'%2C'+long+'&radius='+radius+'&type=restaurant&key=' + process.env.GOOGLE_MAPS_API_KEY);
+        const data = await response.json();
+        
+        
+        //setNearPlaces(data.results);
+        places = data.results;
+        console.log(places)
   }
 
-  useEffect(() => {
-    //locateUser();
-    //setLocation({lat: 42.095827505764824, long: -88.06465224618745});
-    setLocationLong(151.1957362);
-    setLocationLat(-33.8670522); //temporary for testing purposes
-    setRadius(1500);
-    setData(fetchData());
-    
-    console.log(JSON.stringify(data));
-  }, [])
-
+  
+  fetchData();
+//TODO Wait until the fetchData method is done before the return statement executes
   return (
    <View style={styles.container}>
     <Text style={styles.header}>BITE BUDDY</Text>
@@ -49,19 +48,19 @@ export default function HomeScreen({navigation}) {
       <Text style={{fontFamily: 'Open Sans', fontSize: 20}}>FOOD NEAR YOU</Text>
       <SimplePlaceView 
       margTop={15} 
-      name={'data.name'}
-      address={'1032 Baller St'}
-      details={'American'}
-      rating={2} 
-      imageUri={'https://asset-cdn.schoology.com/system/files/imagecache/profile_reg/pictures/picture-95e36dc30f43e2e1e133573eb4fbbd7b_6504c03ebd0bd.jpg?1694810174'}/>
+      name={nearPlaces? nearPlaces[0].name: 'Loading...'}
+      address={nearPlaces? nearPlaces[0].vicinity: 'Loading...'}
+      details={nearPlaces? nearPlaces[0].user_ratings_total: 'Loading...'}
+      rating={nearPlaces? nearPlaces[0].rating: 0} 
+      imageUri={nearPlaces? nearPlaces[0].icon : 'https://asset-cdn.schoology.com/system/files/imagecache/profile_reg/pictures/picture-95e36dc30f43e2e1e133573eb4fbbd7b_6504c03ebd0bd.jpg?1694810174'}/>
 
       <SimplePlaceView 
       margTop={11} 
-      name={'Artifical Intelligence'}
-      address={'125 Brian St'}
-      details={'Computer'}
-      rating={4}
-      imageUri={'https://sds-platform-private.s3-us-east-2.amazonaws.com/uploads/49_blog_image_1.png'}/>
+      name={nearPlaces? nearPlaces[1].name: 'Loading...'}
+      address={nearPlaces? nearPlaces[1].vicinity: 'Loading...'}
+      details={nearPlaces? nearPlaces[1].user_ratings_total: 'Loading...'}
+      rating={nearPlaces? nearPlaces[1].rating: 0} 
+      imageUri={nearPlaces? nearPlaces[1].icon : 'https://asset-cdn.schoology.com/system/files/imagecache/profile_reg/pictures/picture-95e36dc30f43e2e1e133573eb4fbbd7b_6504c03ebd0bd.jpg?1694810174'}/>
     </View>
 
     <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 15}}>
