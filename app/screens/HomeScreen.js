@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Dimensions, StyleSheet, Text, TouchableHighlight, View, Pressable } from 'react-native';
 import colors from '../config/colors';
 import SimplePlaceView from '../components/SimplePlaceView';
@@ -11,6 +11,7 @@ export default function HomeScreen({navigation}) {
   const [locationLat, setLocationLat] = useState('42.095271881586406');
   const [done, setDone] = useState(undefined);
   const [places, setPlaces] = useState(null);
+  const ref = useRef(true);
 
   const[imgArray, setImgArray] = useState([]);
   const [imgRefArray, setImgRefArray] = useState([]);
@@ -24,37 +25,33 @@ export default function HomeScreen({navigation}) {
   // }
 
   useEffect(() => {
-    setTimeout(() => {
+    //setTimeout(() => {
       fetchData();
       
-    }, 2000);
-  }, []);
+    //}, 2000);
+  }, []); 
 
-  // useEffect(() => {
-  //   var imgRef = [];
-  //     for(var i = 0; i < 2; i++){
-  //       console.log(places[i].photos[0].photo_reference);
-  //       imgRef.push(places[i].photos[0].photo_reference);
-        
-  //     }
-  //     setImgRefArray(imgRef);
-  //     console.log(imgRefArray)
-  // }, [places])
+  useEffect(() => {
+    if(!places){return;}
+    for(var i = 0; i < 2; i++){ // change hard coded number
+      console.log(places[i].photos[0].photo_reference);
+      setImgRefArray([...imgRefArray, places[i].photos[0].photo_reference])
+    } 
+  }, [places])
 
-  // useEffect(() => {
-  //   var arr = [];
-  //   for(var i = 0; i < imgRefArray.length; i++) {
-  //     fetch('https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference='+imgRefArray[i]+'&key='+process.env.GOOGLE_MAPS_API_KEY)
-  //         .then((response) => {
-  //           console.log(response.url)
-  //           arr.push(response.url)
-  //         })
-  //         .catch((error) => console.log("fetchImage: " + error))
-  //   }
-  //   console.log(arr)
-  //   setImgArray(arr);
-  //   setDone(true);
-  // }, [imgRefArray])
+  useEffect(() => {
+    if(!imgRefArray){return;}
+    console.log(imgRefArray)
+    for(var i = 0; i < imgRefArray.length; i++) {
+      fetch('https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference='+imgRefArray[i]+'&key='+process.env.GOOGLE_MAPS_API_KEY)
+          .then((response) => {
+            console.log(response.url)
+            setImgArray([...imgArray, response.url])
+          })
+          .catch((error) => console.log("fetchImage: " + error))
+    }
+    setDone(true);
+  }, [imgRefArray])
   
   async function fetchData() {
     var data = await fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+locationLat+'%2C'+locationLong+'&radius='+radius+'&type=restaurant&key='+process.env.GOOGLE_MAPS_API_KEY)
