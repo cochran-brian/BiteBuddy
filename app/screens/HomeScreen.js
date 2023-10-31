@@ -32,25 +32,50 @@ export default function HomeScreen({navigation}) {
   }, []); 
 
   useEffect(() => {
-    if(!places){return;}
-    for(var i = 0; i < 2; i++){ // change hard coded number
-      console.log(places[i].photos[0].photo_reference);
-      setImgRefArray([...imgRefArray, places[i].photos[0].photo_reference])
-    } 
+    if(!places) return;
+    // for(var i = 0; i < 2; i++){ // change hard coded number
+    //   console.log(places[i].photos[0].photo_reference);
+    //   setImgRefArray([...imgRefArray, places[i].photos[0].photo_reference])
+    // } 
+
+    const limitedIterations = 2;
+    const references = places.slice(0, limitedIterations).map(place => {
+      place.photos && place.photos.length > 0 ? place.photos[0].photo_reference : null;
+    })
+    
+    const filteredReferences = references.filter(reference => reference !== null);
+    setImgRefArray(filteredReferences);
+
   }, [places])
 
   useEffect(() => {
-    if(!imgRefArray){return;}
-    console.log(imgRefArray)
-    for(var i = 0; i < imgRefArray.length; i++) {
-      fetch('https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference='+imgRefArray[i]+'&key='+process.env.GOOGLE_MAPS_API_KEY)
-          .then((response) => {
-            console.log(response.url)
-            setImgArray([...imgArray, response.url])
-          })
-          .catch((error) => console.log("fetchImage: " + error))
+    if(!imgRefArray || imgRefArray.length === 0) return;
+    // console.log(imgRefArray)
+    // for(var i = 0; i < imgRefArray.length; i++) {
+    //   fetch('https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference='+imgRefArray[i]+'&key='+process.env.GOOGLE_MAPS_API_KEY)
+    //       .then((response) => {
+    //         console.log(response.url)
+    //         setImgArray([...imgArray, response.url])
+    //       })
+    //       .catch((error) => console.log("fetchImage: " + error))
+    // }
+    // setDone(true);
+
+    const fetchImages = async () => {
+      const promises = imgRefArray.map(async ref => {
+        try {
+          const response = await fetch('https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference='+ref+'&key='+process.env.GOOGLE_MAPS_API_KEY);
+          return response.url;
+        } catch (error) {
+          console.error(error);
+        }
+      })
+
+      const urls = await Promise.all(promises);
+      setImgArray(urls.filter(url => url !== null));
+      setDone(true);
     }
-    setDone(true);
+
   }, [imgRefArray])
   
   async function fetchData() {
@@ -58,14 +83,6 @@ export default function HomeScreen({navigation}) {
     data = await data.json();
     console.log(data);
     setPlaces(data.results);
-        
-    // var imRef = [];
-    // for(var i = 0; i < 2; i++){
-    //   imRef.push(json.results[i].photos[0].photo_reference);
-    // }
-    // setImgRefArray(imRef);
-    //     })
-    //     .catch((error) => console.log(error))
   }
 
 
