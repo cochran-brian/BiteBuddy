@@ -9,11 +9,11 @@ function SimplePlaceView({imageUri, name, address, details, rating, margTop}){
             source={{uri: imageUri}}
             style={styles.image}>
         </Image>
-        <View style={{flexDirection: 'column', height: 117, alignItems: 'left', marginTop: 15, marginLeft: 10}}>
+        <View style={{flexDirection: 'column', height: 117, alignItems: 'left', marginTop: 15, marginLeft: 10, flex: 1, flexWrap: 'wrap'}}>
            <View style={{marginLeft: 5}}>
             <Text style = {{fontFamily: 'Open Sans', fontSize: 16}}>{name}</Text>
-            <Text style = {{fontFamily: 'Open Sans Light'}}>{address}</Text>
-            <Text style = {{fontFamily: 'Open Sans Light', marginBottom: 2}}>{details}</Text>
+            <Text style = {{fontFamily: 'Open Sans Light', fontSize: 12}}>{address}</Text>
+            {/* <Text style = {{fontFamily: 'Open Sans Light', marginBottom: 2}}>{details}</Text> */}
            </View>
             <AirbnbRating
                 isDisabled={true}
@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderWidth: 1,
         borderColor: 'grey',
+        position: 'relative'
     },
     image:{
         width: 117,
