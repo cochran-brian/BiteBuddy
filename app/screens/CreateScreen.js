@@ -22,7 +22,7 @@ export default function CreateScreen({navigation}) {
                 maximumValue={50}
                 onValueChange={(val) => setSlideValue(val)}
               />
-              <Text style={{alignSelf: 'center', fontFamily: 'Open Sans', fontSize: 16}}>{slideValue} mi</Text>
+              <Text style={{alignSelf: 'center', fontFamily: 'Open Sans', fontSize: 18}}>{slideValue} mi</Text>
             </View>
 
             <View style={{flex: 1, justifyContent: 'flex-end'}}>

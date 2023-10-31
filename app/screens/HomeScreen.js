@@ -25,41 +25,28 @@ export default function HomeScreen({navigation}) {
   // }
 
   useEffect(() => {
-    //setTimeout(() => {
+    setTimeout(() => {
       fetchData();
       
-    //}, 2000);
+    }, 1000);
   }, []); 
 
   useEffect(() => {
     if(!places) return;
-    // for(var i = 0; i < 2; i++){ // change hard coded number
-    //   console.log(places[i].photos[0].photo_reference);
-    //   setImgRefArray([...imgRefArray, places[i].photos[0].photo_reference])
-    // } 
 
     const limitedIterations = 2;
     const references = places.slice(0, limitedIterations).map(place => {
-      place.photos && place.photos.length > 0 ? place.photos[0].photo_reference : null;
+     return place.photos && place.photos.length > 0 ? place.photos[0].photo_reference : null;
     })
     
     const filteredReferences = references.filter(reference => reference !== null);
+    
     setImgRefArray(filteredReferences);
 
   }, [places])
 
   useEffect(() => {
     if(!imgRefArray || imgRefArray.length === 0) return;
-    // console.log(imgRefArray)
-    // for(var i = 0; i < imgRefArray.length; i++) {
-    //   fetch('https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference='+imgRefArray[i]+'&key='+process.env.GOOGLE_MAPS_API_KEY)
-    //       .then((response) => {
-    //         console.log(response.url)
-    //         setImgArray([...imgArray, response.url])
-    //       })
-    //       .catch((error) => console.log("fetchImage: " + error))
-    // }
-    // setDone(true);
 
     const fetchImages = async () => {
       const promises = imgRefArray.map(async ref => {
@@ -75,36 +62,15 @@ export default function HomeScreen({navigation}) {
       setImgArray(urls.filter(url => url !== null));
       setDone(true);
     }
-
+    fetchImages();
   }, [imgRefArray])
   
   async function fetchData() {
     var data = await fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+locationLat+'%2C'+locationLong+'&radius='+radius+'&type=restaurant&key='+process.env.GOOGLE_MAPS_API_KEY)
     data = await data.json();
-    console.log(data);
     setPlaces(data.results);
   }
 
-
-  
-
-  //  async function fetchData(){
-  //       const radius = '1000';
-  //       const lat = '42.095271881586406';
-  //       const long = '-88.06476939999999';
-
-  //       const response = await 
-  //       const data = await response.json();
-        
-        
-  //       //setNearPlaces(data.results);
-  //       places = data.results;
-  //       console.log(places)
-  // }
-
-  // fetchData();
-
-//TODO Wait until the fetchData method is done before the return statement executes
   return (
     <>
     {!done?(
