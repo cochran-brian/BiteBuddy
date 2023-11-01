@@ -26,14 +26,20 @@ export default function HomeScreen({navigation}) {
 
   useEffect(() => {
     setTimeout(() => {
-      fetchData();
+      //fetchData();
+      fetchAll();
       
     }, 1000);
   }, []); 
 
-  useEffect(() => {
-    if(!places) return;
+  const fetchAll = async () => {
+    await fetchData();
+    await fetchImgRef();
+    await fetchImages();
+    setDone(true);
+  }
 
+  const fetchImgRef = async () => {
     const limitedIterations = 2;
     const references = places.slice(0, limitedIterations).map(place => {
      return place.photos && place.photos.length > 0 ? place.photos[0].photo_reference : null;
@@ -42,30 +48,57 @@ export default function HomeScreen({navigation}) {
     const filteredReferences = references.filter(reference => reference !== null);
     
     setImgRefArray(filteredReferences);
+  }
 
-  }, [places])
+  const fetchImages = async () => {
+    const promises = imgRefArray.map(async ref => {
+      try {
+        const response = await fetch('https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference='+ref+'&key='+process.env.GOOGLE_MAPS_API_KEY);
+        return response.url;
+      } catch (error) {
+        console.error(error);
+      }
+    })
 
-  useEffect(() => {
-    if(!imgRefArray || imgRefArray.length === 0) return;
+    const urls = await Promise.all(promises);
+    setImgArray(urls.filter(url => url !== null));
+  }
 
-    const fetchImages = async () => {
-      const promises = imgRefArray.map(async ref => {
-        try {
-          const response = await fetch('https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference='+ref+'&key='+process.env.GOOGLE_MAPS_API_KEY);
-          return response.url;
-        } catch (error) {
-          console.error(error);
-        }
-      })
+  // useEffect(() => {
+  //   if(!places) return;
 
-      const urls = await Promise.all(promises);
-      setImgArray(urls.filter(url => url !== null));
-      setDone(true);
-    }
-    fetchImages();
-  }, [imgRefArray])
+  //   const limitedIterations = 2;
+  //   const references = places.slice(0, limitedIterations).map(place => {
+  //    return place.photos && place.photos.length > 0 ? place.photos[0].photo_reference : null;
+  //   })
+    
+  //   const filteredReferences = references.filter(reference => reference !== null);
+    
+  //   setImgRefArray(filteredReferences);
+
+  // }, [places])
+
+  // useEffect(() => {
+  //   if(!imgRefArray || imgRefArray.length === 0) return;
+
+  //   const fetchImages = async () => {
+  //     const promises = imgRefArray.map(async ref => {
+  //       try {
+  //         const response = await fetch('https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference='+ref+'&key='+process.env.GOOGLE_MAPS_API_KEY);
+  //         return response.url;
+  //       } catch (error) {
+  //         console.error(error);
+  //       }
+  //     })
+
+  //     const urls = await Promise.all(promises);
+  //     setImgArray(urls.filter(url => url !== null));
+  //     setDone(true);
+  //   }
+  //   fetchImages();
+  // }, [imgRefArray])
   
-  async function fetchData() {
+  const fetchData = async () => {
     var data = await fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+locationLat+'%2C'+locationLong+'&radius='+radius+'&type=restaurant&key='+process.env.GOOGLE_MAPS_API_KEY)
     data = await data.json();
     setPlaces(data.results);
