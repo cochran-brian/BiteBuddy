@@ -7,8 +7,8 @@ import SimplePlaceView from '../components/SimplePlaceView';
 export default function HomeScreen({navigation}) {
 
   const [radius, setRadius] = useState(1500);
-  const [locationLong, setLocationLong] = useState('-88.06476939999999');
-  const [locationLat, setLocationLat] = useState('42.095271881586406');
+  const [locationLat, setLocationLat] = useState('51.64361'); //42.095271881586406
+  const [locationLong, setLocationLong] = useState('-0.48066'); //-88.06476939999999
   const [done, setDone] = useState(undefined);
   const [places, setPlaces] = useState(null);
   const ref = useRef(true);
@@ -103,7 +103,7 @@ export default function HomeScreen({navigation}) {
   const fetchData = async () => {
     var data = await fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+locationLat+'%2C'+locationLong+'&radius='+radius+'&type=restaurant&key='+process.env.GOOGLE_MAPS_API_KEY)
     data = await data.json();
-    console.log(data.results)
+    console.log(data)
     setPlaces(data.results);
     console.log(places)
   }

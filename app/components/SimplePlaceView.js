@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Text, StyleSheet, View, Image } from 'react-native';
-import {AirbnbRating} from 'react-native-ratings';
+import { Rating } from '@kolking/react-native-rating';
+import colors from '../config/colors';
 
 function SimplePlaceView({imageUri, name, address, details, rating, margTop}){
     return(
@@ -11,16 +12,18 @@ function SimplePlaceView({imageUri, name, address, details, rating, margTop}){
         </Image>
         <View style={{flexDirection: 'column', height: 117, alignItems: 'left', marginTop: 15, marginLeft: 10, flex: 1, flexWrap: 'wrap'}}>
            <View style={{marginLeft: 5}}>
-            <Text style = {{fontFamily: 'Open Sans', fontSize: 16}}>{name}</Text>
+            <Text style = {{fontFamily: 'Open Sans', fontSize: 16}}>{name.toUpperCase()}</Text>
             <Text style = {{fontFamily: 'Open Sans Light', fontSize: 12}}>{address}</Text>
             {/* <Text style = {{fontFamily: 'Open Sans Light', marginBottom: 2}}>{details}</Text> */}
            </View>
-            <AirbnbRating
-                isDisabled={true}
-                size={22}
-                showRating={false}
-                defaultRating={rating}
+           <View style={{justifyContent: 'flex-end', flex: 1, marginBottom: 30}}>
+            <Rating
+                disabled={true}
+                size={25}
+                rating={rating}
+                fillColor={'gold'}
             />
+            </View>
         </View>
     </View>
 
