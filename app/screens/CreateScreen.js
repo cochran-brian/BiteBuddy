@@ -139,13 +139,9 @@ export default function CreateScreen({navigation}) {
   // }, [imgArray])
 
     return(
-      <>
-        {/* {!done?(
-        <View style={[styles.container, {justifyContent: 'center'}]}>
-          <Text style={[styles.header, {marginTop: 0}]}>BITE BUDDY</Text>
-        </View>
-      ):( */}
-      (
+      
+        
+      
         <View style={styles.container}>
               <Text style={styles.header}>CREATE A BITE</Text>
 
@@ -169,7 +165,7 @@ export default function CreateScreen({navigation}) {
 
           </View>
       )
-    </>)
+  
 }
 
 const styles = StyleSheet.create({
