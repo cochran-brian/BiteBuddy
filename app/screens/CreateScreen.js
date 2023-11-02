@@ -16,6 +16,7 @@ export default function CreateScreen({navigation}) {
   const [places, setPlaces] = useState(null);
   const[imgArray, setImgArray] = useState([]);
   const [imgRefArray, setImgRefArray] = useState([]);
+  const [done, setDone] = useState(undefined);
 
   const fetchData = async () => {
     var data = await fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+locationLat+'%2C'+locationLong+'&radius='+radius+'&type=restaurant&key='+process.env.GOOGLE_MAPS_API_KEY)
@@ -68,6 +69,7 @@ export default function CreateScreen({navigation}) {
     await fetchData();
     await fetchImages();
     await addDocuments();
+    setDone(true);
   }
 
 
@@ -129,29 +131,36 @@ export default function CreateScreen({navigation}) {
   // }, [imgArray])
 
     return(
-        <View style={styles.container}>
-            <Text style={styles.header}>CREATE A BITE</Text>
-
-
-            <View style={{marginTop: 80}}>
-              <Text style={styles.promptText}>HOW FAR ARE YOU WILLING TO TRAVEL?</Text>
-              <Slider
-                step={1}
-                minimumValue={5}
-                maximumValue={50}
-                onValueChange={(val) => setSlideValue(val)}
-              />
-              <Text style={{alignSelf: 'center', fontFamily: 'Open Sans', fontSize: 18}}>{slideValue} mi</Text>
-            </View>
-
-            <View style={{flex: 1, justifyContent: 'flex-end'}}>
-             <TouchableHighlight style= {styles.bottomButton} underlayColor={colors.primaryDark} onPress={fetchSend()}>
-              <Text style={{color: 'white', fontFamily: 'Open Sans', fontSize: 20}}>CREATE BITE</Text>
-             </TouchableHighlight>
-            </View>
-
+      <>
+        {!done?(
+        <View style={[styles.container, {justifyContent: 'center'}]}>
+          <Text style={[styles.header, {marginTop: 0}]}>BITE BUDDY</Text>
         </View>
-    )
+      ):(
+        <View style={styles.container}>
+              <Text style={styles.header}>CREATE A BITE</Text>
+
+
+              <View style={{marginTop: 80}}>
+                <Text style={styles.promptText}>HOW FAR ARE YOU WILLING TO TRAVEL?</Text>
+                <Slider
+                  step={1}
+                  minimumValue={5}
+                  maximumValue={50}
+                  onValueChange={(val) => setSlideValue(val)}
+                />
+                <Text style={{alignSelf: 'center', fontFamily: 'Open Sans', fontSize: 18}}>{slideValue} mi</Text>
+              </View>
+
+              <View style={{flex: 1, justifyContent: 'flex-end'}}>
+              <TouchableHighlight style= {styles.bottomButton} underlayColor={colors.primaryDark} onPress={fetchSend()}>
+                <Text style={{color: 'white', fontFamily: 'Open Sans', fontSize: 20}}>CREATE BITE</Text>
+              </TouchableHighlight>
+              </View>
+
+          </View>
+      )}
+    </>)
 }
 
 const styles = StyleSheet.create({
