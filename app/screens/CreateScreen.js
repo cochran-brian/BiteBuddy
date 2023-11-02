@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Dimensions, StyleSheet, Text, TouchableHighlight, View, Pressable } from 'react-native';
 import colors from '../config/colors';
 import Slider from '@react-native-community/slider';
+import { db } from '../../firebase/config';
 
 
 
@@ -15,6 +16,12 @@ export default function CreateScreen({navigation}) {
   const [places, setPlaces] = useState(null);
   const[imgArray, setImgArray] = useState([]);
   const [imgRefArray, setImgRefArray] = useState([]);
+
+  async function fetchData() {
+    var data = await fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+locationLat+'%2C'+locationLong+'&radius='+radius+'&type=restaurant&key='+process.env.GOOGLE_MAPS_API_KEY)
+    data = await data.json();
+    setPlaces(data.results);
+  }
 
   useEffect(() => {
     if(!places) return;
@@ -48,13 +55,27 @@ export default function CreateScreen({navigation}) {
     }
     fetchImages();
   }, [imgRefArray])
+  
+  useEffect(() => {
+    const addDocument = async (index) => {
+      const reference = collection(db, "restaurants")
+      try {
+        const doc = await addDoc(reference, {
+          name: places[index].name,
+          address: places[index].address,
+          rating: places[index].rating,
+          imageURL: imgArray[index],
+          isOpen: places[index].opening_hours.open_now
+        })
+      } catch (error) {
+        console.error(error);
+      }
+    }
 
-
-  async function fetchData() {
-    var data = await fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+locationLat+'%2C'+locationLong+'&radius='+radius+'&type=restaurant&key='+process.env.GOOGLE_MAPS_API_KEY)
-    data = await data.json();
-    setPlaces(data.results);
-  }
+    for(var i = 0; i < places.length; i++) {
+      addDocument(i);
+    }
+  }, [imgArray])
 
     return(
         <View style={styles.container}>
