@@ -19,9 +19,11 @@ export default function CreateScreen({navigation}) {
   const [done, setDone] = useState(undefined);
 
   const fetchData = async () => {
+    console.log("fetching data")
     var data = await fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+locationLat+'%2C'+locationLong+'&radius='+radius+'&type=restaurant&key='+process.env.GOOGLE_MAPS_API_KEY)
     data = await data.json();
     await setPlaces(data.results);
+    console.log(places)
 
     const limitedIterations = 10;
     const references = places.slice(0, limitedIterations).map(place => {
@@ -29,9 +31,11 @@ export default function CreateScreen({navigation}) {
     })
     const filteredReferences = references.filter(reference => reference !== null);
     await setImgRefArray(filteredReferences);
+    console.log(imgRefArray);
   }
 
   const fetchImages = async () => {
+    console.log("fetching images")
     const promises = imgRefArray.map(async ref => {
       try {
         const response = await fetch('https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference='+ref+'&key='+process.env.GOOGLE_MAPS_API_KEY);
@@ -42,11 +46,14 @@ export default function CreateScreen({navigation}) {
     })
 
     const urls = await Promise.all(promises);
-    setImgArray(urls.filter(url => url !== null));
+    await setImgArray(urls.filter(url => url !== null));
+    console.log(imgArray);
   }
 
   const addDocuments = async () => {
+    console.log("adding documents")
     const addDocument = async () => {
+      console.log("adding one doc")
       const reference = collection(db, "restaurants")
         try {
           const doc = await addDoc(reference, {
@@ -56,6 +63,7 @@ export default function CreateScreen({navigation}) {
             imageURL: imgArray[index],
             isOpen: places[index].opening_hours.open_now
           })
+          console.log(doc)
         } catch (error) {
           console.error(error);
         }
