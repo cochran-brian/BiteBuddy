@@ -77,7 +77,7 @@ export default function CreateScreen({navigation}) {
     await fetchData();
     await fetchImages();
     await addDocuments();
-    setDone(true);
+    //setDone(true);
   }
 
 
@@ -140,11 +140,12 @@ export default function CreateScreen({navigation}) {
 
     return(
       <>
-        {!done?(
+        {/* {!done?(
         <View style={[styles.container, {justifyContent: 'center'}]}>
           <Text style={[styles.header, {marginTop: 0}]}>BITE BUDDY</Text>
         </View>
-      ):(
+      ):( */}
+      (
         <View style={styles.container}>
               <Text style={styles.header}>CREATE A BITE</Text>
 
@@ -167,7 +168,7 @@ export default function CreateScreen({navigation}) {
               </View>
 
           </View>
-      )}
+      )
     </>)
 }
 
