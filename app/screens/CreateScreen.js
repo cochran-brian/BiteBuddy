@@ -57,6 +57,8 @@ export default function CreateScreen({navigation}) {
   }, [imgRefArray])
   
   useEffect(() => {
+    if(!imgArray || imgArray.length === 0) return;
+
     const addDocument = async (index) => {
       const reference = collection(db, "restaurants")
       try {
