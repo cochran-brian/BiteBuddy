@@ -24,119 +24,111 @@ export default function CreateScreen({navigation}) {
     data = await data.json();
     //sconsole.log(data.results);
     setPlaces(data.results);
+  }
+
+  // async function fetchImages(){
+  //   console.log("fetching images")
+  //   const promises = imgRefArray.map(async ref => {
+  //     try {
+  //       const response = await fetch('https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference='+ref+'&key='+process.env.GOOGLE_MAPS_API_KEY);
+  //       return response.url;
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   })
+
+  //   const urls = await Promise.all(promises);
+  //   await setImgArray(urls.filter(url => url !== null));
+  //   console.log(imgArray);
+  // }
+
+  // async function addDocuments(){
+  //   console.log("adding documents")
+  //   const addDocument = async () => {
+  //     console.log("adding one doc")
+  //     const reference = collection(db, "restaurants")
+  //       try {
+  //         const doc = await addDoc(reference, {
+  //           name: places[index].name,
+  //           address: places[index].address,
+  //           rating: places[index].rating,
+  //           imageURL: imgArray[index],
+  //           isOpen: places[index].opening_hours.open_now
+  //         })
+  //         console.log(doc)
+  //       } catch (error) {
+  //         console.error(error);
+  //       }
+  //   }
+  //   for(var i = 0; i < places.length; i++) {
+  //     addDocument(i);
+  //   }
+  // }
+
+  // async function fetchSend(){
+  //   await fetchData();
+  //   await fetchImages();
+  //   await addDocuments();
+  //   //setDone(true);
+  // }
+
+
+
+  useEffect(() => {
+    if(!places) return;
 
     const limitedIterations = 10;
     const references = places.slice(0, limitedIterations).map(place => {
      return place.photos && place.photos.length > 0 ? place.photos[0].photo_reference : null;
     })
+    
     const filteredReferences = references.filter(reference => reference !== null);
-    await setImgRefArray(filteredReferences);
-    console.log(imgRefArray);
-  }
+    
+    setImgRefArray(filteredReferences);
 
-  async function fetchImages(){
-    console.log("fetching images")
-    const promises = imgRefArray.map(async ref => {
-      try {
-        const response = await fetch('https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference='+ref+'&key='+process.env.GOOGLE_MAPS_API_KEY);
-        return response.url;
-      } catch (error) {
-        console.error(error);
-      }
-    })
+  }, [places])
 
-    const urls = await Promise.all(promises);
-    await setImgArray(urls.filter(url => url !== null));
-    console.log(imgArray);
-  }
+  useEffect(() => {
+    if(!imgRefArray || imgRefArray.length === 0) return;
 
-  async function addDocuments(){
-    console.log("adding documents")
-    const addDocument = async () => {
-      console.log("adding one doc")
-      const reference = collection(db, "restaurants")
+    const fetchImages = async () => {
+      const promises = imgRefArray.map(async ref => {
         try {
-          const doc = await addDoc(reference, {
-            name: places[index].name,
-            address: places[index].address,
-            rating: places[index].rating,
-            imageURL: imgArray[index],
-            isOpen: places[index].opening_hours.open_now
-          })
-          console.log(doc)
+          const response = await fetch('https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference='+ref+'&key='+process.env.GOOGLE_MAPS_API_KEY);
+          return response.url;
         } catch (error) {
           console.error(error);
         }
+      })
+
+      const urls = await Promise.all(promises);
+      setImgArray(urls.filter(url => url !== null));
     }
+    fetchImages();
+  }, [imgRefArray])
+  
+  useEffect(() => {
+    if(!imgArray || imgArray.length === 0) return;
+
+    const addDocument = async (index) => {
+      const reference = collection(db, "restaurants")
+      try {
+        const doc = await addDoc(reference, {
+          name: places[index].name,
+          address: places[index].vicinity,
+          rating: places[index].rating,
+          imageURL: imgArray[index],
+          isOpen: places[index].opening_hours.open_now
+        })
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
     for(var i = 0; i < places.length; i++) {
       addDocument(i);
     }
-  }
-
-  async function fetchSend(){
-    await fetchData();
-    await fetchImages();
-    await addDocuments();
-    //setDone(true);
-  }
-
-
-
-  // useEffect(() => {
-  //   if(!places) return;
-
-  //   const limitedIterations = 100;
-  //   const references = places.slice(0, limitedIterations).map(place => {
-  //    return place.photos && place.photos.length > 0 ? place.photos[0].photo_reference : null;
-  //   })
-    
-  //   const filteredReferences = references.filter(reference => reference !== null);
-    
-  //   setImgRefArray(filteredReferences);
-
-  // }, [places])
-
-  // useEffect(() => {
-  //   if(!imgRefArray || imgRefArray.length === 0) return;
-
-  //   const fetchImages = async () => {
-  //     const promises = imgRefArray.map(async ref => {
-  //       try {
-  //         const response = await fetch('https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference='+ref+'&key='+process.env.GOOGLE_MAPS_API_KEY);
-  //         return response.url;
-  //       } catch (error) {
-  //         console.error(error);
-  //       }
-  //     })
-
-  //     const urls = await Promise.all(promises);
-  //     setImgArray(urls.filter(url => url !== null));
-  //   }
-  //   fetchImages();
-  // }, [imgRefArray])
-  
-  // useEffect(() => {
-  //   if(!imgArray || imgArray.length === 0) return;
-
-  //   const addDocument = async (index) => {
-  //     const reference = collection(db, "restaurants")
-  //     try {
-  //       const doc = await addDoc(reference, {
-  //         name: places[index].name,
-  //         address: places[index].address,
-  //         rating: places[index].rating,
-  //         imageURL: imgArray[index],
-  //         isOpen: places[index].opening_hours.open_now
-  //       })
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   }
-
-  //   for(var i = 0; i < places.length; i++) {
-  //     addDocument(i);
-  //   }
-  // }, [imgArray])
+  }, [imgArray])
 
     return(
       
@@ -158,7 +150,7 @@ export default function CreateScreen({navigation}) {
               </View>
 
               <View style={{flex: 1, justifyContent: 'flex-end'}}>
-              <TouchableHighlight style= {styles.bottomButton} underlayColor={colors.primaryDark} onPress={() => fetchSend()}>
+              <TouchableHighlight style= {styles.bottomButton} underlayColor={colors.primaryDark} onPress={() => fetchData()}>
                 <Text style={{color: 'white', fontFamily: 'Open Sans', fontSize: 20}}>CREATE BITE</Text>
               </TouchableHighlight>
               </View>
