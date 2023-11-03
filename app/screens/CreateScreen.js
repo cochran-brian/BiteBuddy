@@ -3,14 +3,14 @@ import { Dimensions, StyleSheet, Text, TouchableHighlight, View, Pressable } fro
 import colors from '../config/colors';
 import Slider from '@react-native-community/slider';
 import { db } from '../../firebase/config';
+import { collection, addDoc } from "firebase/firestore"
 
 
 
 export default function CreateScreen({navigation}) {
 
-  const [slideValue, setSlideValue] = useState(0);
 
-  const [radius, setRadius] = useState(1500);
+  const [slideValue, setSlideValue] = useState(0);
   const [locationLong, setLocationLong] = useState('-88.06476939999999');
   const [locationLat, setLocationLat] = useState('42.095271881586406');
   const [places, setPlaces] = useState(null);
@@ -18,12 +18,12 @@ export default function CreateScreen({navigation}) {
   const [imgRefArray, setImgRefArray] = useState([]);
   const [done, setDone] = useState(undefined);
 
-  const fetchData = async () => {
+  async function fetchData(){
     console.log("fetching data")
-    var data = await fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+locationLat+'%2C'+locationLong+'&radius='+radius+'&type=restaurant&key='+process.env.GOOGLE_MAPS_API_KEY)
+    var data = await fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+locationLat+'%2C'+locationLong+'&radius='+(slideValue * 1609.34)+'&type=restaurant&key='+process.env.GOOGLE_MAPS_API_KEY)
     data = await data.json();
-    await setPlaces(data.results);
-    console.log(places)
+    //sconsole.log(data.results);
+    setPlaces(data.results);
 
     const limitedIterations = 10;
     const references = places.slice(0, limitedIterations).map(place => {
@@ -34,7 +34,7 @@ export default function CreateScreen({navigation}) {
     console.log(imgRefArray);
   }
 
-  const fetchImages = async () => {
+  async function fetchImages(){
     console.log("fetching images")
     const promises = imgRefArray.map(async ref => {
       try {
@@ -50,7 +50,7 @@ export default function CreateScreen({navigation}) {
     console.log(imgArray);
   }
 
-  const addDocuments = async () => {
+  async function addDocuments(){
     console.log("adding documents")
     const addDocument = async () => {
       console.log("adding one doc")
@@ -73,7 +73,7 @@ export default function CreateScreen({navigation}) {
     }
   }
 
-  const fetchSend = async () => {
+  async function fetchSend(){
     await fetchData();
     await fetchImages();
     await addDocuments();
@@ -158,7 +158,7 @@ export default function CreateScreen({navigation}) {
               </View>
 
               <View style={{flex: 1, justifyContent: 'flex-end'}}>
-              <TouchableHighlight style= {styles.bottomButton} underlayColor={colors.primaryDark} onPress={fetchSend()}>
+              <TouchableHighlight style= {styles.bottomButton} underlayColor={colors.primaryDark} onPress={() => fetchSend()}>
                 <Text style={{color: 'white', fontFamily: 'Open Sans', fontSize: 20}}>CREATE BITE</Text>
               </TouchableHighlight>
               </View>
