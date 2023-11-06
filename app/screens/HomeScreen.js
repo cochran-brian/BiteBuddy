@@ -12,6 +12,8 @@ export default function HomeScreen({navigation}) {
   const [done, setDone] = useState(undefined);
   const [places, setPlaces] = useState(null);
 
+  const iterationLimit = 2;
+
   // const[imgArray, setImgArray] = useState([]);
   // const [imgRefArray, setImgRefArray] = useState([]);
   
@@ -64,12 +66,12 @@ export default function HomeScreen({navigation}) {
   // }, [imgRefArray])
   
   async function fetchData(){
-    //var data = await fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+locationLat+'%2C'+locationLong+'&radius='+radius+'&type=restaurant&key='+process.env.GOOGLE_MAPS_API_KEY)
+    var data = await fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+locationLat+'%2C'+locationLong+'&radius='+radius+'&type=restaurant&key='+process.env.GOOGLE_MAPS_API_KEY)
     data = await data.json();
 
     promises = await data.results.slice(0, iterationLimit).map(async (place) => {
       try{
-        //const response = await fetch('https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference='+place.imageRef+'&key='+process.env.GOOGLE_MAPS_API_KEY);
+        const response = await fetch('https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference='+place.photos[0].photo_reference+'&key='+process.env.GOOGLE_MAPS_API_KEY);
         return {
             name: place.name,
             address: place.vicinity, 
@@ -85,6 +87,7 @@ export default function HomeScreen({navigation}) {
 
     data = await Promise.all(promises);
     setPlaces(data);
+    setDone(true);
   }
 
   return (

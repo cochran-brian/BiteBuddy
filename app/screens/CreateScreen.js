@@ -14,12 +14,12 @@ export default function CreateScreen({navigation}) {
   const [locationLat, setLocationLat] = useState('42.095271881586406');
 
   async function fetchData(){
-    //var data = await fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+locationLat+'%2C'+locationLong+'&radius='+(slideValue * 1609.34)+'&type=restaurant&key='+process.env.GOOGLE_MAPS_API_KEY)
+    var data = await fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+locationLat+'%2C'+locationLong+'&radius='+(slideValue * 1609.34)+'&type=restaurant&key='+process.env.GOOGLE_MAPS_API_KEY)
     data = await data.json();
 
     promises = await data.results.slice(0, iterationLimit).map(async (place) => {
       try{
-        //const response = await fetch('https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference='+place.imageRef+'&key='+process.env.GOOGLE_MAPS_API_KEY);
+        const response = await fetch('https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference='+place.photos[0].photo_reference+'&key='+process.env.GOOGLE_MAPS_API_KEY);
         return {
             name: place.name,
             address: place.vicinity, 
