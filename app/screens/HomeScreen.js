@@ -27,7 +27,10 @@ export default function HomeScreen({navigation}) {
 
   useEffect(() => {
     setTimeout(() => {
-      fetchData();
+
+      //fetchData();
+      setDone(true);
+
     }, 1000);
   }, []); 
 
