@@ -3,7 +3,7 @@ import { Dimensions, StyleSheet, Text, TouchableHighlight, View, Pressable } fro
 import colors from '../config/colors';
 import Slider from '@react-native-community/slider';
 import { db } from '../../firebase/config';
-import { collection, addDoc } from "firebase/firestore"
+import { collection, addDoc, setDoc } from "firebase/firestore"
 
 export default function CreateScreen({navigation}) {
 
@@ -77,7 +77,7 @@ export default function CreateScreen({navigation}) {
               </View>
 
               <View style={{flex: 1, justifyContent: 'flex-end'}}>
-              <TouchableHighlight style= {styles.bottomButton} underlayColor={colors.primaryDark} onPress={() => navigation.navigate("Survey")}> 
+              <TouchableHighlight style= {styles.bottomButton} underlayColor={colors.primaryDark} onPress={() => fetchData()}> 
                 <Text style={{color: 'white', fontFamily: 'Open Sans', fontSize: 20}}>CREATE BITE</Text>
               </TouchableHighlight>
               </View>
