@@ -78,7 +78,10 @@ export default function CreateScreen({navigation}) {
               </View>
 
               <View style={{flex: 1, justifyContent: 'flex-end'}}>
-              <TouchableHighlight style= {styles.bottomButton} underlayColor={colors.primaryDark} onPress={() => fetchData()}> 
+              <TouchableHighlight style= {styles.bottomButton} underlayColor={colors.primaryDark} 
+                onPress={() => navigation.navigate('Survey') //fetchData()}
+                }>
+
                 <Text style={{color: 'white', fontFamily: 'Open Sans', fontSize: 20}}>CREATE BITE</Text>
               </TouchableHighlight>
               </View>

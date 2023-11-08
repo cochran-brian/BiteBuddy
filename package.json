@@ -24,7 +24,8 @@
     "react-native": "0.72.5",
     "react-native-dotenv": "^3.4.9",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
-    "react-native-ratings": "^8.1.0"
+    "react-native-ratings": "^8.1.0",
+    "react-native-snap-carousel": "^3.9.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
