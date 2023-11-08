@@ -38,7 +38,6 @@ export default function CreateScreen({navigation}) {
             serves_wine: place.serves_wine,
             website: place.website,
             image_url: response.url,
-            //isOpen: place.opening_hours
           }
       } catch (error) {
         console.error(error);
@@ -52,8 +51,10 @@ export default function CreateScreen({navigation}) {
     //add collection to reference above inside of document "restaurants"
     //create new reference 
     data.map(async (place) => {
+      console.log("setting yo doc boi")
       try {
-        await setDoc(doc(db, "places", place.name), place); //have this be the new reference
+        await setDoc(doc(db, "places", "restaurants"), place); //have this be the new reference
+        console.log("doc set brew")
       } catch (error) {
         console.error(error);
       } 
