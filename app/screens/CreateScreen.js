@@ -48,12 +48,12 @@ export default function CreateScreen({navigation}) {
 
     data = await Promise.all(promises);
 
-    const reference = collection(db, "places")
+    //const reference = collection(db, "places/restaurants/new")
     //add collection to reference above inside of document "restaurants"
     //create new reference 
     data.map(async (place) => {
       try {
-        await addDoc(reference, place); //have this be the new reference
+        await setDoc(doc(db, "places", place.name), place); //have this be the new reference
       } catch (error) {
         console.error(error);
       } 
