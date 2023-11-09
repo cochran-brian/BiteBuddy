@@ -13,6 +13,8 @@ export default function SurveySceen({navigation}) {
   {name: 'Big Ben', address: 'Baller', rating: 3.4, url: 'https://asset-cdn.schoology.com/system/files/imagecache/profile_reg/pictures/picture-95e36dc30f43e2e1e133573eb4fbbd7b_6504c03ebd0bd.jpg?1694810174'},
   {name: 'Bri Coc', address: 'Baller', rating: 4.2, url:'https://asset-cdn.schoology.com/system/files/imagecache/profile_reg/pictures/picture-143dba946e5a104a83e3af1fcea12697_6504c00154c6d.jpg?1694810113'}]
 
+
+
   renderItem = ({item, index}) => {
     return (
         <SurveyCard

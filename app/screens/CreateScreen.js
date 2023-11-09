@@ -3,7 +3,7 @@ import { Dimensions, StyleSheet, Text, TouchableHighlight, View, Pressable } fro
 import colors from '../config/colors';
 import Slider from '@react-native-community/slider';
 import { db } from '../../firebase/config';
-import { collection, addDoc, setDoc } from "firebase/firestore"
+import { collection, addDoc, setDoc, doc } from "firebase/firestore"
 
 export default function CreateScreen({navigation}) {
 
@@ -13,6 +13,10 @@ export default function CreateScreen({navigation}) {
   const [locationLong, setLocationLong] = useState('-88.06476939999999');
   const [locationLat, setLocationLat] = useState('42.095271881586406');
 
+  function generateCode() {
+    return Math.floor(Math.random() * 100000);
+  }
+
   async function fetchData(){
     var data = await fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+locationLat+'%2C'+locationLong+'&radius='+(slideValue * 1609.34)+'&type=restaurant&opennow=true&key='+process.env.GOOGLE_MAPS_API_KEY)
     data = await data.json();
@@ -20,23 +24,22 @@ export default function CreateScreen({navigation}) {
     promises = await data.results.slice(0, iterationLimit).map(async (place) => {
       try{
         const response = await fetch('https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference='+place.photos[0].photo_reference+'&key='+process.env.GOOGLE_MAPS_API_KEY);
-        console.log(place.editorial_summary)
         return {
             name: place.name,
             address: place.vicinity, 
             rating: place.rating,
             price_level: place.price_level,
-            delivery: place.delivery,
-            reservable: place.reservable,
-            takeout: place.takeout,
-            serves_breakfast: place.serves_breakfast,
-            serves_brunch: place.serves_brunch,
-            serves_lunch: place.serves_lunch,
-            serves_dinner: place.serves_dinner,
-            serves_vegetarian_food: place.serves_vegetarian_food,
-            serves_beer: place.serves_beer,
-            serves_wine: place.serves_wine,
-            website: place.website,
+            //delivery: place.delivery,
+            //reservable: place.reservable,
+            //takeout: place.takeout,
+            // serves_breakfast: place.serves_breakfast,
+            // serves_brunch: place.serves_brunch,
+            // serves_lunch: place.serves_lunch,
+            // serves_dinner: place.serves_dinner,
+            // serves_vegetarian_food: place.serves_vegetarian_food,
+            // serves_beer: place.serves_beer,
+            // serves_wine: place.serves_wine,
+            //website: place.website,
             image_url: response.url,
           }
       } catch (error) {
@@ -47,14 +50,14 @@ export default function CreateScreen({navigation}) {
 
     data = await Promise.all(promises);
 
-    //const reference = collection(db, "places/restaurants/new")
+    //const reference = collection(db, "places")
     //add collection to reference above inside of document "restaurants"
     //create new reference 
     data.map(async (place) => {
       console.log("setting yo doc boi")
       try {
-        await setDoc(doc(db, "places", "restaurants"), place); //have this be the new reference
-        console.log("doc set brew")
+        await setDoc(doc(db, generateCode(), place.name), place); //have this be the new reference
+        //await addDoc(reference, place)
       } catch (error) {
         console.error(error);
       } 
@@ -79,7 +82,7 @@ export default function CreateScreen({navigation}) {
 
               <View style={{flex: 1, justifyContent: 'flex-end'}}>
               <TouchableHighlight style= {styles.bottomButton} underlayColor={colors.primaryDark} 
-                onPress={() => navigation.navigate('Survey') //fetchData()}
+                onPress={() =>  fetchData() //navigation.navigate('Survey')}
                 }>
 
                 <Text style={{color: 'white', fontFamily: 'Open Sans', fontSize: 20}}>CREATE BITE</Text>
