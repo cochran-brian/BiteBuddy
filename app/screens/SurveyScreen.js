@@ -36,14 +36,20 @@ export default function SurveySceen({navigation}) {
               sliderWidth={400}
               itemWidth={320}
               containerCustomStyle={{flexGrow: 0}}
+              scrollEnabled={false}
             />
             </View>
 
             <View style={{flexDirection: 'row', marginTop: 20}}>
-              <TouchableHighlight style={{width: 50, height: 20, borderRadius: 10}}>
+              <TouchableHighlight style={{width: 50, height: 50, borderRadius: 25, backgroundColor: colors.primary, justifyContent: 'center', alignItems: 'center'}}
+              onPress={() => this._carousel.snapToNext()}>
                 <Text>Skip</Text>
               </TouchableHighlight>
             
+              <TouchableHighlight style={{width: 50, height: 50, borderRadius: 25, backgroundColor: colors.primary, justifyContent: 'center', alignItems: 'center'}}
+              onPress={() => this._carousel.snapToPrev()}>
+                <Text>Last</Text>
+              </TouchableHighlight>
 
             </View>
             
