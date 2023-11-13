@@ -6,3 +6,4 @@ export default{
     dark: '#2a282a',
     neutral: '#D9D9D9'
 }
+

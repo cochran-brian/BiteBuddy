@@ -7,6 +7,7 @@ import HomeScreen from './screens/HomeScreen';
 import AuthScreen from './screens/AuthScreen';
 import CreateScreen from './screens/CreateScreen';
 import SurveySceen from './screens/SurveyScreen';
+import ResultScreen from './screens/ResultScreen';
 import { useFonts } from 'expo-font';
 import { auth } from '../firebase/config';
 
@@ -39,6 +40,11 @@ const ScreenHandler = () => {
          <Stack.Screen
             name="Survey"
             component={SurveySceen}
+            options={{headerShown: false}}
+        />
+        <Stack.Screen
+            name="Result"
+            component={ResultScreen}
             options={{headerShown: false}}
         />
      </Stack.Navigator>
