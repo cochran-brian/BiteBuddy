@@ -1,4 +1,4 @@
-import { DataFrame } from "pandas-js";
+import { DataFrame } from "dataframe-js";
 
 export default model = () => {
     // Example ratings data (replace with actual data)
