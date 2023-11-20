@@ -14,7 +14,6 @@
     "@react-native-community/slider": "^4.4.3",
     "@react-navigation/native": "^6.1.8",
     "@react-navigation/native-stack": "^6.9.14",
-    "dataframe-js": "^1.4.4",
     "events": "^3.3.0",
     "expo": "~49.0.13",
     "expo-font": "~11.4.0",
