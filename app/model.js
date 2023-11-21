@@ -1,38 +1,37 @@
-
+import { DataFrame } from "dataframe-js";
 
 export default model = () => {
-
     // Example ratings data (replace with actual data)
     const ratingsData = {
-        'targetUser': [4, 5, 0, 0, 3],  // Ratings for 5 common restaurants
+        'User1': [4, 5, 0, 0, 3],  // Ratings for 5 common restaurants
         'User2': [0, 5, 4, 0, 0],
         'User3': [3, 0, 0, 4, 5],
         // ... additional users
     };
   
-   // const ratingsDf = new DataFrame(ratingsData, { index: ['Restaurant1', 'Restaurant2', 'Restaurant3', 'Restaurant4', 'Restaurant5'] });
-   const index =  ['Restaurant1', 'Restaurant2', 'Restaurant3', 'Restaurant4', 'Restaurant5']
+    const ratingsDf = new DataFrame(ratingsData, { index: ['Restaurant1', 'Restaurant2', 'Restaurant3', 'Restaurant4', 'Restaurant5'] });
     
     // Calculate user similarities (using cosine similarity for simplicity)
     //   const userSimilarities = cosineSimilarities(ratingsDf.values);
     
     // Choose a target user (e.g., User1) for recommendation
-   
-    const targetUserRatings = ratingsData.targetUser;
+    const targetUser = 'User1';
+    const targetUserRatings = ratingsDf[targetUser].values.reshape(1, -1);
     
     console.log(targetUserRatings);
+    console.log(ratingsDf);
     
     // Calculate the similarity between the target user and all other users
-    const similaritiesWithTarget = cosineSimilarity(targetUserRatings, ratingsData);
+    const similaritiesWithTarget = cosineSimilarities(targetUserRatings, ratingsDf.T.values);
     
     // Weighted sum of ratings from similar users to generate recommendations
-    const recommendations = calculateRecommendations(similaritiesWithTarget, ratingsData);
+    const recommendations = calculateRecommendations(similaritiesWithTarget, ratingsDf.values);
     
     // Exclude already rated restaurants
-    const unratedRestaurants = index[ratingsData.targetUser === 0];
-    const recommendationsForUnrated = recommendations[ratingsData.targetUser === 0];
+    const unratedRestaurants = ratingsDf.index[ratingsDf[targetUser] === 0];
+    const recommendationsForUnrated = recommendations[ratingsDf[targetUser] === 0];
     
-    const allRestaurants = index;
+    const allRestaurants = ratingsDf.index;
     const recommendedRestaurants = allRestaurants[sortRecommendations(recommendations)];
     
     const N = 1;
@@ -68,7 +67,7 @@ export default model = () => {
     
     function cosineSimilarity(array1, array2) {
         if (array1.length !== array2.length) {
-        throw new Error('Arrays must have the same length, array1:' + array1.length + ' array2: ' + array2.length);
+        throw new Error('Arrays must have the same length');
         }
     
         let dotProduct = 0;
