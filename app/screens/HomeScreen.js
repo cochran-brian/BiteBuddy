@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState, useEffect, useRef } from 'react';
 import { Dimensions, StyleSheet, Text, TouchableHighlight, View, Pressable } from 'react-native';
+import { auth } from '../firebase/config';
 import colors from '../config/colors';
 import SimplePlaceView from '../components/SimplePlaceView';
 
@@ -131,22 +132,40 @@ export default function HomeScreen({navigation}) {
     </View> */}
 
     <View>
-     <TouchableHighlight style={[styles.biteButtons, {marginTop: 55}]} underlayColor={colors.primaryDark} onPress={() => navigation.navigate("Create")}>
-      <Text style={styles.buttonText}>CREATE A BITE</Text>
+     <TouchableHighlight 
+      style={[styles.biteButtons, {marginTop: 55}]} 
+      underlayColor={colors.primaryDark} onPress={() => {
+        if(auth.currentUser){
+          navigation.navigate("Create")
+        } else {
+          navigation.navigate("Auth");
+        }
+      }}>
+      <Text 
+        style={styles.buttonText}>
+          CREATE A BITE</Text>
      </TouchableHighlight>
 
-     <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 15, alignSelf: 'center'}}>
-      <View style={{height: 3, width: 90, backgroundColor: 'black'}}/>
-        <Text style={{marginLeft: 10, marginRight: 10, color: 'green', fontFamily: 'Open Sans', fontSize: 18}}>OR</Text>
-      <View style={{height: 3, width: 90, backgroundColor: 'black'}}/>
+     <View 
+      style={{flexDirection: 'row', alignItems: 'center', marginTop: 15, alignSelf: 'center'}}>
+      <View 
+        style={{height: 3, width: 90, backgroundColor: 'black'}}/>
+        <Text 
+          style={{marginLeft: 10, marginRight: 10, color: 'green', fontFamily: 'Open Sans', fontSize: 18}}>
+            OR</Text>
+      <View 
+        style={{height: 3, width: 90, backgroundColor: 'black'}}/>
     </View>
 
-     <TouchableHighlight style={styles.biteButtons} underlayColor={colors.primaryDark}>
-      <Text style={styles.buttonText}>JOIN A BITE</Text>
+     <TouchableHighlight 
+      style={styles.biteButtons} 
+      underlayColor={colors.primaryDark} 
+      onPress={() => navigation.navigate("Join")}>
+        <Text 
+          style={styles.buttonText}>
+            JOIN A BITE</Text>
      </TouchableHighlight>
     </View>
-
-
    </View>
    )}
   </>);

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Dimensions, StyleSheet, Text, TouchableHighlight, View, Pressable } from 'react-native';
 import colors from '../config/colors';
 import Slider from '@react-native-community/slider';
-import { db } from '../../firebase/config';
+import { db } from '../firebase/config';
 import { collection, addDoc, setDoc, doc } from "firebase/firestore"
 
 export default function CreateScreen({navigation}) {
@@ -14,10 +14,11 @@ export default function CreateScreen({navigation}) {
   const [locationLat, setLocationLat] = useState('42.095271881586406');
 
   function generateCode() {
-    return Math.floor(Math.random() * 100000);
+    return Math.floor(Math.random() * 10000);
   }
 
   async function fetchData(){
+    console.log(process.env.GOOGLE_MAPS_API_KEY)
     var data = await fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+locationLat+'%2C'+locationLong+'&radius='+(slideValue * 1609.34)+'&type=restaurant&opennow=true&key='+process.env.GOOGLE_MAPS_API_KEY)
     data = await data.json();
 
@@ -53,11 +54,13 @@ export default function CreateScreen({navigation}) {
     //const reference = collection(db, "places")
     //add collection to reference above inside of document "restaurants"
     //create new reference 
+    const code = "" + generateCode();
     data.map(async (place) => {
-      console.log("setting yo doc boi")
       try {
-        await setDoc(doc(db, generateCode(), place.name), place); //have this be the new reference
+        //await setDoc(doc(db, generateCode(), place.name), place); //have this be the new reference
         //await addDoc(reference, place)
+        
+        await setDoc(doc(db, code, place.name), place)
       } catch (error) {
         console.error(error);
       } 
@@ -82,8 +85,11 @@ export default function CreateScreen({navigation}) {
 
               <View style={{flex: 1, justifyContent: 'flex-end'}}>
               <TouchableHighlight style= {styles.bottomButton} underlayColor={colors.primaryDark} 
-                onPress={() => navigation.navigate('Result') //fetchData() }
-                }>
+                onPress={() => {
+                  fetchData();
+
+                  navigation.navigate('Survey') //fetchData() }
+                }}>
 
                 <Text style={{color: 'white', fontFamily: 'Open Sans', fontSize: 20}}>CREATE BITE</Text>
               </TouchableHighlight>

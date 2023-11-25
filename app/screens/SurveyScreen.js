@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Dimensions, StyleSheet, Text, TouchableHighlight, View, Pressable } from 'react-native';
 import colors from '../config/colors';
-import { db } from '../../firebase/config';
+import { db } from '../firebase/config';
 import { collection, addDoc } from "firebase/firestore"
 import SurveyCard from '../components/SurveyCard';
 import Carousel from 'react-native-snap-carousel';

@@ -1,6 +1,5 @@
-import { DataFrame } from "dataframe-js";
 
-export default model = () => {
+export default function model() {
     // Example ratings data (replace with actual data)
     const ratingsData = {
         'User1': [4, 5, 0, 0, 3],  // Ratings for 5 common restaurants
@@ -8,31 +7,54 @@ export default model = () => {
         'User3': [3, 0, 0, 4, 5],
         // ... additional users
     };
-  
-    const ratingsDf = new DataFrame(ratingsData, { index: ['Restaurant1', 'Restaurant2', 'Restaurant3', 'Restaurant4', 'Restaurant5'] });
+    
+    const restaurants = ['Restaurant1', 'Restaurant2', 'Restaurant3', 'Restaurant4', 'Restaurant5'];
     
     // Calculate user similarities (using cosine similarity for simplicity)
-    //   const userSimilarities = cosineSimilarities(ratingsDf.values);
+    function cosineSimilarity(a, b) {
+        const dotProduct = a.map((x, i) => x * b[i]).reduce((acc, val) => acc + val, 0);
+        const normA = Math.sqrt(a.map(x => x ** 2).reduce((acc, val) => acc + val, 0));
+        const normB = Math.sqrt(b.map(x => x ** 2).reduce((acc, val) => acc + val, 0));
+        return dotProduct / (normA * normB);
+    }
+    
+    const ratingsArray = Object.values(ratingsData);
     
     // Choose a target user (e.g., User1) for recommendation
-    const targetUser = 'User1';
-    const targetUserRatings = ratingsDf[targetUser].values.reshape(1, -1);
+    const targetUserIndex = 0;
+    const targetUserRatings = ratingsArray[targetUserIndex];
     
     console.log(targetUserRatings);
-    console.log(ratingsDf);
+    console.log(ratingsArray);
     
     // Calculate the similarity between the target user and all other users
-    const similaritiesWithTarget = cosineSimilarities(targetUserRatings, ratingsDf.T.values);
+    const similaritiesWithTarget = ratingsArray.map(ratings => cosineSimilarity(targetUserRatings, ratings));
     
     // Weighted sum of ratings from similar users to generate recommendations
-    const recommendations = calculateRecommendations(similaritiesWithTarget, ratingsDf.values);
+    const recommendations = restaurants.map((_, i) => {
+        const numerator = ratingsArray.reduce((acc, userRatings, j) => {
+        const similarity = similaritiesWithTarget[j];
+        const userRating = userRatings[i];
+        return acc + (similarity * (userRating !== 0 ? userRating : 0));
+        }, 0);
+    
+        const denominator = similaritiesWithTarget.reduce((acc, similarity, j) => {
+        const userRating = targetUserRatings[i];
+        return acc + (similarity * (userRating !== 0 ? 1 : 0));
+        }, 0);
+    
+        return denominator !== 0 ? numerator / denominator : 0;
+    });
     
     // Exclude already rated restaurants
-    const unratedRestaurants = ratingsDf.index[ratingsDf[targetUser] === 0];
-    const recommendationsForUnrated = recommendations[ratingsDf[targetUser] === 0];
+    const unratedRestaurants = targetUserRatings.map((rating, i) => (rating === 0 ? i : -1)).filter(index => index !== -1);
+    const recommendationsForUnrated = unratedRestaurants.map(i => recommendations[i]);
     
-    const allRestaurants = ratingsDf.index;
-    const recommendedRestaurants = allRestaurants[sortRecommendations(recommendations)];
+    const allRestaurants = restaurants;
+    const recommendedRestaurants = allRestaurants
+        .map((restaurant, i) => ({ restaurant, recommendation: recommendations[i] }))
+        .sort((a, b) => b.recommendation - a.recommendation)
+        .map(item => item.restaurant);
     
     const N = 1;
     
@@ -40,84 +62,18 @@ export default model = () => {
     console.log(`Top ${N} recommended restaurants for the group: ${topRecommendations[0]}`);
     
     // Example arrays of non-binary values (replace with your actual data)
-    const winner = [3, 1, 5, 2, 4]; // Pretend this is the features of the users' top-rated restaurant
-    const unratedPlaces = [
-        [1, 5, 1, 6, 1],
-        [2, 2, 3, 5, 1]
-    ];
+    const winner = [3, 1, 5, 2, 4];  // Pretend this is the features of the users' top-rated restaurant
+    const unratedPlaces = [[2, 1, 5, 6, 3], [2, 2, 3, 5, 1]];
     const placeNames = ['Chappies', 'ZaZa'];
     
-    // Reshape arrays to be 2D (required for cosine_similarity)
-    const winner2D = reshapeArray(winner);
-    
     // Calculate cosine similarity
-    const similarityScores = [];
-    for (const arr of unratedPlaces) {
-        const arr2D = reshapeArray(arr);
-        similarityScores.push(cosineSimilarity(winner2D, arr2D));
-    }
+    const similarityScores = unratedPlaces.map(place => cosineSimilarity(winner, place));
     
     console.log(similarityScores);
-    // The similarity_matrix is a 2D array, and the value at [0, 0] represents the cosine similarity
     
     const recPlaceValue = Math.max(...similarityScores);
     const recPlaceName = placeNames[similarityScores.indexOf(recPlaceValue)];
     
     console.log(`In this case, we recommend ${recPlaceName} with a similarity of ${Math.round(recPlaceValue * 100)}% to the top restaurant from the survey`);
-    
-    function cosineSimilarity(array1, array2) {
-        if (array1.length !== array2.length) {
-        throw new Error('Arrays must have the same length');
-        }
-    
-        let dotProduct = 0;
-        let magnitude1 = 0;
-        let magnitude2 = 0;
-    
-        for (let i = 0; i < array1.length; i++) {
-        dotProduct += array1[i] * array2[i];
-        magnitude1 += array1[i] * array1[i];
-        magnitude2 += array2[i] * array2[i];
-        }
-    
-        if (magnitude1 === 0 || magnitude2 === 0) {
-        return 0; // Handle the case where one of the arrays has zero magnitude
-        }
-    
-        const similarity = dotProduct / (Math.sqrt(magnitude1) * Math.sqrt(magnitude2));
-        return similarity;
-    }
-    
-    function calculateRecommendations(similarities, ratingsMatrix) {
-        const weightedSum = Array(ratingsMatrix[0].length).fill(0);
-        let sumOfWeights = 0;
-    
-        for (let i = 0; i < similarities.length; i++) {
-        const weight = similarities[i];
-        sumOfWeights += Math.abs(weight);
-        for (let j = 0; j < ratingsMatrix[i].length; j++) {
-            weightedSum[j] += weight * ratingsMatrix[i][j];
-        }
-        }
-    
-        if (sumOfWeights === 0) {
-        throw new Error('Sum of weights is zero, cannot calculate recommendations.');
-        }
-    
-        const recommendations = weightedSum.map(value => value / sumOfWeights);
-        return recommendations;
-    }
-    
-    function sortRecommendations(recommendations) {
-        const indices = Array.from(recommendations.keys());
-    
-        indices.sort((a, b) => recommendations[b] - recommendations[a]);
-    
-        return indices;
-    }
-    
-    function reshapeArray(array) {
-        return array.slice().map(value => [value]);
-    }
-}
 
+}

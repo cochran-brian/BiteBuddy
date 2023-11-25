@@ -8,8 +8,9 @@ import AuthScreen from './screens/AuthScreen';
 import CreateScreen from './screens/CreateScreen';
 import SurveySceen from './screens/SurveyScreen';
 import ResultScreen from './screens/ResultScreen';
+import JoinBiteScreen from './screens/JoinBiteScreen'
 import { useFonts } from 'expo-font';
-import { auth } from '../firebase/config';
+import { auth } from './firebase/config';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,19 +23,23 @@ const ScreenHandler = () => {
     <NavigationContainer>
      <Stack.Navigator>
      <Stack.Screen
-            name="Auth"
-            component={AuthScreen}
-            options={{headerShown: false}}
-        />
-
-        <Stack.Screen
             name="Home"
             component={HomeScreen}
             options={{headerShown: false}}
         />
         <Stack.Screen
+            name="Auth"
+            component={AuthScreen}
+            options={{headerShown: false}}
+        />
+        <Stack.Screen
             name="Create"
             component={CreateScreen}
+            options={{headerShown: false}}
+        />
+        <Stack.Screen
+            name="Join"
+            component={JoinBiteScreen}
             options={{headerShown: false}}
         />
          <Stack.Screen

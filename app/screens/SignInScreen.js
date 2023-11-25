@@ -2,7 +2,7 @@ import colors from '../config/colors';
 import { Keyboard, StyleSheet,Button, Text, View, Pressable, TextInput, KeyboardAvoidingView, TouchableHighlight, Dimensions } from 'react-native';
 import { useFonts } from 'expo-font';
 import { useState } from 'react';
-import { auth } from '../../firebase/config';
+import { auth } from '../firebase/config';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
 export default function SignInScreen({navigation}) {
@@ -42,14 +42,9 @@ export default function SignInScreen({navigation}) {
         </View>
 
 
-        {// TEMPORARY BUTTON FOR DEV
-        } 
-        <Button title={"Bypass"} onPress={() => navigation.navigate("Home")}/>
-
-
         <View style={styles.emptyView}/>
 
-        <View style={{flex: 1, justifyContent: 'flex-end'}}>
+        <View style={{flex: 1}}>
          <TouchableHighlight style= {styles.bottomButton} onPress={onSubmitPressed} underlayColor={colors.primaryDark}>
           <Text style={{color: 'white', fontFamily: 'Open Sans', fontSize: 20}}>SUBMIT</Text>
          </TouchableHighlight>
@@ -87,7 +82,7 @@ const styles = StyleSheet.create({
     width: 344,
     height: 54,
     borderRadius: 10,
-    marginBottom: 14,
+    //marginBottom: 14,
     backgroundColor: colors.primary,
     alignItems: 'center',
     justifyContent: 'center'
