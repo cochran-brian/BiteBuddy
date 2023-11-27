@@ -43,12 +43,12 @@ export default function SurveySceen({navigation}) {
             </View>
 
             <View style={{flexDirection: 'row', marginTop: 20}}>
-              <TouchableHighlight style={{width: 50, height: 50, borderRadius: 25, backgroundColor: colors.primary, justifyContent: 'center', alignItems: 'center'}}
+              <TouchableHighlight style={styles.button}
               onPress={() => this._carousel.snapToNext()}>
                 <Text>Skip</Text>
               </TouchableHighlight>
             
-              <TouchableHighlight style={{width: 50, height: 50, borderRadius: 25, backgroundColor: colors.primary, justifyContent: 'center', alignItems: 'center'}}
+              <TouchableHighlight style={styles.button}
               onPress={() => this._carousel.snapToPrev()}>
                 <Text>Last</Text>
               </TouchableHighlight>
@@ -72,5 +72,13 @@ const styles = StyleSheet.create({
         fontSize: 45,
         marginTop: 80,
         alignSelf: 'center'
-      },
+    },
+    button:{
+      width: 50, 
+      height: 50, 
+      borderRadius: 25, 
+      backgroundColor: colors.primary, 
+      justifyContent: 'center', 
+      alignItems: 'center'
+    }
 });

@@ -1,8 +1,8 @@
 import { Keyboard, StyleSheet, Text, View, Pressable, TextInput, KeyboardAvoidingView, TouchableHighlight, ScrollView } from 'react-native';
 import { useFonts } from 'expo-font';
 import colors from '../config/colors';
-import SignInScreen from "./SignInScreen";
-import RegisterScreen from './RegisterScreen';
+import SignInView from "../components/SignInView";
+import RegisterView from '../components/RegisterView';
 import { useState } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
@@ -13,7 +13,7 @@ export default function AuthScreen({navigation}) {
   const [fontsLoaded] = useFonts({
      'Open Sans': require('../assets/fonts/OpenSans-ExtraBold.ttf'),
      'Open Sans Light': require('../assets/fonts/OpenSans-Regular.ttf'),
- });
+  });
 
   if(!fontsLoaded){
       return null;
@@ -21,9 +21,9 @@ export default function AuthScreen({navigation}) {
 
   const changeDisplay = () => {
     if(signingIn) {
-      return <SignInScreen navigation={navigation}/>
+      return <SignInView navigation={navigation}/>
     } else {
-      return <RegisterScreen navigation={navigation}/>
+      return <RegisterView navigation={navigation}/>
     }
   }
 
@@ -65,24 +65,36 @@ export default function AuthScreen({navigation}) {
   return (
     <View style={styles.container}>
       <KeyboardAwareScrollView>
-        <Pressable onPress={() => Keyboard.dismiss()}>
-        
-          <Text style={styles.header}>BITE BUDDY</Text>
-            <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-                  <Pressable onPress={() => setSigningIn(true)} style={[styles.viewSelectButton,{backgroundColor: signingIn? colors.primary : colors.neutral, borderTopLeftRadius: 20, borderBottomLeftRadius: 20}]}>
-                    <Text style={[styles.viewChangeText, {color: signingIn? 'white' : 'black'}]}>Log In</Text>
+        <Pressable 
+          onPress={() => Keyboard.dismiss()}>
+          <Text 
+            style={styles.header}>
+              BITE BUDDY</Text>
+            <View 
+              style={{flexDirection: 'row', alignSelf: 'center'}}>
+                  <Pressable 
+                    onPress={() => setSigningIn(true)} 
+                    style={[styles.viewSelectButton, 
+                      {backgroundColor: signingIn ? colors.primary : colors.neutral}]}>
+                    <Text 
+                      style={[styles.viewChangeText, 
+                        {color: signingIn ? 'white' : 'black'}]}>
+                        Log In</Text>
                   </Pressable>
-                  <Pressable onPress = {() => setSigningIn(false)} style={[styles.viewSelectButton,{backgroundColor: signingIn? colors.neutral : colors.primary, borderTopRightRadius: 20, borderBottomRightRadius: 20}]}>
-                    <Text style={[styles.viewChangeText, {color: signingIn? 'black' : 'white'}]}>Sign Up</Text>
+                  <Pressable 
+                    onPress={() => setSigningIn(false)} 
+                    style={[styles.viewSelectButton,
+                      {backgroundColor: signingIn ? colors.neutral : colors.primary}]}>
+                    <Text 
+                      style={[styles.viewChangeText, 
+                        {color: signingIn ? 'black' : 'white'}]}>
+                        Sign Up</Text>
                   </Pressable>
             </View>
-            
             {changeDisplay()}
-            
         </Pressable>
       </KeyboardAwareScrollView>
     </View>
-  
   );
 }
 
@@ -92,7 +104,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center'
-    
   },
   header:{
     color: 'black',
@@ -102,14 +113,15 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   },
   viewSelectButton:{
-    width: 136,
-    height:40,
+    width: 130,
+    height: 40,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop:94,
+    marginTop: 100,
     marginBottom: 0,
-    alignSelf: 'center'
-    
+    alignSelf: 'center',
+    borderTopLeftRadius: 20, 
+    borderBottomLeftRadius: 20
   },
   viewChangeText:{
     color: 'white',

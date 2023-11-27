@@ -51,15 +51,9 @@ export default function CreateScreen({navigation}) {
 
     data = await Promise.all(promises);
 
-    //const reference = collection(db, "places")
-    //add collection to reference above inside of document "restaurants"
-    //create new reference 
     const code = "" + generateCode();
     data.map(async (place) => {
-      try {
-        //await setDoc(doc(db, generateCode(), place.name), place); //have this be the new reference
-        //await addDoc(reference, place)
-        
+      try {        
         await setDoc(doc(db, code, place.name), place)
       } catch (error) {
         console.error(error);
@@ -68,30 +62,41 @@ export default function CreateScreen({navigation}) {
   }
 
     return(
-        <View style={styles.container}>
-              <Text style={styles.header}>CREATE A BITE</Text>
+        <View 
+          style={styles.container}>
+              <Text 
+                style={styles.header}>
+                  CREATE A BITE</Text>
 
-
-              <View style={{marginTop: 80}}>
-                <Text style={styles.promptText}>HOW FAR ARE YOU WILLING TO TRAVEL?</Text>
+              <View 
+                style={{marginTop: 80}}>
+                <Text 
+                  style={styles.promptText}>
+                    HOW FAR ARE YOU WILLING TO TRAVEL?</Text>
                 <Slider
                   step={1}
                   minimumValue={5}
                   maximumValue={50}
                   onValueChange={(val) => setSlideValue(val)}
                 />
-                <Text style={{alignSelf: 'center', fontFamily: 'Open Sans', fontSize: 18}}>{slideValue} mi</Text>
+                <Text 
+                  style={{alignSelf: 'center', fontFamily: 'Open Sans', fontSize: 18}}>
+                    {slideValue} mi</Text>
               </View>
 
-              <View style={{flex: 1, justifyContent: 'flex-end'}}>
-              <TouchableHighlight style= {styles.bottomButton} underlayColor={colors.primaryDark} 
+              <View 
+                style={{flex: 1, justifyContent: 'flex-end'}}>
+              <TouchableHighlight 
+                style={styles.bottomButton} 
+                underlayColor={colors.primaryDark} 
                 onPress={() => {
-                  fetchData();
-
-                  navigation.navigate('Survey') //fetchData() }
+                  //fetchData();
+                  navigation.navigate('Survey')
                 }}>
 
-                <Text style={{color: 'white', fontFamily: 'Open Sans', fontSize: 20}}>CREATE BITE</Text>
+              <Text 
+                style={{color: 'white', fontFamily: 'Open Sans', fontSize: 20}}>
+                  CREATE BITE</Text>
               </TouchableHighlight>
               </View>
 
@@ -107,25 +112,25 @@ const styles = StyleSheet.create({
       alignItems: 'center',
     },
     header:{
-        color: 'black',
-        fontFamily: 'Open Sans',
-        fontSize: 45,
-        marginTop: 80,
-        alignSelf: 'center'
-      },
+      color: 'black',
+      fontFamily: 'Open Sans',
+      fontSize: 45,
+      marginTop: 80,
+      alignSelf: 'center'
+    },
     bottomButton:{
-        width: 344,
-        height: 54,
-        borderRadius: 10,
-        marginBottom: 14,
-        backgroundColor: colors.primary,
-        alignItems: 'center',
-        justifyContent: 'center'
-      },
-      promptText:{
-        fontFamily: 'Open Sans',
-        fontSize: 20,
-        width: 375,
-        textAlign: 'center'
-      }
+      width: 344,
+      height: 54,
+      borderRadius: 10,
+      marginBottom: 14,
+      backgroundColor: colors.primary,
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    promptText:{
+      fontFamily: 'Open Sans',
+      fontSize: 20,
+      width: 375,
+      textAlign: 'center'
+    }
 });

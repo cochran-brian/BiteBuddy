@@ -20,14 +20,20 @@ export default function JoinBiteScreen({navigation}) {
     });
 
     async function handlePress() {
-        // try{
-        //     console.log(value)
-        //     const snapshot = await getDocs(collection(db, "" + value))
-        //     console.log("count: ", snapshot.data().count)
-        //     //console.log(getDocs(collection(db, "8841")).data().count) 
-        // } catch (error) {
-        //     console.error(error)
-        // }
+        // check if a collection with the given code exists
+        // if not send error
+        // get data from inside of the collection
+        // store data for access in the survey page
+
+
+        try{
+            console.log(value)
+            const snapshot = await getDocs(collection(db, "" + value))
+            console.log("count: ", snapshot.data().count)
+            //console.log(getDocs(collection(db, "8841")).data().count) 
+        } catch (error) {
+            console.error(error)
+        }
         
     }
 

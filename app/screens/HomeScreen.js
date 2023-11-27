@@ -106,8 +106,7 @@ export default function HomeScreen({navigation}) {
 
     <View style= {styles.recBox}>
       <Text style={{fontFamily: 'Open Sans', fontSize: 20}}>FOOD NEAR YOU</Text>
-      <SimplePlaceView 
-      margTop={15} 
+      <SimplePlaceView  
       name={places? places[0].name: 'Loading...'}
       address={places? places[0].vicinity: 'Loading...'}
       // details={places? places[0].user_ratings_total: 'Loading...'}
@@ -115,7 +114,6 @@ export default function HomeScreen({navigation}) {
       imageUri={places? places[0].imageURL: 'https://asset-cdn.schoology.com/system/files/imagecache/profile_reg/pictures/picture-95e36dc30f43e2e1e133573eb4fbbd7b_6504c03ebd0bd.jpg?1694810174'}/>
 
       <SimplePlaceView 
-      margTop={11} 
       name={places? places[1].name: 'Loading...'}
       address={places? places[1].vicinity: 'Loading...'}
       // details={places? places[1].user_ratings_total: 'Loading...'}

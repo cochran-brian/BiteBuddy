@@ -6,7 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './screens/HomeScreen';
 import AuthScreen from './screens/AuthScreen';
 import CreateScreen from './screens/CreateScreen';
-import SurveySceen from './screens/SurveyScreen';
+import SurveyScreen from './screens/SurveyScreen';
 import ResultScreen from './screens/ResultScreen';
 import JoinBiteScreen from './screens/JoinBiteScreen'
 import { useFonts } from 'expo-font';
@@ -44,7 +44,7 @@ const ScreenHandler = () => {
         />
          <Stack.Screen
             name="Survey"
-            component={SurveySceen}
+            component={SurveyScreen}
             options={{headerShown: false}}
         />
         <Stack.Screen
