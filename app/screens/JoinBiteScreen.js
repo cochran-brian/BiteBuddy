@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, TouchableHighlight, TextInput, SafeAreaView, ScrollView } from 'react-native'
+import { StyleSheet, View, Text, TouchableHighlight, TextInput, ScrollView, Pressable } from 'react-native'
 import { useState } from 'react'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { CodeField, Cursor, useBlurOnFulfill, useClearByFocusCell } from 'react-native-confirmation-code-field';
@@ -6,9 +6,9 @@ import { collection, addDoc, setDoc, doc, getDocs } from "firebase/firestore"
 import { db } from "../firebase/config"
 import colors from '../config/colors';
 
-const CELL_COUNT = 4;
+export default function JoinBiteScreen({ navigation }) {
 
-export default function JoinBiteScreen({navigation}) {
+    const CELL_COUNT = 4;
 
     const [name, setName] = useState('');
 
@@ -24,8 +24,6 @@ export default function JoinBiteScreen({navigation}) {
         // if not send error
         // get data from inside of the collection
         // store data for access in the survey page
-
-
         try{
             console.log(value)
             const snapshot = await getDocs(collection(db, "" + value))
@@ -39,58 +37,57 @@ export default function JoinBiteScreen({navigation}) {
 
     return (
         <View 
-        style={styles.container}>
-            {/* <KeyboardAwareScrollView> */}
-
-            <Text 
-            style={styles.header}>JOIN BITE</Text>
-            
-            <View
-            style={styles.inputFields}>
-
-                <CodeField
-                    ref={ref}
-                    {...props}
-                    // Use `caretHidden={false}` when users can't paste a text value, because context menu doesn't appear
-                    value={value}
-                    onChangeText={setValue}
-                    cellCount={CELL_COUNT}
-                    rootStyle={styles.codeFieldRoot}
-                    keyboardType="number-pad"
-                    textContentType="oneTimeCode"
-                    renderCell={({index, symbol, isFocused}) => (
-                    <Text
-                        key={index}
-                        style={[styles.cell, isFocused && styles.focusCell]}
-                        onLayout={getCellOnLayoutHandler(index)}>
-                        {symbol || (isFocused ? <Cursor/> : null)}
-                    </Text>
-                    )}
-                />
-
-                <View style={[styles.textInputView, {marginTop: 123}]}>
-                    <TextInput
-                    style={styles.textInput}
-                    onChangeText={(name) => setName(name)} placeholder='Name' autoCapitalize='words' keyboardType='default' />
-                </View>
-            </View>
-
-            <View>
-                <TouchableHighlight 
-                style={styles.bottomButton} 
-                underlayColor={colors.primaryDark} 
-                onPress={() => {
-                    handlePress();
-                    navigation.navigate('Survey')
-                }}>
+            style={styles.container}>
+            <KeyboardAwareScrollView>
+                <Pressable
+                    onPress={() => Keyboard.dismiss()}>
                     <Text 
-                    style={styles.buttonText}>
-                        TAKE SURVEY</Text>
-                </TouchableHighlight>
-            </View>
+                        style={styles.header}>JOIN BITE</Text>
+                    <View
+                        style={styles.inputFields}>
 
-            {/* </KeyboardAwareScrollView> */}
+                        <CodeField
+                            ref={ref}
+                            {...props}
+                            // Use `caretHidden={false}` when users can't paste a text value, because context menu doesn't appear
+                            value={value}
+                            onChangeText={setValue}
+                            cellCount={CELL_COUNT}
+                            rootStyle={styles.codeFieldRoot}
+                            keyboardType="number-pad"
+                            textContentType="oneTimeCode"
+                            renderCell={({index, symbol, isFocused}) => (
+                            <Text
+                                key={index}
+                                style={[styles.cell, isFocused && styles.focusCell]}
+                                onLayout={getCellOnLayoutHandler(index)}>
+                                {symbol || (isFocused ? <Cursor/> : null)}
+                            </Text>
+                            )}
+                        />
 
+                        <View style={[styles.textInputView, {marginTop: 123}]}>
+                            <TextInput
+                            style={styles.textInput}
+                            onChangeText={(name) => setName(name)} placeholder='Name' autoCapitalize='words' keyboardType='default' />
+                        </View>
+                    </View>
+
+                    <View>
+                        <TouchableHighlight 
+                            style={styles.bottomButton} 
+                            underlayColor={colors.primaryDark} 
+                            onPress={() => {
+                                handlePress();
+                                navigation.navigate('Survey')
+                            }}>
+                            <Text 
+                                style={styles.buttonText}>
+                                    TAKE SURVEY</Text>
+                        </TouchableHighlight>
+                    </View>
+                </Pressable>
+            </KeyboardAwareScrollView>
         </View>
     )
 }

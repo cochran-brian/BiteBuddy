@@ -3,7 +3,7 @@ import { Text, StyleSheet, View, Image } from 'react-native';
 import { Rating } from '@kolking/react-native-rating';
 import colors from '../config/colors';
 
-function SimplePlaceView({imageUri, name, address, rating}){
+function SimplePlaceView({ imageUri, name, address, rating }){
     return(
         <View style={styles.container}>
             <Image

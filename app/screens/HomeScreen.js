@@ -1,11 +1,13 @@
-import { StatusBar } from 'expo-status-bar';
-import { useState, useEffect, useRef } from 'react';
-import { Dimensions, StyleSheet, Text, TouchableHighlight, View, Pressable } from 'react-native';
+import { useState, useEffect } from 'react';
+import { Dimensions, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import { auth } from '../firebase/config';
 import colors from '../config/colors';
 import SimplePlaceView from '../components/SimplePlaceView';
+import { ThreeDots, TailSpin } from 'react-loader-spinner';
 
-export default function HomeScreen({navigation}) {
+export default function HomeScreen({ navigation }) {
+
+  const ITERATION_LIMIT = 2;
 
   const [radius, setRadius] = useState(1500);
   const [locationLat, setLocationLat] = useState('51.64361'); //42.095271881586406
@@ -13,11 +15,8 @@ export default function HomeScreen({navigation}) {
   const [done, setDone] = useState(undefined);
   const [places, setPlaces] = useState(null);
 
-  const iterationLimit = 2;
-
   // const[imgArray, setImgArray] = useState([]);
   // const [imgRefArray, setImgRefArray] = useState([]);
-  
 
   // const locateUser = async () => {
   //   navigator.geolocation.getCurrentPosition(position => {
@@ -28,52 +27,16 @@ export default function HomeScreen({navigation}) {
 
   useEffect(() => {
     setTimeout(() => {
-
       //fetchData();
       setDone(true);
-
     }, 1000);
   }, []); 
-
-  // useEffect(() => {
-  //   if(!places) return;
-
-  //   const limitedIterations = 2;
-  //   const references = places.slice(0, limitedIterations).map(place => {
-  //    return place.photos && place.photos.length > 0 ? place.photos[0].photo_reference : null;
-  //   })
-    
-  //   const filteredReferences = references.filter(reference => reference !== null);
-    
-  //   setImgRefArray(filteredReferences);
-
-  // }, [places])
-
-  // useEffect(() => {
-  //   if(!imgRefArray || imgRefArray.length === 0) return;
-
-  //   const fetchImages = async () => {
-  //     const promises = imgRefArray.map(async ref => {
-  //       try {
-  //         //const response = await fetch('https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference='+ref+'&key='+process.env.GOOGLE_MAPS_API_KEY);
-  //         return response.url;
-  //       } catch (error) {
-  //         console.error(error);
-  //       }
-  //     })
-
-  //     const urls = await Promise.all(promises);
-  //     setImgArray(urls.filter(url => url !== null));
-  //     setDone(true);
-  //   }
-  //   fetchImages();
-  // }, [imgRefArray])
   
   async function fetchData(){
-    var data = await fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+locationLat+'%2C'+locationLong+'&radius='+radius+'&type=restaurant&key='+process.env.GOOGLE_MAPS_API_KEY)
+    var data = await fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+locationLat+'%2C'+locationLong+'&radius='+radius+'&type=restaurant&opennow=true&key='+process.env.GOOGLE_MAPS_API_KEY)
     data = await data.json();
 
-    promises = await data.results.slice(0, iterationLimit).map(async (place) => {
+    promises = await data.results.slice(0, ITERATION_LIMIT).map(async (place) => {
       try{
         const response = await fetch('https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference='+place.photos[0].photo_reference+'&key='+process.env.GOOGLE_MAPS_API_KEY);
         return {
@@ -81,14 +44,11 @@ export default function HomeScreen({navigation}) {
             address: place.vicinity, 
             rating: place.rating,
             imageURL: response.url,
-            //isOpen: place.opening_hours
           }
       } catch (error) {
         console.error(error);
       }
-      
     })
-
     data = await Promise.all(promises);
     setPlaces(data);
     setDone(true);
@@ -97,28 +57,76 @@ export default function HomeScreen({navigation}) {
   return (
     <>
     {!done?(
-      <View style={[styles.container, {justifyContent: 'center'}]}>
-        <Text style={[styles.header, {marginTop: 0}]}>BITE BUDDY</Text>
+      <View 
+        style={[styles.container, {justifyContent: 'center'}]}>
+        <Text 
+          style={[styles.header, {marginTop: 0}]}>BITE BUDDY</Text>
       </View>
     ):(
-   <View style={styles.container}>
-    <Text style={styles.header}>BITE BUDDY</Text>
+   <View 
+    style={styles.container}>
+    <Text 
+      style={styles.header}>
+        BITE BUDDY</Text>
 
-    <View style= {styles.recBox}>
-      <Text style={{fontFamily: 'Open Sans', fontSize: 20}}>FOOD NEAR YOU</Text>
+    <View 
+      style={styles.recBox}>
+      <Text 
+        style={{fontFamily: 'Open Sans', fontSize: 20}}>
+          FOOD NEAR YOU</Text>
       <SimplePlaceView  
-      name={places? places[0].name: 'Loading...'}
-      address={places? places[0].vicinity: 'Loading...'}
-      // details={places? places[0].user_ratings_total: 'Loading...'}
-      rating={places? places[0].rating: 0} 
-      imageUri={places? places[0].imageURL: 'https://asset-cdn.schoology.com/system/files/imagecache/profile_reg/pictures/picture-95e36dc30f43e2e1e133573eb4fbbd7b_6504c03ebd0bd.jpg?1694810174'}/>
+        name={places ? places[0].name : 
+          <ThreeDots
+            height="40" 
+            width="40" 
+            radius="5"
+            color={colors.primary}
+            ariaLabel="three-dots-loading"/>
+        }
+        address={places ? places[0].vicinity : 
+          <ThreeDots
+            height="40" 
+            width="40" 
+            radius="5"
+            color={colors.primary}
+            ariaLabel="three-dots-loading"/>
+        }
+        rating={places ? places[0].rating : 0} 
+        imageUri={places ? places[0].imageURL : 
+          <TailSpin
+            height="80"
+            width="80"
+            color={colors.primary}
+            radius="1"
+            ariaLabel="tail-spin-loading"/>
+        }/>
 
-      <SimplePlaceView 
-      name={places? places[1].name: 'Loading...'}
-      address={places? places[1].vicinity: 'Loading...'}
-      // details={places? places[1].user_ratings_total: 'Loading...'}
-      rating={places? places[1].rating: 0} 
-      imageUri={places? places[1].imageURL: 'https://asset-cdn.schoology.com/system/files/imagecache/profile_reg/pictures/picture-95e36dc30f43e2e1e133573eb4fbbd7b_6504c03ebd0bd.jpg?1694810174'}/>
+      <SimplePlaceView  
+        name={places ? places[1].name : 
+          <ThreeDots
+            height="40" 
+            width="40" 
+            radius="5"
+            color={colors.primary}
+            ariaLabel="three-dots-loading"/>
+        }
+        address={places ? places[1].vicinity : 
+          <ThreeDots
+            height="40" 
+            width="40" 
+            radius="5"
+            color={colors.primary}
+            ariaLabel="three-dots-loading"/>
+        }
+        rating={places ? places[1].rating : 0} 
+        imageUri={places ? places[1].imageURL : 
+          <TailSpin
+            height="80"
+            width="80"
+            color={colors.primary}
+            radius="1"
+            ariaLabel="tail-spin-loading"/>
+        }/>
     </View>
 
     {/* <View style={{flexDirection: 'row', alignItems: 'center', marginTop: '200%', position: 'absolute'}}>
@@ -131,8 +139,9 @@ export default function HomeScreen({navigation}) {
 
     <View>
      <TouchableHighlight 
-      style={[styles.biteButtons, {marginTop: 55}]} 
-      underlayColor={colors.primaryDark} onPress={() => {
+      style={[styles.biteButtons, {marginTop: 50}]} 
+      underlayColor={colors.primaryDark} 
+      onPress={() => {
         if(auth.currentUser){
           navigation.navigate("Create")
         } else {
@@ -145,14 +154,14 @@ export default function HomeScreen({navigation}) {
      </TouchableHighlight>
 
      <View 
-      style={{flexDirection: 'row', alignItems: 'center', marginTop: 15, alignSelf: 'center'}}>
+      style={styles.dividerLineContainer}>
       <View 
-        style={{height: 3, width: 90, backgroundColor: 'black'}}/>
+        style={styles.dividerLine}/>
         <Text 
-          style={{marginLeft: 10, marginRight: 10, color: 'green', fontFamily: 'Open Sans', fontSize: 18}}>
+          style={styles.dividerLineText}>
             OR</Text>
       <View 
-        style={{height: 3, width: 90, backgroundColor: 'black'}}/>
+        style={styles.dividerLine}/>
     </View>
 
      <TouchableHighlight 
@@ -175,32 +184,50 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
   },
-  header:{
+  header: {
     color: 'black',
     fontFamily: 'Open Sans',
     fontSize: 50,
     marginTop: 80,
     alignSelf: 'center'
   },
-  recBox:{
+  recBox: {
     width: Dimensions.get('screen').width - 80,
     height: '30%',
     marginTop: 43,
     marginLeft: 40,
     marginRight: 40,
   },
-  biteButtons:{
+  dividerLineContainer: {
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    marginTop: 15, 
+    alignSelf: 'center'
+  },
+  dividerLine: {
+    height: 3, 
+    width: 90, 
+    backgroundColor: 'black'
+  },
+  dividerLineText: {
+    marginLeft: 10, 
+    marginRight: 10, 
+    color: 'green', 
+    fontFamily: 'Open Sans', 
+    fontSize: 18
+  },
+  biteButtons: {
     width: Dimensions.get('screen').width - 36,
     marginLeft: 18,
     marginRight: 18,
     marginTop: 15,
-    height: 86,
+    height: 100,
     backgroundColor: colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
   },
-  buttonText:{
+  buttonText: {
     color: 'white',
     fontSize: 20,
     fontFamily: 'Open Sans',

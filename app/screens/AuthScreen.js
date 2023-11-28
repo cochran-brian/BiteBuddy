@@ -6,7 +6,7 @@ import RegisterView from '../components/RegisterView';
 import { useState } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-export default function AuthScreen({navigation}) {
+export default function AuthScreen({ navigation }) {
 
   const [signingIn, setSigningIn] = useState(true);
 

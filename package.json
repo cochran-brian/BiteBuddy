@@ -25,6 +25,7 @@
     "net": "^1.0.2",
     "pandas-js": "^0.2.4",
     "react": "18.2.0",
+    "react-loader-spinner": "^5.4.5",
     "react-native": "0.72.5",
     "react-native-confirmation-code-field": "^7.3.2",
     "react-native-dotenv": "^3.4.9",

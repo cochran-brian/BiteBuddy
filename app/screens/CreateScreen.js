@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
-import { Dimensions, StyleSheet, Text, TouchableHighlight, View, Pressable } from 'react-native';
+import { useState } from 'react';
+import { StyleSheet, Text, TouchableHighlight, View, Pressable } from 'react-native';
 import colors from '../config/colors';
 import Slider from '@react-native-community/slider';
 import { db } from '../firebase/config';
-import { collection, addDoc, setDoc, doc } from "firebase/firestore"
+import { setDoc, doc } from "firebase/firestore"
 
-export default function CreateScreen({navigation}) {
+export default function CreateScreen({ navigation }) {
 
   const iterationLimit = 10;
 
@@ -33,21 +33,20 @@ export default function CreateScreen({navigation}) {
             //delivery: place.delivery,
             //reservable: place.reservable,
             //takeout: place.takeout,
-            // serves_breakfast: place.serves_breakfast,
-            // serves_brunch: place.serves_brunch,
-            // serves_lunch: place.serves_lunch,
-            // serves_dinner: place.serves_dinner,
-            // serves_vegetarian_food: place.serves_vegetarian_food,
-            // serves_beer: place.serves_beer,
-            // serves_wine: place.serves_wine,
+            //serves_breakfast: place.serves_breakfast,
+            //serves_brunch: place.serves_brunch,
+            //serves_lunch: place.serves_lunch,
+            //serves_dinner: place.serves_dinner,
+            //serves_vegetarian_food: place.serves_vegetarian_food,
+            //serves_beer: place.serves_beer,
+            //serves_wine: place.serves_wine,
             //website: place.website,
             image_url: response.url,
           }
       } catch (error) {
         console.error(error);
       }
-      
-    })
+    });
 
     data = await Promise.all(promises);
 
@@ -80,29 +79,28 @@ export default function CreateScreen({navigation}) {
                   onValueChange={(val) => setSlideValue(val)}
                 />
                 <Text 
-                  style={{alignSelf: 'center', fontFamily: 'Open Sans', fontSize: 18}}>
+                  style={styles.slider}>
                     {slideValue} mi</Text>
               </View>
 
               <View 
-                style={{flex: 1, justifyContent: 'flex-end'}}>
-              <TouchableHighlight 
-                style={styles.bottomButton} 
-                underlayColor={colors.primaryDark} 
-                onPress={() => {
-                  //fetchData();
-                  navigation.navigate('Survey')
-                }}>
+                style={styles.buttonContainer}>
+                <TouchableHighlight 
+                  style={styles.bottomButton} 
+                  underlayColor={colors.primaryDark} 
+                  onPress={() => {
+                    //fetchData();
+                    navigation.navigate('Survey')
+                  }}>
 
-              <Text 
-                style={{color: 'white', fontFamily: 'Open Sans', fontSize: 20}}>
-                  CREATE BITE</Text>
+                <Text 
+                  style={styles.buttonText}>
+                    CREATE BITE</Text>
               </TouchableHighlight>
               </View>
 
           </View>
       )
-  
 }
 
 const styles = StyleSheet.create({
@@ -118,6 +116,10 @@ const styles = StyleSheet.create({
       marginTop: 80,
       alignSelf: 'center'
     },
+    buttonContainer: {
+      flex: 1, 
+      justifyContent: 'flex-end'
+    },
     bottomButton:{
       width: 344,
       height: 54,
@@ -127,10 +129,20 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center'
     },
+    buttonText: {
+      color: 'white', 
+      fontFamily: 'Open Sans', 
+      fontSize: 20
+    },
     promptText:{
       fontFamily: 'Open Sans',
       fontSize: 20,
       width: 375,
       textAlign: 'center'
+    },
+    slider: {
+      alignSelf: 'center', 
+      fontFamily: 'Open Sans', 
+      fontSize: 18
     }
 });
