@@ -6,7 +6,13 @@ import { collection, addDoc } from "firebase/firestore"
 import SurveyCard from '../components/SurveyCard';
 import Carousel from 'react-native-snap-carousel';
 
-export default function SurveySceen({navigation}) {
+export default function SurveySceen({ route, navigation }) {
+
+  const [done, setDone] = useState(true);
+  
+
+  const { data2 } = route.params;
+  console.log(data2)
 
   data = [
   {name: 'SUPER SOAKER DYL', address: 'Baller', rating: 5, url: 'https://asset-cdn.schoology.com/system/files/imagecache/profile_reg/pictures/picture-a70804d0c37f4f34a4b7721005f0dd70_6504c016c1894.jpg?1694810134'}, 
@@ -27,6 +33,14 @@ export default function SurveySceen({navigation}) {
 }
 
     return(
+      <>
+      {!done ? (
+        <View 
+          style={[styles.container, {justifyContent: 'center'}]}>
+          <Text 
+            style={[styles.header, {marginTop: 0}]}>BITE BUDDY</Text>
+        </View>
+      ) : (
         <View style={styles.container}>
             <Text style={styles.header}>BITE BUDDY</Text>
 
@@ -55,9 +69,11 @@ export default function SurveySceen({navigation}) {
 
             </View>
             
-        </View>
-      )
-  
+          </View>
+        )
+      }
+      </>
+    )
 }
 
 const styles = StyleSheet.create({

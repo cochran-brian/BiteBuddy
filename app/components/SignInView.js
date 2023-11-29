@@ -10,14 +10,6 @@ export default function SignInView({navigation}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [fontsLoaded] = useFonts({
-     'Open Sans': require('../assets/fonts/OpenSans-ExtraBold.ttf'),
- });
-
-  if(!fontsLoaded){
-      return null;
-  }
-
   async function onSubmitPressed(){
     try {
       const user = await signInWithEmailAndPassword(auth, email, password)

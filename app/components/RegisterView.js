@@ -15,14 +15,6 @@ export default function RegisterView({navigation}) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
 
-  const [fontsLoaded] = useFonts({
-     'Open Sans': require('../assets/fonts/OpenSans-ExtraBold.ttf'),
-  });
-
-  if(!fontsLoaded){
-      return null;
-  }
-
   async function onSubmitPressed(){
     try {
       const user = await createUserWithEmailAndPassword(auth, email, password)

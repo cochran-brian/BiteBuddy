@@ -1,5 +1,4 @@
 import { Keyboard, StyleSheet, Text, View, Pressable, TextInput, KeyboardAvoidingView, TouchableHighlight, ScrollView } from 'react-native';
-import { useFonts } from 'expo-font';
 import colors from '../config/colors';
 import SignInView from "../components/SignInView";
 import RegisterView from '../components/RegisterView';
@@ -9,11 +8,6 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 export default function AuthScreen({ navigation }) {
 
   const [signingIn, setSigningIn] = useState(true);
-
-  const [fontsLoaded] = useFonts({
-     'Open Sans': require('../assets/fonts/OpenSans-ExtraBold.ttf'),
-     'Open Sans Light': require('../assets/fonts/OpenSans-Regular.ttf'),
-  });
 
   if(!fontsLoaded){
       return null;

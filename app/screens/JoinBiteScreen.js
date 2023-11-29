@@ -1,8 +1,9 @@
 import { StyleSheet, View, Text, TouchableHighlight, TextInput, ScrollView, Pressable } from 'react-native'
 import { useState } from 'react'
+import { Keyboard } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { CodeField, Cursor, useBlurOnFulfill, useClearByFocusCell } from 'react-native-confirmation-code-field';
-import { collection, addDoc, setDoc, doc, getDocs } from "firebase/firestore" 
+import { collection, addDoc, setDoc, doc, getDocs, getCountFromServer, documentId } from "firebase/firestore" 
 import { db } from "../firebase/config"
 import colors from '../config/colors';
 
@@ -20,25 +21,29 @@ export default function JoinBiteScreen({ navigation }) {
     });
 
     async function handlePress() {
-        // check if a collection with the given code exists
-        // if not send error
-        // get data from inside of the collection
-        // store data for access in the survey page
         try{
-            console.log(value)
-            const snapshot = await getDocs(collection(db, "" + value))
-            console.log("count: ", snapshot.data().count)
-            //console.log(getDocs(collection(db, "8841")).data().count) 
+            const col = collection(db, "" + value);
+            const snapshot = await getCountFromServer(col)
+            if(snapshot.data().count > 0) {
+                console.log("we in boui")
+                const querySnapshot = await getDocs(col);
+                var arr = [];
+                querySnapshot.forEach((doc) => {
+                    arr.push(doc);
+                })
+                
+                navigation.navigate('Survey', {
+                    data2: arr
+                })
+            } 
         } catch (error) {
             console.error(error)
         }
-        
     }
 
     return (
         <View 
             style={styles.container}>
-            <KeyboardAwareScrollView>
                 <Pressable
                     onPress={() => Keyboard.dismiss()}>
                     <Text 
@@ -79,7 +84,7 @@ export default function JoinBiteScreen({ navigation }) {
                             underlayColor={colors.primaryDark} 
                             onPress={() => {
                                 handlePress();
-                                navigation.navigate('Survey')
+                                
                             }}>
                             <Text 
                                 style={styles.buttonText}>
@@ -87,7 +92,6 @@ export default function JoinBiteScreen({ navigation }) {
                         </TouchableHighlight>
                     </View>
                 </Pressable>
-            </KeyboardAwareScrollView>
         </View>
     )
 }

@@ -3,7 +3,7 @@ import { Dimensions, StyleSheet, Text, TouchableHighlight, View } from 'react-na
 import { auth } from '../firebase/config';
 import colors from '../config/colors';
 import SimplePlaceView from '../components/SimplePlaceView';
-import { ThreeDots, TailSpin } from 'react-loader-spinner';
+//import { ThreeDots, TailSpin } from 'react-loader-spinner';
 
 export default function HomeScreen({ navigation }) {
 
@@ -76,56 +76,62 @@ export default function HomeScreen({ navigation }) {
           FOOD NEAR YOU</Text>
       <SimplePlaceView  
         name={places ? places[0].name : 
-          <ThreeDots
-            height="40" 
-            width="40" 
-            radius="5"
-            color={colors.primary}
-            ariaLabel="three-dots-loading"/>
+          // <ThreeDots
+          //   height="40" 
+          //   width="40" 
+          //   radius="5"
+          //   color={colors.primary}
+          //   ariaLabel="three-dots-loading"/>
+          "loading"
         }
         address={places ? places[0].vicinity : 
-          <ThreeDots
-            height="40" 
-            width="40" 
-            radius="5"
-            color={colors.primary}
-            ariaLabel="three-dots-loading"/>
+          // <ThreeDots
+          //   height="40" 
+          //   width="40" 
+          //   radius="5"
+          //   color={colors.primary}
+          //   ariaLabel="three-dots-loading"/>
+          "loading"
         }
         rating={places ? places[0].rating : 0} 
         imageUri={places ? places[0].imageURL : 
-          <TailSpin
-            height="80"
-            width="80"
-            color={colors.primary}
-            radius="1"
-            ariaLabel="tail-spin-loading"/>
+          // <TailSpin
+          //   height="80"
+          //   width="80"
+          //   color={colors.primary}
+          //   radius="1"
+          //   ariaLabel="tail-spin-loading"/>
+          "loading"
         }/>
 
       <SimplePlaceView  
         name={places ? places[1].name : 
-          <ThreeDots
-            height="40" 
-            width="40" 
-            radius="5"
-            color={colors.primary}
-            ariaLabel="three-dots-loading"/>
+          // <ThreeDots
+          //   height="40" 
+          //   width="40" 
+          //   radius="5"
+          //   color={colors.primary}
+          //   ariaLabel="three-dots-loading"/>
+          "loading"
         }
         address={places ? places[1].vicinity : 
-          <ThreeDots
-            height="40" 
-            width="40" 
-            radius="5"
-            color={colors.primary}
-            ariaLabel="three-dots-loading"/>
+          // <ThreeDots
+          //   height="40" 
+          //   width="40" 
+          //   radius="5"
+          //   color={colors.primary}
+          //   ariaLabel="three-dots-loading"/>
+          "loading"
         }
         rating={places ? places[1].rating : 0} 
         imageUri={places ? places[1].imageURL : 
-          <TailSpin
-            height="80"
-            width="80"
-            color={colors.primary}
-            radius="1"
-            ariaLabel="tail-spin-loading"/>
+          // <TailSpin
+          //   height="80"
+          //   width="80"
+          //   color={colors.primary}
+          //   radius="1"
+          //   ariaLabel="tail-spin-loading"/>
+          "loading"
         }/>
     </View>
 
