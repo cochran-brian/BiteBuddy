@@ -22,12 +22,13 @@ export default function SurveySceen({ route, navigation }) {
 
 
   renderItem = ({item, index}) => {
+    console.log(item);
     return (
         <SurveyCard
-            name = {item.id}
-            imageUri={item.data.image_url}
-            address={item.data.address}
-            rating={item.data.rating}
+            name = {item.name}
+            imageUri={item.image_url}
+            address={item.address}
+            rating={item.rating}
         />
     );
 }
@@ -52,7 +53,7 @@ export default function SurveySceen({ route, navigation }) {
         <View style={styles.container}>
             <Text style={styles.header}>BITE BUDDY</Text>
 
-            <View style={{height: '55%', marginTop: 20}}>
+            <View style={{height: 550, marginTop: 20}}>
             <Carousel
               ref={(c) => { this._carousel = c; }}
               data={data2}

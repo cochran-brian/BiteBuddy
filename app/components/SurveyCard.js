@@ -14,18 +14,22 @@ function SurveyCard({ imageUri, name, address, rating }){
            <View 
                 style={styles.textContainer}>
                 <Text 
+                    numberOfLines={2}
                     style={styles.textTitle}>
-                        {name.toUpperCase()}</Text>
+                    {name.toUpperCase()}
+                    {/* {(name.length > 25) ? name.substring(0, 25).toUpperCase() + "..." : name.toUpperCase()} */}
+                </Text>
                 <Text 
+                    numberOfLines={2}
                     style={styles.textSubheader}>
                         {address}</Text>
-                <Rating
-                    disabled={true}
-                    size={40}
-                    rating={rating}
-                    fillColor={'gold'}
-                    style={{marginTop: 12}}/>
             </View>
+            <Rating
+                disabled={true}
+                size={40}
+                rating={rating}
+                fillColor={'gold'}
+                style={styles.ratingsStyle}/>
     </View>
 
 )}
@@ -33,34 +37,40 @@ function SurveyCard({ imageUri, name, address, rating }){
 const styles = StyleSheet.create({
     container:{
         width: '100%',
-        height: '100%',
+        height: 550,
         backgroundColor: 'white',
         borderRadius: 30,
         borderWidth: 1,
         borderColor: 'grey',
+        justifyContent: 'space-between'
+    
     },
     image:{
         width: '100%',
-        height: '65%',
+        height: '55%',
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30
     },
     textContainer: { 
+        height: 100,
         marginTop: 15, 
-        marginLeft: 10, 
+        marginLeft: 18,
+        marginRight: 18 
     },
     textTitle: {
         fontFamily: 'Open Sans', 
-        fontSize: 30
+        marginTop: -30,
+        fontSize: 30,
+        lineHeight: 35,
     },
     textSubheader: {
         fontFamily: 'Open Sans Light', 
-        fontSize: 24
+        fontSize: 18,
+        lineHeight: 25
     },
-    ratingContainer: {
-        justifyContent: 'flex-end', 
-        flex: 1, 
-        marginBottom: 30
+    ratingsStyle:{
+        marginBottom: 25,
+        marginLeft: 18
     }
 });
 

@@ -29,12 +29,14 @@ export default function JoinBiteScreen({ navigation }) {
                 const querySnapshot = await getDocs(col);
                 var arr = [];
                 querySnapshot.forEach((doc) => {
-                    arr.push(doc);
+                    arr.push(doc.data());
                 })
                 
                 navigation.navigate('Survey', {
                     data2: arr
                 })
+
+
             } 
         } catch (error) {
             console.error(error)
