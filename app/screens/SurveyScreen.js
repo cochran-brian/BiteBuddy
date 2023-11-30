@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 import { Dimensions, StyleSheet, Text, TouchableHighlight, View, Pressable } from 'react-native';
 import colors from '../config/colors';
 import { db } from '../firebase/config';
-import { collection, addDoc } from "firebase/firestore"
+import { collection, addDoc} from "firebase/firestore"
 import SurveyCard from '../components/SurveyCard';
 import Carousel from 'react-native-snap-carousel';
 
 export default function SurveySceen({ route, navigation }) {
 
-  const [done, setDone] = useState(true);
+  const [done, setDone] = useState(false);
   
 
   const { data2 } = route.params;
@@ -24,13 +24,21 @@ export default function SurveySceen({ route, navigation }) {
   renderItem = ({item, index}) => {
     return (
         <SurveyCard
-            name = {item.name}
-            imageUri={item.url}
-            address={item.address}
-            rating={item.rating}
+            name = {item.id}
+            imageUri={item.data.image_url}
+            address={item.data.address}
+            rating={item.data.rating}
         />
     );
 }
+
+  useEffect(() => {
+    setTimeout(() => {
+      console.log("Loading Datum")
+      setDone(true);
+    }, 1000);
+  }, []); 
+
 
     return(
       <>
@@ -47,7 +55,7 @@ export default function SurveySceen({ route, navigation }) {
             <View style={{height: '55%', marginTop: 20}}>
             <Carousel
               ref={(c) => { this._carousel = c; }}
-              data={data}
+              data={data2}
               renderItem={this.renderItem}
               sliderWidth={400}
               itemWidth={320}

@@ -108,6 +108,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Open Sans',
         fontSize: 45,
         marginTop: 20,
+        marginBottom: 25,
         alignSelf: 'center'
       },
     textInputView:{
@@ -118,6 +119,7 @@ const styles = StyleSheet.create({
         borderColor: '#000000FF',
         textAlignVertical: 'center',
         textAlign: 'left',
+        alignSelf: 'center'
         
     },
     textInput: {
@@ -125,7 +127,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Open Sans',
         fontSize: 24,
         fontWeight: 300,
-        marginLeft: 10
+        marginLeft: 10,
     },
     inputFields: {
         display: 'block',
