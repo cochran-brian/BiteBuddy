@@ -4,14 +4,13 @@ import SignInView from "../components/SignInView";
 import RegisterView from '../components/RegisterView';
 import { useState } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { AntDesign } from '@expo/vector-icons';
 
 export default function AuthScreen({ navigation }) {
 
   const [signingIn, setSigningIn] = useState(true);
 
-  if(!fontsLoaded){
-      return null;
-  }
+  
 
   const changeDisplay = () => {
     if(signingIn) {
@@ -61,6 +60,9 @@ export default function AuthScreen({ navigation }) {
       <KeyboardAwareScrollView>
         <Pressable 
           onPress={() => Keyboard.dismiss()}>
+            <Pressable style={styles.backButton} onPress={() => navigation.navigate('Home')}>
+              <AntDesign name="arrowleft" size={34} color="black" />
+            </Pressable>
           <Text 
             style={styles.header}>
               BITE BUDDY</Text>
@@ -69,7 +71,7 @@ export default function AuthScreen({ navigation }) {
                   <Pressable 
                     onPress={() => setSigningIn(true)} 
                     style={[styles.viewSelectButton, 
-                      {backgroundColor: signingIn ? colors.primary : colors.neutral}]}>
+                      {backgroundColor: signingIn ? colors.primary : colors.neutral, borderTopLeftRadius: 20, borderBottomLeftRadius: 20}]}>
                     <Text 
                       style={[styles.viewChangeText, 
                         {color: signingIn ? 'white' : 'black'}]}>
@@ -78,7 +80,7 @@ export default function AuthScreen({ navigation }) {
                   <Pressable 
                     onPress={() => setSigningIn(false)} 
                     style={[styles.viewSelectButton,
-                      {backgroundColor: signingIn ? colors.neutral : colors.primary}]}>
+                      {backgroundColor: signingIn ? colors.neutral : colors.primary, borderTopRightRadius: 20, borderBottomRightRadius: 20}]}>
                     <Text 
                       style={[styles.viewChangeText, 
                         {color: signingIn ? 'black' : 'white'}]}>
@@ -93,6 +95,9 @@ export default function AuthScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  backButton:{
+    marginTop: 80,
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
@@ -103,7 +108,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontFamily: 'Open Sans',
     fontSize: 50,
-    marginTop: 80,
+    marginTop: 10,
     alignSelf: 'center'
   },
   viewSelectButton:{
@@ -111,11 +116,9 @@ const styles = StyleSheet.create({
     height: 40,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 100,
+    marginTop: 70,
     marginBottom: 0,
     alignSelf: 'center',
-    borderTopLeftRadius: 20, 
-    borderBottomLeftRadius: 20
   },
   viewChangeText:{
     color: 'white',

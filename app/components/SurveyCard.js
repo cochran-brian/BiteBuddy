@@ -37,7 +37,7 @@ function SurveyCard({ imageUri, name, address, rating }){
 const styles = StyleSheet.create({
     container:{
         width: '100%',
-        height: 550,
+        height: 490,
         backgroundColor: 'white',
         borderRadius: 30,
         borderWidth: 1,
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     },
     textContainer: { 
         height: 100,
-        marginTop: 15, 
+        marginTop: 20, 
         marginLeft: 18,
         marginRight: 18 
     },

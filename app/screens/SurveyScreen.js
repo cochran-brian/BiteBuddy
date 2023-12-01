@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Dimensions, StyleSheet, Text, TouchableHighlight, View, Pressable } from 'react-native';
+import { Dimensions, StyleSheet, Text, TouchableHighlight, View, Pressable, SafeAreaView } from 'react-native';
 import colors from '../config/colors';
 import { db } from '../firebase/config';
 import { collection, addDoc} from "firebase/firestore"
@@ -55,10 +55,10 @@ positiveRating = () => {
             style={[styles.header, {marginTop: 0}]}>BITE BUDDY</Text>
         </View>
       ) : (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <Text style={styles.header}>BITE BUDDY</Text>
 
-            <View style={{height: 550, marginTop: 20}}>
+            <View style={{height: 490, marginTop: 20}}>
             <Carousel
               ref={(c) => { this._carousel = c; }}
               data={data2}
@@ -76,7 +76,7 @@ positiveRating = () => {
                 <Text style={styles.emojis}>😢</Text>
               </TouchableHighlight>
               <TouchableHighlight style={styles.button} underlayColor={'lightgrey'}
-              onPress={() => this._carousel.snapToNext()}>
+              onPress={() => navigation.navigate("Result")}>
                 <Text style={styles.emojis}>😐</Text>
               </TouchableHighlight>
               <TouchableHighlight style={styles.button} underlayColor={'lightgrey'}
@@ -85,7 +85,7 @@ positiveRating = () => {
               </TouchableHighlight>
             </View>
             
-          </View>
+          </SafeAreaView>
         )
       }
       </>
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
         color: 'black',
         fontFamily: 'Open Sans',
         fontSize: 45,
-        marginTop: 80,
+        marginTop: 10,
         alignSelf: 'center'
     },
     button:{

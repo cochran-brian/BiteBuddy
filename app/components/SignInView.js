@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   },
   emptyView:{
     width: 270,
-    height: 195,
+    flex: 1,
   },
   textInput:{
     fontFamily: 'Open Sans',

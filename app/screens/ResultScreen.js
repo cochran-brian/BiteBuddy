@@ -10,12 +10,12 @@ export default function ResultScreen({navigation}) {
         <View 
           style={styles.container}>
             <SafeAreaView 
-              style={{margin: '10%', marginTop: 70, marginBottom: '7%', alignItems: 'center'}}>
+              style={{margin: '10%', marginTop: 10, marginBottom: '7%', alignItems: 'center'}}>
               <Image 
-                source={require('../assets/crown.png')}/> {/* Image courtesy of zky.icon via flaticon.com */}
+                source={require('../assets/crown.png')}/> 
+                {/* Image courtesy of zky.icon via flaticon.com */}
               <Text 
-                style={styles.sectionTitle}>
-                  TOP RECOMMENDATION</Text>
+                style={styles.sectionTitle}>TOP RECOMMENDATION</Text>
               <SimplePlaceView
                 name={'Chappie\'s'}
                 address={'754 W Euclid Ave'}
@@ -27,9 +27,9 @@ export default function ResultScreen({navigation}) {
               style={{height: 2, width: '90%',backgroundColor: 'black'}}/>
 
             <View 
-              style={{margin: '10%', marginTop: 30, marginBottom: '7%', alignItems: 'center'}}>
+              style={{margin: '10%', marginTop: 16, marginBottom: '7%', alignItems: 'center'}}>
             <Text 
-              style={styles.sectionTitle}>HOST'S FAVORITE</Text>
+              style={[styles.sectionTitle, {fontSize: 22}]}>SOMEWHERE SIMILAR</Text>
               <SimplePlaceView
                 name={'Chappie\'s'}
                 address={'754 W Euclid Ave'}
@@ -38,9 +38,9 @@ export default function ResultScreen({navigation}) {
             </View>
 
             <View 
-              style={{margin: '10%', marginTop: 15, marginBottom: '7%', alignItems: 'center'}}>
+              style={{margin: '10%', marginTop: 0, marginBottom: '7%', alignItems: 'center'}}>
             <Text 
-              style={styles.sectionTitle}>MOST HEATED</Text>
+              style={[styles.sectionTitle, {fontSize: 22}]}>MOST HEATED</Text>
               <SimplePlaceView
                 name={'Chappie\'s'}
                 address={'754 W Euclid Ave'}
@@ -59,8 +59,7 @@ export default function ResultScreen({navigation}) {
                   navigation.navigate('Home')
                 }}>
                 <Text 
-                  style={styles.buttonText}>
-                    BACK</Text>
+                  style={styles.buttonText}>BACK</Text>
               </TouchableHighlight>
               <TouchableHighlight 
                 style={[styles.biteButtons, {width: 95}]} 
@@ -68,7 +67,7 @@ export default function ResultScreen({navigation}) {
               <Feather 
                 name="share" 
                 size={38} 
-                color="white" />
+                color="white"/>
               </TouchableHighlight>
           </View>
         </View>
@@ -85,7 +84,7 @@ const styles = StyleSheet.create({
         color: 'black',
         fontFamily: 'Open Sans',
         fontSize: 24,
-        marginBottom: 22
+        marginBottom: 12
       },
     biteButtons:{
       width: Dimensions.get('screen').width - 10,

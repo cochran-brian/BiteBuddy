@@ -101,7 +101,7 @@ export default function HomeScreen({ navigation }) {
           //   color={colors.primary}
           //   radius="1"
           //   ariaLabel="tail-spin-loading"/>
-          "loading..."
+          "https://img.icons8.com/material-sharp/96/restaurant.png"
         }/>
 
       <SimplePlaceView  
@@ -131,7 +131,7 @@ export default function HomeScreen({ navigation }) {
           //   color={colors.primary}
           //   radius="1"
           //   ariaLabel="tail-spin-loading"/>
-          "loading..."
+          "https://img.icons8.com/material-sharp/96/restaurant.png"
         }/>
     </View>
 
@@ -145,7 +145,7 @@ export default function HomeScreen({ navigation }) {
 
     <View>
      <TouchableHighlight 
-      style={[styles.biteButtons, {marginTop: 50}]} 
+      style={[styles.biteButtons, {marginTop: 100}]} 
       underlayColor={colors.primaryDark} 
       onPress={() => {
         if(auth.currentUser){
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
   recBox: {
     width: Dimensions.get('screen').width - 80,
     height: '30%',
-    marginTop: 43,
+    marginTop: 34,
     marginLeft: 40,
     marginRight: 40,
   },

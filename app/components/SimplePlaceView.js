@@ -43,11 +43,11 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: 'grey',
         position: 'relative',
-        marginTop: 15
+        marginTop: 0
     },
     image:{
-        width: 125,
-        height: 125,
+        width: 120,
+        height: '100%',
         borderTopLeftRadius: 10,
         borderBottomLeftRadius: 10
     },
