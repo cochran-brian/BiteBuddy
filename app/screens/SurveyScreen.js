@@ -9,18 +9,14 @@ import Carousel from 'react-native-snap-carousel';
 export default function SurveySceen({ route, navigation }) {
 
   const [done, setDone] = useState(false);
-  const [localRatings, setLocalRatins] = useState(new Array(10))
+
+  const { data } = route.params;
+
+  var localRatings = new Array(data.length);
   
 
-  const { data2 } = route.params;
-  console.log(data2)
-
-  data = [
-  {name: 'SUPER SOAKER DYL', address: 'Baller', rating: 5, url: 'https://asset-cdn.schoology.com/system/files/imagecache/profile_reg/pictures/picture-a70804d0c37f4f34a4b7721005f0dd70_6504c016c1894.jpg?1694810134'}, 
-  {name: 'Big Ben', address: 'Baller', rating: 3.4, url: 'https://asset-cdn.schoology.com/system/files/imagecache/profile_reg/pictures/picture-95e36dc30f43e2e1e133573eb4fbbd7b_6504c03ebd0bd.jpg?1694810174'},
-  {name: 'Bri Coc', address: 'Baller', rating: 4.2, url:'https://asset-cdn.schoology.com/system/files/imagecache/profile_reg/pictures/picture-143dba946e5a104a83e3af1fcea12697_6504c00154c6d.jpg?1694810113'}]
-
-
+ 
+  console.log(data)
 
   renderItem = ({item, index}) => {
     console.log(item);
@@ -34,9 +30,17 @@ export default function SurveySceen({ route, navigation }) {
     );
 }
 
-positiveRating = () => {
-  console.log('Positive ' + this._carousel.currentIndex);
+rating = async(r) => {
+  console.log('Rating: ' + r + ' => ' + this._carousel.currentIndex);
+
+  localRatings[this._carousel.currentIndex] = r
+
+  if(this._carousel.currentIndex >= data.length - 1) {
+    await setDoc(doc(db, code, place.name), place)
+    navigation.navigate('Result')
+  }
 }
+
 
   useEffect(() => {
     setTimeout(() => {
@@ -61,7 +65,7 @@ positiveRating = () => {
             <View style={{height: 490, marginTop: 20}}>
             <Carousel
               ref={(c) => { this._carousel = c; }}
-              data={data2}
+              data={data}
               renderItem={this.renderItem}
               sliderWidth={400}
               itemWidth={320}
@@ -71,18 +75,29 @@ positiveRating = () => {
             </View>
 
             <View style={{flexDirection: 'row', marginTop: 20}}>
-              <TouchableHighlight style={styles.button} underlayColor={'lightgrey'}
-              onPress={() => this._carousel.snapToPrev()}>
+              <Pressable style={styles.button} 
+              onPress={() => {
+                rating(0)
+                this._carousel.snapToNext()
+              }}>
                 <Text style={styles.emojis}>😢</Text>
-              </TouchableHighlight>
-              <TouchableHighlight style={styles.button} underlayColor={'lightgrey'}
-              onPress={() => navigation.navigate("Result")}>
+              </Pressable>
+              <Pressable style={styles.button} 
+              onPress={
+                () => {
+                rating(1)
+                this._carousel.snapToNext()
+            }}>
                 <Text style={styles.emojis}>😐</Text>
-              </TouchableHighlight>
-              <TouchableHighlight style={styles.button} underlayColor={'lightgrey'}
-              onPress={() => positiveRating()}>
+              </Pressable>
+              <Pressable style={styles.button} 
+              onPress={
+                () => {
+                  rating(2)
+                  this._carousel.snapToNext()
+                }}>
                 <Text style={styles.emojis}>😁</Text>
-              </TouchableHighlight>
+              </Pressable>
             </View>
             
           </SafeAreaView>
@@ -106,16 +121,16 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     button:{
-      width: 100, 
-      height: 100, 
+      width: 90, 
+      height: 90, 
       borderRadius: 50, 
-      margin: 14,
+      margin: 10,
       marginTop:32,
       backgroundColor: 'white', 
       justifyContent: 'center', 
       alignItems: 'center'
     },
     emojis:{
-      fontSize: 84,
+      fontSize: 80,
     },
 });
