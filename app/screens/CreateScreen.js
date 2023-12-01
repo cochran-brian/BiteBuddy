@@ -51,9 +51,12 @@ export default function CreateScreen({ navigation }) {
     data = await Promise.all(promises);
 
     const code = "" + generateCode();
+    docRef = await setDoc(doc(db, code, "restaurants"));
+    console.log(docRef);
     data.map(async (place) => {
       try {        
-        await setDoc(doc(db, code, place.name), place)
+        
+        await setDoc(doc(docRef, "restaurants", place.name), place)
       } catch (error) {
         console.error(error);
       } 
