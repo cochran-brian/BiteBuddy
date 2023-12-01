@@ -9,6 +9,7 @@ import Carousel from 'react-native-snap-carousel';
 export default function SurveySceen({ route, navigation }) {
 
   const [done, setDone] = useState(false);
+  const [localRatings, setLocalRatins] = useState(new Array(10))
   
 
   const { data2 } = route.params;
@@ -31,6 +32,10 @@ export default function SurveySceen({ route, navigation }) {
             rating={item.rating}
         />
     );
+}
+
+positiveRating = () => {
+  console.log('Positive ' + this._carousel.currentIndex);
 }
 
   useEffect(() => {
@@ -66,16 +71,18 @@ export default function SurveySceen({ route, navigation }) {
             </View>
 
             <View style={{flexDirection: 'row', marginTop: 20}}>
-              <TouchableHighlight style={styles.button}
-              onPress={() => this._carousel.snapToNext()}>
-                <Text>Skip</Text>
-              </TouchableHighlight>
-            
-              <TouchableHighlight style={styles.button}
+              <TouchableHighlight style={styles.button} underlayColor={'lightgrey'}
               onPress={() => this._carousel.snapToPrev()}>
-                <Text>Last</Text>
+                <Text style={styles.emojis}>😢</Text>
               </TouchableHighlight>
-
+              <TouchableHighlight style={styles.button} underlayColor={'lightgrey'}
+              onPress={() => this._carousel.snapToNext()}>
+                <Text style={styles.emojis}>😐</Text>
+              </TouchableHighlight>
+              <TouchableHighlight style={styles.button} underlayColor={'lightgrey'}
+              onPress={() => positiveRating()}>
+                <Text style={styles.emojis}>😁</Text>
+              </TouchableHighlight>
             </View>
             
           </View>
@@ -99,11 +106,16 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     button:{
-      width: 50, 
-      height: 50, 
-      borderRadius: 25, 
-      backgroundColor: colors.primary, 
+      width: 100, 
+      height: 100, 
+      borderRadius: 50, 
+      margin: 14,
+      marginTop:32,
+      backgroundColor: 'white', 
       justifyContent: 'center', 
       alignItems: 'center'
-    }
+    },
+    emojis:{
+      fontSize: 84,
+    },
 });

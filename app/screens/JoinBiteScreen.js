@@ -103,13 +103,13 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: '#fff',
       alignItems: 'center',
-      justifyContent: 'space-around'
+      //justifyContent: 'space-around'
     },
     header:{
         color: 'black',
         fontFamily: 'Open Sans',
         fontSize: 45,
-        marginTop: 20,
+        marginTop: '60%',
         marginBottom: 25,
         alignSelf: 'center'
       },
@@ -118,6 +118,7 @@ const styles = StyleSheet.create({
         height: 60,
         borderRadius: 10,
         borderWidth: 3,
+        marginTop: 25,
         borderColor: '#000000FF',
         textAlignVertical: 'center',
         textAlign: 'left',
@@ -133,11 +134,11 @@ const styles = StyleSheet.create({
     },
     inputFields: {
         display: 'block',
-        marginBottom: '50%',
+        marginBottom: '35%',
     },
     bottomButton:{
         width: 344,
-        height: 54,
+        height: 70,
         borderRadius: 10,
         backgroundColor: colors.primary,
         alignItems: 'center',

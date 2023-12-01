@@ -82,7 +82,7 @@ export default function HomeScreen({ navigation }) {
           //   radius="5"
           //   color={colors.primary}
           //   ariaLabel="three-dots-loading"/>
-          "loading"
+          "loading..."
         }
         address={places ? places[0].vicinity : 
           // <ThreeDots
@@ -91,7 +91,7 @@ export default function HomeScreen({ navigation }) {
           //   radius="5"
           //   color={colors.primary}
           //   ariaLabel="three-dots-loading"/>
-          "loading"
+          "loading..."
         }
         rating={places ? places[0].rating : 0} 
         imageUri={places ? places[0].imageURL : 
@@ -101,7 +101,7 @@ export default function HomeScreen({ navigation }) {
           //   color={colors.primary}
           //   radius="1"
           //   ariaLabel="tail-spin-loading"/>
-          "loading"
+          "loading..."
         }/>
 
       <SimplePlaceView  
@@ -112,7 +112,7 @@ export default function HomeScreen({ navigation }) {
           //   radius="5"
           //   color={colors.primary}
           //   ariaLabel="three-dots-loading"/>
-          "loading"
+          "loading..."
         }
         address={places ? places[1].vicinity : 
           // <ThreeDots
@@ -121,7 +121,7 @@ export default function HomeScreen({ navigation }) {
           //   radius="5"
           //   color={colors.primary}
           //   ariaLabel="three-dots-loading"/>
-          "loading"
+          "loading..."
         }
         rating={places ? places[1].rating : 0} 
         imageUri={places ? places[1].imageURL : 
@@ -131,7 +131,7 @@ export default function HomeScreen({ navigation }) {
           //   color={colors.primary}
           //   radius="1"
           //   ariaLabel="tail-spin-loading"/>
-          "loading"
+          "loading..."
         }/>
     </View>
 
