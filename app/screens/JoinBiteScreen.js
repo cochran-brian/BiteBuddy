@@ -22,21 +22,24 @@ export default function JoinBiteScreen({ navigation }) {
 
     async function handlePress() {
         try{
-            const col = collection(db, "" + value);
-            const snapshot = await getCountFromServer(col)
+            // const col = collection(db, value.toString());
+
+            const placesDocRef = doc(collection(db, value.toString()), 'places');
+            const subcollectionRef = collection(placesDocRef, 'restaurants');
+
+            const snapshot = await getCountFromServer(subcollectionRef)
             if(snapshot.data().count > 0) {
-                console.log("we in boui")
-                const querySnapshot = await getDocs(col);
-                var arr = [];
+                const querySnapshot = await getDocs(subcollectionRef);
+                var data = [];
                 querySnapshot.forEach((doc) => {
-                    arr.push(doc.data());
+                    data.push(doc.data());
                 })
                 
                 navigation.navigate('Survey', {
-                    data: arr
+                    data: data,
+                    code: value.toString(),
+                    name: name
                 })
-
-
             } 
         } catch (error) {
             console.error(error)

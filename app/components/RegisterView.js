@@ -3,8 +3,8 @@ import { StyleSheet, Text, View, TextInput, TouchableHighlight } from 'react-nat
 import { useFonts } from 'expo-font';
 import { useState } from 'react';
 import { db, auth } from '../firebase/config';
+import { setDoc, doc, collection } from "firebase/firestore"
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { addDoc, collection } from '@firebase/firestore';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function RegisterView({navigation}) {
@@ -25,8 +25,8 @@ export default function RegisterView({navigation}) {
           phoneNumber
       };
       try {
-        const usersRef = collection(db, "users");
-        const doc = await addDoc(usersRef, data);
+        const usersRef = doc(collection(db, 'users'), data.email);
+        await setDoc(usersRef, data);
       } catch(error) {
         alert(error);
         return;

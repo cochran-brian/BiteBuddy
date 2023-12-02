@@ -19,41 +19,6 @@ export default function AuthScreen({ navigation }) {
       return <RegisterView navigation={navigation}/>
     }
   }
-
-  async function onSubmitPressed() {
-    if(signingIn) {
-      try {
-        const user = await signInWithEmailAndPassword(auth, email, password)
-      } catch (error) {
-        alert(error);
-        return;
-      }
-      navigation.navigate("Home");
-      alert("success!")
-    } else {
-      try {
-        const user = await createUserWithEmailAndPassword(auth, email, password)
-        const data = {
-            firstName,
-            lastName,
-            email,
-            phoneNumber
-        };
-        try {
-          const usersRef = collection(db, "users");
-          const doc = await addDoc(usersRef, data);
-        } catch(error) {
-          alert(error);
-          return;
-        }
-      } catch(error) {
-        alert(error);
-        return;
-      }
-      navigation.navigate("Home");
-      alert("success!")
-    }
-  }
     
   return (
     <View style={styles.container}>

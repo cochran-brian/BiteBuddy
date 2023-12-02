@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { StyleSheet, Text, TouchableHighlight, View, Pressable } from 'react-native';
 import colors from '../config/colors';
 import Slider from '@react-native-community/slider';
-import { db } from '../firebase/config';
-import { setDoc, doc } from "firebase/firestore"
+import { db, auth } from '../firebase/config';
+import { setDoc, doc, collection } from "firebase/firestore"
 
 export default function CreateScreen({ navigation }) {
 
@@ -50,16 +50,29 @@ export default function CreateScreen({ navigation }) {
 
     data = await Promise.all(promises);
 
-    const code = "" + generateCode();
-    docRef = await setDoc(doc(db, code, "restaurants"));
-    console.log(docRef);
+    const code = generateCode().toString();
     data.map(async (place) => {
       try {        
-        
-        await setDoc(doc(docRef, "restaurants", place.name), place)
+        const placesDocRef = doc(collection(db, code), 'places');
+        await setDoc(placesDocRef, {
+          survey_code: code,
+          search_radius: slideValue * 1609.34,
+          host_latitude: locationLat,
+          host_longitude: locationLong,
+          host_email: auth.currentUser.email
+        });
+
+        const subcollectionRef = collection(placesDocRef, 'restaurants');
+        const subDocRef = doc(subcollectionRef, place.name);
+        await setDoc(subDocRef, place);
+
       } catch (error) {
         console.error(error);
       } 
+    })
+
+    navigation.navigate('Survey', {
+      data: data
     })
   }
 
@@ -92,8 +105,7 @@ export default function CreateScreen({ navigation }) {
                   style={styles.bottomButton} 
                   underlayColor={colors.primaryDark} 
                   onPress={() => {
-                    //fetchData();
-                    navigation.navigate('Survey')
+                    fetchData();
                   }}>
 
                 <Text 

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Dimensions, StyleSheet, Text, TouchableHighlight, View, Pressable, SafeAreaView } from 'react-native';
 import colors from '../config/colors';
-import { db } from '../firebase/config';
-import { collection, addDoc} from "firebase/firestore"
+import { db, auth } from '../firebase/config';
+import { setDoc, doc, collection } from "firebase/firestore"
 import SurveyCard from '../components/SurveyCard';
 import Carousel from 'react-native-snap-carousel';
 
@@ -10,7 +10,7 @@ export default function SurveySceen({ route, navigation }) {
 
   const [done, setDone] = useState(false);
 
-  const { data } = route.params;
+  const { data, code, name } = route.params;
 
   var localRatings = new Array(data.length);
   
@@ -31,12 +31,30 @@ export default function SurveySceen({ route, navigation }) {
 }
 
 rating = async(r) => {
-  console.log('Rating: ' + r + ' => ' + this._carousel.currentIndex);
+  console.log('Index: ' + this._carousel.currentIndex + ' => ' + r);
 
   localRatings[this._carousel.currentIndex] = r
 
   if(this._carousel.currentIndex >= data.length - 1) {
-    await setDoc(doc(db, code, place.name), place)
+
+    var userName;
+    if(auth.currentUser) {
+      userName = auth.currentUser.email;
+    } else {
+      userName = name;
+    }
+
+    const userRatingsDocRef = doc(collection(db, code), 'ratings');
+    await setDoc(userRatingsDocRef, {
+      survey_code: code,
+    });
+    const subcollectionRef = collection(userRatingsDocRef, 'user_ratings');
+    const subDocRef = doc(subcollectionRef, userName);
+    console.log(localRatings);
+    await setDoc(subDocRef, {
+      ratings_array: localRatings
+    });
+
     navigation.navigate('Result')
   }
 }
