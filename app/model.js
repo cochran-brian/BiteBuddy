@@ -1,15 +1,22 @@
+import { returnKeyLabel } from "deprecated-react-native-prop-types/DeprecatedTextInputPropTypes";
 
-export default function model() {
+export default function model(inputRestaurants, ratingsData) {
     // Example ratings data (replace with actual data)
-    const ratingsData = {
-        'User1': [4, 5, 0, 0, 3],  // Ratings for 5 common restaurants
-        'User2': [0, 5, 4, 0, 0],
-        'User3': [3, 0, 0, 4, 5],
-        // ... additional users
-    };
+    // const ratingsData = {
+    //     'User1': [4, 5, 0, 0, 3],  // Ratings for 5 common restaurants
+    //     'User2': [0, 5, 4, 0, 0],
+    //     'User3': [3, 0, 0, 4, 5],
+    //     // ... additional users
+    // };
     
-    const restaurants = ['Restaurant1', 'Restaurant2', 'Restaurant3', 'Restaurant4', 'Restaurant5'];
-    
+    // const restaurants = ['Restaurant1', 'Restaurant2', 'Restaurant3', 'Restaurant4', 'Restaurant5'];
+    var restaurants = [];
+    inputRestaurants.forEach((restaurant) => {
+        //data.push(doc.data());
+        restaurants.push(restaurant.name);
+    })
+    console.log(restaurants);
+
     // Calculate user similarities (using cosine similarity for simplicity)
     function cosineSimilarity(a, b) {
         const dotProduct = a.map((x, i) => x * b[i]).reduce((acc, val) => acc + val, 0);
@@ -76,4 +83,21 @@ export default function model() {
     
     console.log(`In this case, we recommend ${recPlaceName} with a similarity of ${Math.round(recPlaceValue * 100)}% to the top restaurant from the survey`);
 
+}
+
+
+function toFeatureArray(restaurant){
+    features = [];
+    features.push(restaurant.delivery? 1 : 0);
+    features.push(restaurant.reservable? 1 : 0);
+    features.push(restaurant.takeout? 1 : 0);
+    features.push(restaurant.serves_breakfast? 1 : 0);
+    features.push(restaurant.serves_brunch? 1 : 0);
+    features.push(restaurant.serves_lunch? 1 : 0);
+    features.push(restaurant.serves_dinner? 1 : 0);
+    features.push(restaurant.serves_vegetarian_food? 1 : 0);
+    features.push(restaurant.serves_beer? 1 : 0);
+    features.push(restaurant.serves_wine? 1 : 0);
+
+    return features;
 }

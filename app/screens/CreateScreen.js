@@ -26,8 +26,10 @@ export default function CreateScreen({ navigation }) {
       try{
         console.log(place.place_id);
         const imageResponse = await fetch('https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference='+place.photos[0].photo_reference+'&key='+process.env.GOOGLE_MAPS_API_KEY);
-        const detailResponse = await fetch('https://places.googleapis.com/v1/places/'+place.place_id+'?fields=id,displayName&key='+process.env.GOOGLE_MAPS_API_KEY);
-        console.log(detailResponse);
+        //var detailResponse = await fetch('https://places.googleapis.com/v1/places/'+place.place_id+'?fields=id,displayName&key='+process.env.GOOGLE_MAPS_API_KEY);
+        var detailResponse = await fetch('https://maps.googleapis.com/maps/api/place/details/json?place_id='+place.place_id+'&key='+process.env.GOOGLE_MAPS_API_KEY);
+        detailResponse = detailResponse.json();
+        console.log(detailResponse.delivery);
         return {
             name: place.name,
             address: place.vicinity, 

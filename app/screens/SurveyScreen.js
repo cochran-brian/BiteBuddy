@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import { Dimensions, StyleSheet, Text, TouchableHighlight, View, Pressable, SafeAreaView } from 'react-native';
 import colors from '../config/colors';
 import { db, auth } from '../firebase/config';
-import { setDoc, doc, collection } from "firebase/firestore"
+import { setDoc, doc, collection, getDocs } from "firebase/firestore"
 import SurveyCard from '../components/SurveyCard';
 import Carousel from 'react-native-snap-carousel';
+import model from '../model';
 
 export default function SurveySceen({ route, navigation }) {
 
@@ -50,10 +51,20 @@ rating = async(r) => {
     });
     const subcollectionRef = collection(userRatingsDocRef, 'user_ratings');
     const subDocRef = doc(subcollectionRef, userName);
-    console.log(localRatings);
     await setDoc(subDocRef, {
       ratings_array: localRatings
     });
+
+
+    const querySnapshot = await getDocs(subcollectionRef);
+    var user_ratings = {};
+    querySnapshot.forEach((doc) => {
+        //data.push(doc.data());
+        user_ratings[doc.id] = doc.data().ratings_array;
+    })
+
+    //const { topRecommendation, similarRecommendation } = model(data, user_ratings);
+    model(data, user_ratings);
 
     navigation.navigate('Result')
   }
