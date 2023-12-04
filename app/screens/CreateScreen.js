@@ -24,24 +24,28 @@ export default function CreateScreen({ navigation }) {
 
     promises = await data.results.slice(0, iterationLimit).map(async (place) => {
       try{
-        const response = await fetch('https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference='+place.photos[0].photo_reference+'&key='+process.env.GOOGLE_MAPS_API_KEY);
+        console.log(place.place_id);
+        const imageResponse = await fetch('https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference='+place.photos[0].photo_reference+'&key='+process.env.GOOGLE_MAPS_API_KEY);
+        const detailResponse = await fetch('https://places.googleapis.com/v1/places/'+place.place_id+'?fields=id,displayName&key='+process.env.GOOGLE_MAPS_API_KEY);
+        console.log(detailResponse);
         return {
             name: place.name,
             address: place.vicinity, 
             rating: place.rating,
             price_level: place.price_level,
-            //delivery: place.delivery,
-            //reservable: place.reservable,
-            //takeout: place.takeout,
-            //serves_breakfast: place.serves_breakfast,
-            //serves_brunch: place.serves_brunch,
-            //serves_lunch: place.serves_lunch,
-            //serves_dinner: place.serves_dinner,
-            //serves_vegetarian_food: place.serves_vegetarian_food,
-            //serves_beer: place.serves_beer,
-            //serves_wine: place.serves_wine,
-            //website: place.website,
-            image_url: response.url,
+            // delivery: detailResponse.delivery,
+            // reservable: detailResponse.reservable,
+            // takeout: detailResponse.takeout,
+            // serves_breakfast: detailResponse.serves_breakfast,
+            // serves_brunch: detailResponse.serves_brunch,
+            // serves_lunch: detailResponse.serves_lunch,
+            // serves_dinner: detailResponse.serves_dinner,
+            // serves_vegetarian_food: detailResponse.serves_vegetarian_food,
+            // serves_beer: detailResponse.serves_beer,
+            // serves_wine: detailResponse.serves_wine,
+            // website: detailResponse.website,
+            image_url: imageResponse.url,
+            place_id: place.place_id
           }
       } catch (error) {
         console.error(error);
