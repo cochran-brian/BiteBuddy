@@ -13,6 +13,11 @@ export default function SurveySceen({ route, navigation }) {
 
   const { data, code, name } = route.params;
 
+  const LIMIT = 8;
+
+  data = data.slice(0, LIMIT);
+  nonSurveyData = data.slice(LIMIT);
+
   var localRatings = new Array(data.length);
   
 
@@ -64,7 +69,7 @@ rating = async(r) => {
     })
 
     //const { topRecommendation, similarRecommendation } = model(data, user_ratings);
-    model(data, user_ratings);
+    model(data, nonSurveyData, user_ratings);
 
     navigation.navigate('Result')
   }

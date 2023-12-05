@@ -7,7 +7,7 @@ import { setDoc, doc, collection } from "firebase/firestore"
 
 export default function CreateScreen({ navigation }) {
 
-  const iterationLimit = 10;
+  const iterationLimit = 8;
 
   const [slideValue, setSlideValue] = useState(0);
   const [locationLong, setLocationLong] = useState('-88.06476939999999');
@@ -25,25 +25,25 @@ export default function CreateScreen({ navigation }) {
       try{
         console.log(place.place_id);
         const imageResponse = await fetch('https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference='+place.photos[0].photo_reference+'&key='+process.env.GOOGLE_MAPS_API_KEY);
-        var detailResponse = await fetch('https://maps.googleapis.com/maps/api/place/details/json?fields=website%2Cdelivery%2Cdine_in%2Creservable%2Cserves_beer%2Cserves_brunch%2Cserves_lunch%2Cserves_dinner%2Cserves_vegetarian_food%2Cserves_wine%2Ctakeout&place_id='+place.place_id+'&key='+process.env.GOOGLE_MAPS_API_KEY);
+        var detailResponse = await fetch('https://maps.googleapis.com/maps/api/place/details/json?fields=website%2Cdelivery%2Cdine_in%2Creservable%2Cserves_beer%2Cserves_breakfast%2Cserves_brunch%2Cserves_lunch%2Cserves_dinner%2Cserves_vegetarian_food%2Cserves_wine%2Ctakeout&place_id='+place.place_id+'&key='+process.env.GOOGLE_MAPS_API_KEY);
         detailResponse = await detailResponse.json();
-        console.log(detailResponse);
+        detailResponse = detailResponse.result;
         return {
             name: place.name,
             address: place.vicinity, 
             rating: place.rating,
             price_level: place.price_level,
-            // delivery: detailResponse.delivery,
-            // reservable: detailResponse.reservable,
-            // takeout: detailResponse.takeout,
-            // serves_breakfast: detailResponse.serves_breakfast,
-            // serves_brunch: detailResponse.serves_brunch,
-            // serves_lunch: detailResponse.serves_lunch,
-            // serves_dinner: detailResponse.serves_dinner,
-            // serves_vegetarian_food: detailResponse.serves_vegetarian_food,
-            // serves_beer: detailResponse.serves_beer,
-            // serves_wine: detailResponse.serves_wine,
-            // website: detailResponse.website,
+            delivery: detailResponse.delivery ? true : false,
+            reservable: detailResponse.reservable ? true : false,
+            takeout: detailResponse.takeout ? true : false,
+            serves_breakfast: detailResponse.serves_breakfast ? true : false,
+            serves_brunch: detailResponse.serves_brunch ? true : false,
+            serves_lunch: detailResponse.serves_lunch ? true : false,
+            serves_dinner: detailResponse.serves_dinner ? true : false,
+            serves_vegetarian_food: detailResponse.serves_vegetarian_food ? true : false,
+            serves_beer: detailResponse.serves_beer ? true : false,
+            serves_wine: detailResponse.serves_wine ? true : false,
+            website: detailResponse.website,
             image_url: imageResponse.url,
             place_id: place.place_id
           }
@@ -55,6 +55,7 @@ export default function CreateScreen({ navigation }) {
     data = await Promise.all(promises);
 
     const code = generateCode().toString();
+    console.log(code)
     data.map(async (place) => {
       try {        
         const placesDocRef = doc(collection(db, code), 'places');

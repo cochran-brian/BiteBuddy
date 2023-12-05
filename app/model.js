@@ -1,6 +1,6 @@
 import { returnKeyLabel } from "deprecated-react-native-prop-types/DeprecatedTextInputPropTypes";
 
-export default function model(inputRestaurants, ratingsData) {
+export default function model(inputRestaurants, nonSurveyData, ratingsData) {
     // Example ratings data (replace with actual data)
     // const ratingsData = {
     //     'User1': [4, 5, 0, 0, 3],  // Ratings for 5 common restaurants
@@ -10,12 +10,6 @@ export default function model(inputRestaurants, ratingsData) {
     // };
     
     // const restaurants = ['Restaurant1', 'Restaurant2', 'Restaurant3', 'Restaurant4', 'Restaurant5'];
-    var restaurants = [];
-    inputRestaurants.forEach((restaurant) => {
-        //data.push(doc.data());
-        restaurants.push(restaurant.name);
-    })
-    console.log(restaurants);
 
     // Calculate user similarities (using cosine similarity for simplicity)
     function cosineSimilarity(a, b) {
@@ -57,21 +51,27 @@ export default function model(inputRestaurants, ratingsData) {
     const unratedRestaurants = targetUserRatings.map((rating, i) => (rating === 0 ? i : -1)).filter(index => index !== -1);
     const recommendationsForUnrated = unratedRestaurants.map(i => recommendations[i]);
     
-    const allRestaurants = restaurants;
+    const allRestaurants = inputRestaurants;
     const recommendedRestaurants = allRestaurants
         .map((restaurant, i) => ({ restaurant, recommendation: recommendations[i] }))
         .sort((a, b) => b.recommendation - a.recommendation)
         .map(item => item.restaurant);
     
     const N = 1;
+
+    console.log(recommendedRestaurants)
     
     const topRecommendations = recommendedRestaurants.slice(0, N);
-    console.log(`Top ${N} recommended restaurants for the group: ${topRecommendations[0]}`);
+    console.log(`Top ${N} recommended restaurants for the group: ${topRecommendations[0].name}`);
     
     // Example arrays of non-binary values (replace with your actual data)
-    const winner = [3, 1, 5, 2, 4];  // Pretend this is the features of the users' top-rated restaurant
-    const unratedPlaces = [[2, 1, 5, 6, 3], [2, 2, 3, 5, 1]];
-    const placeNames = ['Chappies', 'ZaZa'];
+    const winner = toFeatureArray(topRecommendations[0]);  
+    const placeNames = [];
+    const unratedPlaces = nonSurveyData.array.forEach(restaurant => {
+        placeNames.push(restaurant.name);
+        return toFeatureArray(restaurant);
+    });
+    
     
     // Calculate cosine similarity
     const similarityScores = unratedPlaces.map(place => cosineSimilarity(winner, place));
@@ -88,16 +88,16 @@ export default function model(inputRestaurants, ratingsData) {
 
 function toFeatureArray(restaurant){
     features = [];
-    features.push(restaurant.delivery? 1 : 0);
-    features.push(restaurant.reservable? 1 : 0);
-    features.push(restaurant.takeout? 1 : 0);
-    features.push(restaurant.serves_breakfast? 1 : 0);
-    features.push(restaurant.serves_brunch? 1 : 0);
-    features.push(restaurant.serves_lunch? 1 : 0);
-    features.push(restaurant.serves_dinner? 1 : 0);
-    features.push(restaurant.serves_vegetarian_food? 1 : 0);
-    features.push(restaurant.serves_beer? 1 : 0);
-    features.push(restaurant.serves_wine? 1 : 0);
+    features.push(restaurant.delivery ? 1 : 0);
+    features.push(restaurant.reservable ? 1 : 0);
+    features.push(restaurant.takeout ? 1 : 0);
+    features.push(restaurant.serves_breakfast ? 1 : 0);
+    features.push(restaurant.serves_brunch ? 1 : 0);
+    features.push(restaurant.serves_lunch ? 1 : 0);
+    features.push(restaurant.serves_dinner ? 1 : 0);
+    features.push(restaurant.serves_vegetarian_food ? 1 : 0);
+    features.push(restaurant.serves_beer ? 1 : 0);
+    features.push(restaurant.serves_wine ? 1 : 0);
 
     return features;
 }
