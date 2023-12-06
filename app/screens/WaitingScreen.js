@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, TouchableHighlight, FlatList, Pressable} from "react-native";
+import { StyleSheet, View, Text, TouchableHighlight, FlatList, Pressable, ScrollView, RefreshControl } from "react-native";
 import { doc, collection, getDocs } from "firebase/firestore"
 import { db, auth } from '../firebase/config';
 import { Foundation } from '@expo/vector-icons';
+import model from '../model';
 
 import UserView from "../components/UserView";
 import colors from "../config/colors";
@@ -18,9 +19,15 @@ export default function WaitingScreen({route, navigation}){
     //TODO Create state var that contains the users joining the survey
     const[surveyUsers, setSurveyUsers] = useState([name]);
 
-    async function getNames() {
+    function handleRefresh() {
       setRefreshing(true);
+      setTimeout(() => {
+        getNames()
+        setRefreshing(false);
+      }, 2000);
+    }
 
+    async function getNames() {
       const userRatingsDocRef =  doc(collection(db, code), 'ratings');
       const subcollectionRef = collection(userRatingsDocRef, 'user_ratings');
       const querySnapshot = await getDocs(subcollectionRef);
@@ -31,9 +38,7 @@ export default function WaitingScreen({route, navigation}){
         userNames.push(doc.id);
         user_ratings[doc.id] = doc.data().ratings_array;
       })
-
       setSurveyUsers(userNames);
-      setRefreshing(false);
     }
 
     async function handleClick(){
@@ -66,12 +71,14 @@ export default function WaitingScreen({route, navigation}){
             style={[styles.header, {marginTop: 0}]}>BITE BUDDY</Text>
         </View>
       ) : (
+          <ScrollView
+            // contentContainerStyle={styles.scrollView}
+            refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh()} />
+        }>
     <View style={styles.container}>
       <View style={styles.headerContainer}>
         <Text style={styles.header}>BITE BUDDY</Text>
-        <Pressable onPress={() => getNames()}>
-          <Foundation name="refresh" size={24} color="black" />
-        </Pressable>
       </View>
 
       <Text style={[styles.header, {fontSize: 32, marginTop: 0}]}>CODE: {code}</Text>
@@ -81,8 +88,8 @@ export default function WaitingScreen({route, navigation}){
       <FlatList
         data = {surveyUsers} 
         renderItem={({item}) => <UserView name={item} readyStatus={true}/>}
-        onRefresh={() => getNames()}
-        refreshing={refreshing}
+        // onRefresh={() => getNames()}
+        // refreshing={refreshing}
      />
         <View 
             style={styles.buttonContainer}>
@@ -99,6 +106,7 @@ export default function WaitingScreen({route, navigation}){
             </TouchableHighlight>
         </View>
     </View>
+    </ScrollView>
       )}</>
  );
 };

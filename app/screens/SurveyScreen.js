@@ -5,7 +5,7 @@ import { db, auth } from '../firebase/config';
 import { setDoc, doc, collection, getDocs } from "firebase/firestore"
 import SurveyCard from '../components/SurveyCard';
 import Carousel from 'react-native-snap-carousel';
-import model from '../model';
+
 
 export default function SurveySceen({ route, navigation }) {
 
