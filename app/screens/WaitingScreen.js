@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, TouchableHighlight, FlatList, Pressable, ScrollView, RefreshControl } from "react-native";
-import { doc, collection, getDocs } from "firebase/firestore"
+import { doc, collection, getDocs, getDoc } from "firebase/firestore"
 import { db, auth } from '../firebase/config';
 import { Foundation } from '@expo/vector-icons';
 import model from '../model';
@@ -18,6 +18,8 @@ export default function WaitingScreen({route, navigation}){
 
     //TODO Create state var that contains the users joining the survey
     const[surveyUsers, setSurveyUsers] = useState([name]);
+
+    const[isHost, setIsHost] = useState(false);
 
     function handleRefresh() {
       setRefreshing(true);
@@ -54,11 +56,22 @@ export default function WaitingScreen({route, navigation}){
       })
     }
 
+    async function checkForHost(){
+      const placesDocRef = doc(collection(db, code), 'places');
+      const placesDocSnap = await getDoc(placesDocRef);
+      setIsHost(name == placesDocSnap.data().host_email);
+    }
+
+    function navToHome(){
+      navigation.navigate("Home");
+    }
+
     
 
     useEffect(() => {
         setTimeout(() => {
           console.log("Loading")
+          checkForHost()
           setDone(true);
         }, 1000);
       }, []); 
@@ -71,12 +84,12 @@ export default function WaitingScreen({route, navigation}){
             style={[styles.header, {marginTop: 0}]}>BITE BUDDY</Text>
         </View>
       ) : (
+        <View style={styles.container}>
           <ScrollView
-            // contentContainerStyle={styles.scrollView}
             refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh()} />
+          <RefreshControl refreshing={refreshing} onRefresh={() => handleRefresh()} />
         }>
-    <View style={styles.container}>
+   
       <View style={styles.headerContainer}>
         <Text style={styles.header}>BITE BUDDY</Text>
       </View>
@@ -88,25 +101,26 @@ export default function WaitingScreen({route, navigation}){
       <FlatList
         data = {surveyUsers} 
         renderItem={({item}) => <UserView name={item} readyStatus={true}/>}
+        scrollEnabled={false}
         // onRefresh={() => getNames()}
         // refreshing={refreshing}
      />
-        <View 
-            style={styles.buttonContainer}>
-            <TouchableHighlight 
-                style={styles.bottomButton} 
-                underlayColor={colors.primaryDark} 
-                onPress={() => {
-                  handleClick();
-                }}>
-
-            <Text 
-                style={styles.buttonText}>
-                GET RESULTS</Text>
-            </TouchableHighlight>
-        </View>
-    </View>
+        
+        
     </ScrollView>
+    <View 
+    style={styles.buttonContainer}>
+    <TouchableHighlight 
+        style={styles.bottomButton} 
+        underlayColor={colors.primaryDark} 
+        onPress={isHost? () => {handleClick();} : () => {navToHome();}}>
+
+    <Text 
+        style={styles.buttonText}>
+        {isHost? 'GET RESULTS' : 'BACK TO HOME'}</Text>
+      </TouchableHighlight>
+    </View>
+    </View>
       )}</>
  );
 };
