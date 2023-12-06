@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, TouchableHighlight, FlatList } from "react-native";
+import { StyleSheet, View, Text, TouchableHighlight, FlatList, Pressable } from "react-native";
+import { db, doc, collection, getDocs } from "firebase/firestore"
+import { Foundation } from '@expo/vector-icons';
+
 import UserView from "../components/UserView";
 import colors from "../config/colors";
 
@@ -7,11 +10,45 @@ export default function WaitingScreen({route, navigation}){
 
     const [done, setDone] = useState(false);
 
-    const {top, similar, bottom} = route.params;
+    const[refreshing, setRefreshing] = useState(false);
+
+    const {data, nonSurveyData, code} = route.params;
 
     //TODO Create state var that contains the users joining the survey
-    const[surveyUsers, setSurveyUsers] = useState(['Goon', 'Bum', 'Boomjamin', 'Chappie']);
+    const[surveyUsers, setSurveyUsers] = useState([]);
 
+    async function getNames() {
+      setRefreshing(true);
+
+      const userRatingsDocRef =  doc(collection(db, code), 'ratings');
+      const subcollectionRef = collection(userRatingsDocRef, 'user_ratings');
+      const querySnapshot = await getDocs(subcollectionRef);
+      var userNames = [];
+      var user_ratings = {};
+      await querySnapshot.forEach((doc) => {
+        //data.push(doc.data());
+        userNames.push(doc.id);
+        user_ratings[doc.id] = doc.data().ratings_array;
+      })
+
+      setSurveyUsers(userNames);
+      setRefreshing(false);
+    }
+
+    async function handleClick(){
+      const modelResponse = model(data, nonSurveyData, user_ratings)
+      const topRecommendation = modelResponse.topVoted;
+      const similarRecommendation = modelResponse.topSimilar
+      const bottomRecomendation = modelResponse.bottomVoted
+
+      navigation.navigate('Result', {
+        top: topRecommendation,
+        similar: similarRecommendation,
+        bottom: bottomRecomendation
+      })
+    }
+
+    
 
     useEffect(() => {
         setTimeout(() => {
@@ -29,17 +66,26 @@ export default function WaitingScreen({route, navigation}){
         </View>
       ) : (
     <View style={styles.container}>
-      <Text style={styles.header}>BITE BUDDY</Text>
+      <View style={styles.headerContainer}>
+        <Text style={styles.header}>BITE BUDDY</Text>
+        <Pressable onPress={() => getNames()}>
+          <Foundation name="refresh" size={24} color="black" />
+        </Pressable>
+      </View>
+      
+      <View style={{marginLeft: 16, marginTop: 24}}>
       <UserView 
         name = {'Bozo Bucket'}
         readyStatus={true}
       />
-
+      </View>
       <View style={{marginTop: '5%'}}/>
 
       <FlatList
         data = {surveyUsers} 
         renderItem={({item}) => <UserView name={item} readyStatus={true}/>}
+        onRefresh={() => getNames()}
+        refreshing={refreshing}
      />
         <View 
             style={styles.buttonContainer}>
@@ -47,11 +93,7 @@ export default function WaitingScreen({route, navigation}){
                 style={styles.bottomButton} 
                 underlayColor={colors.primaryDark} 
                 onPress={() => {
-                    navigation.navigate('Result', {
-                        top: top,
-                        similar: similar,
-                        bottom: bottom
-                      })
+                  handleClick();
                 }}>
 
             <Text 
@@ -75,6 +117,11 @@ const styles = StyleSheet.create({
     fontSize: 45,
     marginTop: 80,
     alignSelf: 'center'
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   buttonContainer: {
     flex: 1, 

@@ -61,25 +61,17 @@ rating = async(r) => {
     });
 
 
-    const querySnapshot = await getDocs(subcollectionRef);
-    var user_ratings = {};
-    querySnapshot.forEach((doc) => {
-        //data.push(doc.data());
-        user_ratings[doc.id] = doc.data().ratings_array;
-    })
+    
 
-    const modelResponse = model(data, nonSurveyData, user_ratings)
-    const topRecommendation = modelResponse.topVoted;
-    const similarRecommendation = modelResponse.topSimilar
-    const bottomRecomendation = modelResponse.bottomVoted
+    
     
     // console.log("Top => " + topRecommendation);
     // console.log("Similar => " + similarRecommendation);
 
     navigation.navigate('Waiting', {
-      top: topRecommendation,
-      similar: similarRecommendation,
-      bottom: bottomRecomendation,
+      data: data,
+      nonSurveyData: nonSurveyData,
+      code: code,
     })
   }
 }
