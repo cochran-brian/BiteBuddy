@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     container:{
         flexDirection: 'row',
         width: '100%',
-        height: 125,
+        height: 130,
         backgroundColor: 'white',
         borderRadius: 10,
         borderWidth: 1,
@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
         alignItems: 'left', 
         marginTop: 15, 
         marginLeft: 10, 
+        marginRight: 10,
         flex: 1, 
         flexWrap: 'wrap'
     },
@@ -71,7 +72,7 @@ const styles = StyleSheet.create({
     ratingContainer: {
         justifyContent: 'flex-end', 
         flex: 1, 
-        marginBottom: 30
+        marginBottom: 24
     }
 });
 

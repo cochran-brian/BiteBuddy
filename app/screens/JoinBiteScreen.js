@@ -36,7 +36,7 @@ export default function JoinBiteScreen({ navigation }) {
                 })
                 
                 navigation.navigate('Survey', {
-                    data: data,
+                    allData: data,
                     code: value.toString(),
                     name: name
                 })

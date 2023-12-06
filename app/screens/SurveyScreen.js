@@ -11,12 +11,12 @@ export default function SurveySceen({ route, navigation }) {
 
   const [done, setDone] = useState(false);
 
-  const { data, code, name } = route.params;
+  const { allData, code, name } = route.params;
 
   const LIMIT = 8;
 
-  data = data.slice(0, LIMIT);
-  nonSurveyData = data.slice(LIMIT);
+  const data = allData.slice(0, LIMIT);
+  const nonSurveyData = allData.slice(LIMIT);
 
   var localRatings = new Array(data.length);
   
@@ -50,7 +50,7 @@ rating = async(r) => {
       userName = name;
     }
 
-    const userRatingsDocRef = doc(collection(db, code), 'ratings');
+    const userRatingsDocRef =  doc(collection(db, code), 'ratings');
     await setDoc(userRatingsDocRef, {
       survey_code: code,
     });
@@ -68,10 +68,19 @@ rating = async(r) => {
         user_ratings[doc.id] = doc.data().ratings_array;
     })
 
-    //const { topRecommendation, similarRecommendation } = model(data, user_ratings);
-    model(data, nonSurveyData, user_ratings);
+    const modelResponse = model(data, nonSurveyData, user_ratings)
+    const topRecommendation = modelResponse.topVoted;
+    const similarRecommendation = modelResponse.topSimilar
+    const bottomRecomendation = modelResponse.bottomVoted
+    
+    // console.log("Top => " + topRecommendation);
+    // console.log("Similar => " + similarRecommendation);
 
-    navigation.navigate('Result')
+    navigation.navigate('Result', {
+      top: topRecommendation,
+      similar: similarRecommendation,
+      bottom: bottomRecomendation,
+    })
   }
 }
 

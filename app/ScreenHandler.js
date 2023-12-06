@@ -8,7 +8,8 @@ import AuthScreen from './screens/AuthScreen';
 import CreateScreen from './screens/CreateScreen';
 import SurveyScreen from './screens/SurveyScreen';
 import ResultScreen from './screens/ResultScreen';
-import JoinBiteScreen from './screens/JoinBiteScreen'
+import JoinBiteScreen from './screens/JoinBiteScreen';
+import WaitingScreen from './screens/WaitingScreen';
 import { useFonts } from 'expo-font';
 import { auth } from './firebase/config';
 
@@ -50,6 +51,11 @@ const ScreenHandler = () => {
         <Stack.Screen
             name="Result"
             component={ResultScreen}
+            options={{headerShown: false}}
+        />
+        <Stack.Screen
+            name="Waiting"
+            component={WaitingScreen}
             options={{headerShown: false}}
         />
      </Stack.Navigator>

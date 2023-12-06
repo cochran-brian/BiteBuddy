@@ -5,7 +5,10 @@ import { Feather } from '@expo/vector-icons';
 import SimplePlaceView from '../components/SimplePlaceView';
 
 
-export default function ResultScreen({navigation}) {
+export default function ResultScreen({route, navigation}) {
+
+  const {top, similar, bottom} = route.params
+
     return(
         <View 
           style={styles.container}>
@@ -17,10 +20,10 @@ export default function ResultScreen({navigation}) {
               <Text 
                 style={styles.sectionTitle}>TOP RECOMMENDATION</Text>
               <SimplePlaceView
-                name={'Chappie\'s'}
-                address={'754 W Euclid Ave'}
-                rating={4.2}
-                imageUri={'https://lh3.googleusercontent.com/p/AF1QipP4XlKpdvnDQkFQGzxvw02lSqoFaWH64OZbnsV5=s1360-w1360-h1020'}/>
+                name={top.name}
+                address={top.address}
+                rating={top.rating}
+                imageUri={top.image_url}/>
             </SafeAreaView>
 
             <View 
@@ -31,21 +34,21 @@ export default function ResultScreen({navigation}) {
             <Text 
               style={[styles.sectionTitle, {fontSize: 22}]}>SOMEWHERE SIMILAR</Text>
               <SimplePlaceView
-                name={'Chappie\'s'}
-                address={'754 W Euclid Ave'}
-                rating={4.2}
-                imageUri={'https://lh3.googleusercontent.com/p/AF1QipP4XlKpdvnDQkFQGzxvw02lSqoFaWH64OZbnsV5=s1360-w1360-h1020'}/>
+                name={similar.name}
+                address={similar.address}
+                rating={similar.rating}
+                imageUri={similar.image_url}/>
             </View>
 
             <View 
               style={{margin: '10%', marginTop: 0, marginBottom: '7%', alignItems: 'center'}}>
             <Text 
-              style={[styles.sectionTitle, {fontSize: 22}]}>MOST HEATED</Text>
+              style={[styles.sectionTitle, {fontSize: 22}]}>LEAST LIKED</Text>
               <SimplePlaceView
-                name={'Chappie\'s'}
-                address={'754 W Euclid Ave'}
-                rating={4.2}
-                imageUri={'https://lh3.googleusercontent.com/p/AF1QipP4XlKpdvnDQkFQGzxvw02lSqoFaWH64OZbnsV5=s1360-w1360-h1020'}/>
+                name={bottom.name}
+                address={bottom.address}
+                rating={bottom.rating}
+                imageUri={bottom.image_url}/>
             </View>
 
           <View 

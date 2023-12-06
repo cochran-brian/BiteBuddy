@@ -7,7 +7,7 @@ import { setDoc, doc, collection } from "firebase/firestore"
 
 export default function CreateScreen({ navigation }) {
 
-  const iterationLimit = 8;
+  const iterationLimit = 16;
 
   const [slideValue, setSlideValue] = useState(0);
   const [locationLong, setLocationLong] = useState('-88.06476939999999');
@@ -76,8 +76,9 @@ export default function CreateScreen({ navigation }) {
       } 
     })
 
-    navigation.navigate('Survey', {
-      data: data
+    navigation.navigate('Waiting', {
+      allData: data,
+      code: code
     })
   }
 
@@ -111,6 +112,7 @@ export default function CreateScreen({ navigation }) {
                   underlayColor={colors.primaryDark} 
                   onPress={() => {
                     fetchData();
+                    //navigation.navigate("Waiting");
                   }}>
 
                 <Text 

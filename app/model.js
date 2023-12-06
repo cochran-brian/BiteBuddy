@@ -32,7 +32,7 @@ export default function model(inputRestaurants, nonSurveyData, ratingsData) {
     const similaritiesWithTarget = ratingsArray.map(ratings => cosineSimilarity(targetUserRatings, ratings));
     
     // Weighted sum of ratings from similar users to generate recommendations
-    const recommendations = restaurants.map((_, i) => {
+    const recommendations = inputRestaurants.map((_, i) => {
         const numerator = ratingsArray.reduce((acc, userRatings, j) => {
         const similarity = similaritiesWithTarget[j];
         const userRating = userRatings[i];
@@ -66,10 +66,11 @@ export default function model(inputRestaurants, nonSurveyData, ratingsData) {
     
     // Example arrays of non-binary values (replace with your actual data)
     const winner = toFeatureArray(topRecommendations[0]);  
+    var unratedPlaces = []
     const placeNames = [];
-    const unratedPlaces = nonSurveyData.array.forEach(restaurant => {
+    nonSurveyData.forEach(restaurant => {
         placeNames.push(restaurant.name);
-        return toFeatureArray(restaurant);
+        unratedPlaces.push(toFeatureArray(restaurant));
     });
     
     
@@ -83,6 +84,11 @@ export default function model(inputRestaurants, nonSurveyData, ratingsData) {
     
     console.log(`In this case, we recommend ${recPlaceName} with a similarity of ${Math.round(recPlaceValue * 100)}% to the top restaurant from the survey`);
 
+    return {
+        topVoted: topRecommendations[0],
+        topSimilar: nonSurveyData[similarityScores.indexOf(recPlaceValue)],
+        bottomVoted: recommendedRestaurants[recommendedRestaurants.length - 1]
+    }
 }
 
 
@@ -98,6 +104,8 @@ function toFeatureArray(restaurant){
     features.push(restaurant.serves_vegetarian_food ? 1 : 0);
     features.push(restaurant.serves_beer ? 1 : 0);
     features.push(restaurant.serves_wine ? 1 : 0);
+    features.push(restaurant.rating);
+    features.push(restaurant.price_level);
 
     return features;
 }
