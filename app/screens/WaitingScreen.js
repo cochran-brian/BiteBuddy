@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, TouchableHighlight, FlatList, Pressable} from "react-native";
-import { db, doc, collection, getDocs } from "firebase/firestore"
+import { doc, collection, getDocs } from "firebase/firestore"
+import { db, auth } from '../firebase/config';
 import { Foundation } from '@expo/vector-icons';
 
 import UserView from "../components/UserView";
