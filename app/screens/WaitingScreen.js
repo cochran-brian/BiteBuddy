@@ -18,7 +18,7 @@ export default function WaitingScreen({route, navigation}){
 
     //TODO Create state var that contains the users joining the survey
     const[surveyUsers, setSurveyUsers] = useState([name]);
-
+    
     const[isHost, setIsHost] = useState(false);
 
     function handleRefresh() {
@@ -29,21 +29,27 @@ export default function WaitingScreen({route, navigation}){
       }, 1500);
     }
 
+    const userRatingsDocRef =  doc(collection(db, code), 'ratings');
+    const subcollectionRef = collection(userRatingsDocRef, 'user_ratings');
+    
     async function getNames() {
-      const userRatingsDocRef =  doc(collection(db, code), 'ratings');
-      const subcollectionRef = collection(userRatingsDocRef, 'user_ratings');
       const querySnapshot = await getDocs(subcollectionRef);
       var userNames = [];
-      var user_ratings = {};
-      await querySnapshot.forEach((doc) => {
+      querySnapshot.forEach((doc) => {
         //data.push(doc.data());
         userNames.push(doc.id);
-        user_ratings[doc.id] = doc.data().ratings_array;
-      })
+        //user_ratings[doc.id] = doc.data().ratings_array;
+      });
       setSurveyUsers(userNames);
     }
 
     async function handleClick(){
+      const querySnapshot = await getDocs(subcollectionRef);
+      var user_ratings = {};
+      querySnapshot.forEach((doc) => {
+        user_ratings[doc.id] = doc.data().ratings_array;
+      });
+
       const modelResponse = model(data, nonSurveyData, user_ratings)
       const topRecommendation = modelResponse.topVoted;
       const similarRecommendation = modelResponse.topSimilar

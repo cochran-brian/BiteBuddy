@@ -26,11 +26,8 @@ export default function CreateScreen({ navigation }) {
         console.log(place.place_id);
         const imageResponse = await fetch('https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference='+place.photos[0].photo_reference+'&key='+process.env.GOOGLE_MAPS_API_KEY);
         var detailResponse = await fetch('https://maps.googleapis.com/maps/api/place/details/json?fields=website%2Cdelivery%2Cdine_in%2Creservable%2Cserves_beer%2Cserves_breakfast%2Cserves_brunch%2Cserves_lunch%2Cserves_dinner%2Cserves_vegetarian_food%2Cserves_wine%2Ctakeout&place_id='+place.place_id+'&key='+process.env.GOOGLE_MAPS_API_KEY);
-        console.log(detailResponse)
         detailResponse = await detailResponse.json();
-        console.log(detailResponse)
         detailResponse = detailResponse.result;
-        console.log(detailResponse)
         return {
             name: place.name,
             address: place.vicinity, 
