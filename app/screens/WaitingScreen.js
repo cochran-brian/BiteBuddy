@@ -7,7 +7,7 @@ export default function WaitingScreen({route, navigation}){
 
     const [done, setDone] = useState(false);
 
-    const {allData, code} = route.params;
+    const {top, similar, bottom} = route.params;
 
     //TODO Create state var that contains the users joining the survey
     const[surveyUsers, setSurveyUsers] = useState(['Goon', 'Bum', 'Boomjamin', 'Chappie']);
@@ -35,9 +35,7 @@ export default function WaitingScreen({route, navigation}){
         readyStatus={true}
       />
 
-      <View style={styles.codeContainer}>
-        <Text style={styles.codeText}>CODE: {code}</Text>
-      </View>
+      <View style={{marginTop: '5%'}}/>
 
       <FlatList
         data = {surveyUsers} 
@@ -49,15 +47,16 @@ export default function WaitingScreen({route, navigation}){
                 style={styles.bottomButton} 
                 underlayColor={colors.primaryDark} 
                 onPress={() => {
-                    navigation.navigate('Survey', {
-                        allData: allData,
-                        code: code
+                    navigation.navigate('Result', {
+                        top: top,
+                        similar: similar,
+                        bottom: bottom
                       })
                 }}>
 
             <Text 
                 style={styles.buttonText}>
-                START SURVEY</Text>
+                GET RESULTS</Text>
             </TouchableHighlight>
         </View>
     </View>

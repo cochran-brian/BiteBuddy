@@ -76,7 +76,7 @@ export default function CreateScreen({ navigation }) {
       } 
     })
 
-    navigation.navigate('Waiting', {
+    navigation.navigate('Survey', {
       allData: data,
       code: code
     })
@@ -112,7 +112,6 @@ export default function CreateScreen({ navigation }) {
                   underlayColor={colors.primaryDark} 
                   onPress={() => {
                     fetchData();
-                    //navigation.navigate("Waiting");
                   }}>
 
                 <Text 

@@ -76,7 +76,7 @@ rating = async(r) => {
     // console.log("Top => " + topRecommendation);
     // console.log("Similar => " + similarRecommendation);
 
-    navigation.navigate('Result', {
+    navigation.navigate('Waiting', {
       top: topRecommendation,
       similar: similarRecommendation,
       bottom: bottomRecomendation,
