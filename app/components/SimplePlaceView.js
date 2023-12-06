@@ -15,9 +15,11 @@ function SimplePlaceView({ imageUri, name, address, rating }){
                 <View 
                     style={{marginLeft: 5}}>
                     <Text 
+                        numberOfLines={2}
                         style={styles.textTitle}>
                             {name.toUpperCase()}</Text>
                     <Text 
+                        numberOfLines={2}
                         style={styles.textSubheader}>
                             {address}</Text>
                 </View>
@@ -55,7 +57,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column', 
         height: 125, 
         alignItems: 'left', 
-        marginTop: 15, 
+        marginTop: 10, 
         marginLeft: 10, 
         marginRight: 10,
         flex: 1, 
@@ -72,7 +74,7 @@ const styles = StyleSheet.create({
     ratingContainer: {
         justifyContent: 'flex-end', 
         flex: 1, 
-        marginBottom: 24
+        marginBottom: 18
     }
 });
 
