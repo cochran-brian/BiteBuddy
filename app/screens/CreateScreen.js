@@ -7,7 +7,7 @@ import { setDoc, doc, collection } from "firebase/firestore"
 
 export default function CreateScreen({ navigation }) {
 
-  const iterationLimit = 16;
+  const iterationLimit = 20;
 
   const [slideValue, setSlideValue] = useState(0);
   const [locationLong, setLocationLong] = useState('-88.06476939999999');
