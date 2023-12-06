@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, TouchableHighlight, FlatList, Pressable } from "react-native";
+import { StyleSheet, View, Text, TouchableHighlight, FlatList, Pressable} from "react-native";
 import { db, doc, collection, getDocs } from "firebase/firestore"
 import { Foundation } from '@expo/vector-icons';
 
@@ -12,10 +12,10 @@ export default function WaitingScreen({route, navigation}){
 
     const[refreshing, setRefreshing] = useState(false);
 
-    const {data, nonSurveyData, code} = route.params;
+    const {data, nonSurveyData, code, name} = route.params;
 
     //TODO Create state var that contains the users joining the survey
-    const[surveyUsers, setSurveyUsers] = useState([]);
+    const[surveyUsers, setSurveyUsers] = useState([name]);
 
     async function getNames() {
       setRefreshing(true);
@@ -72,14 +72,10 @@ export default function WaitingScreen({route, navigation}){
           <Foundation name="refresh" size={24} color="black" />
         </Pressable>
       </View>
+
+      <Text style={[styles.header, {fontSize: 32, marginTop: 0}]}>CODE: {code}</Text>
       
-      <View style={{marginLeft: 16, marginTop: 24}}>
-      <UserView 
-        name = {'Bozo Bucket'}
-        readyStatus={true}
-      />
-      </View>
-      <View style={{marginTop: '5%'}}/>
+      <View style={{marginTop: '10%'}}/>
 
       <FlatList
         data = {surveyUsers} 

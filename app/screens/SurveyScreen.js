@@ -19,6 +19,8 @@ export default function SurveySceen({ route, navigation }) {
   const nonSurveyData = allData.slice(LIMIT);
 
   var localRatings = new Array(data.length);
+
+  var userName;
   
 
  
@@ -43,7 +45,7 @@ rating = async(r) => {
 
   if(this._carousel.currentIndex >= data.length - 1) {
 
-    var userName;
+    
     if(auth.currentUser) {
       userName = auth.currentUser.email;
     } else {
@@ -72,6 +74,7 @@ rating = async(r) => {
       data: data,
       nonSurveyData: nonSurveyData,
       code: code,
+      name: userName,
     })
   }
 }
