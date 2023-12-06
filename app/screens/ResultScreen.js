@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Dimensions, StyleSheet, Text, TouchableHighlight, View, Pressable, SafeAreaView, Image } from 'react-native';
+import { Dimensions, StyleSheet, Text, TouchableHighlight, View, Pressable, SafeAreaView, Image, Share } from 'react-native';
 import colors from '../config/colors';
 import { Feather } from '@expo/vector-icons';
 import SimplePlaceView from '../components/SimplePlaceView';
@@ -8,6 +8,18 @@ import SimplePlaceView from '../components/SimplePlaceView';
 export default function ResultScreen({route, navigation}) {
 
   const {top, similar, bottom} = route.params
+
+  async function shareResults() {
+    try {
+      const result = await Share.share({
+        message: "Check out our group's favorite restaurant!",
+        url: top.website
+      })
+    } catch(error) {
+      console.error(error);
+    }
+    
+  }
 
     return(
         <View 
@@ -66,11 +78,13 @@ export default function ResultScreen({route, navigation}) {
               </TouchableHighlight>
               <TouchableHighlight 
                 style={[styles.biteButtons, {width: 95}]} 
-                underlayColor={colors.primaryDark}>
+                underlayColor={colors.primaryDark}
+                onPress={() => shareResults()}>
               <Feather 
                 name="share" 
                 size={38} 
-                color="white"/>
+                color="white"
+                />
               </TouchableHighlight>
           </View>
         </View>
