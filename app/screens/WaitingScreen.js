@@ -26,7 +26,7 @@ export default function WaitingScreen({route, navigation}){
       setTimeout(() => {
         getNames()
         setRefreshing(false);
-      }, 2000);
+      }, 1500);
     }
 
     async function getNames() {
@@ -72,8 +72,9 @@ export default function WaitingScreen({route, navigation}){
         setTimeout(() => {
           console.log("Loading")
           checkForHost()
+          getNames()
           setDone(true);
-        }, 1000);
+        }, 1500);
       }, []); 
 
   return (
