@@ -3,7 +3,7 @@ import { Text, StyleSheet, View, Image } from 'react-native';
 import { Rating } from '@kolking/react-native-rating';
 import colors from '../config/colors';
 
-function SimplePlaceView({ imageUri, name, address, rating }){
+function SimplePlaceView({ imageUri, name, address, rating}){
     return(
         <View style={styles.container}>
             <Image
@@ -15,7 +15,7 @@ function SimplePlaceView({ imageUri, name, address, rating }){
                 <View 
                     style={{marginLeft: 5}}>
                     <Text 
-                        numberOfLines={2}
+                        numberOfLines={1}
                         style={styles.textTitle}>
                             {name.toUpperCase()}</Text>
                     <Text 
@@ -65,11 +65,11 @@ const styles = StyleSheet.create({
     },
     textTitle: {
         fontFamily: 'Open Sans', 
-        fontSize: 16
+        fontSize: 22
     },
     textSubheader: {
         fontFamily: 'Open Sans Light', 
-        fontSize: 12
+        fontSize: 16
     },
     ratingContainer: {
         justifyContent: 'flex-end', 

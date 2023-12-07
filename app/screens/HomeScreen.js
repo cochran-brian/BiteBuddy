@@ -10,8 +10,8 @@ export default function HomeScreen({ navigation }) {
   const ITERATION_LIMIT = 2;
 
   const [radius, setRadius] = useState(1500);
-  const [locationLat, setLocationLat] = useState('51.64361'); //42.095271881586406
-  const [locationLong, setLocationLong] = useState('-0.48066'); //-88.06476939999999
+  const [locationLat, setLocationLat] = useState('42.095271881586406'); 
+  const [locationLong, setLocationLong] = useState('-88.06476939999999'); 
   const [done, setDone] = useState(undefined);
   const [places, setPlaces] = useState(null);
 
@@ -27,7 +27,7 @@ export default function HomeScreen({ navigation }) {
 
   useEffect(() => {
     setTimeout(() => {
-      //fetchData();
+      fetchData();
       setDone(true);
     }, 1000);
   }, []); 
@@ -52,6 +52,8 @@ export default function HomeScreen({ navigation }) {
     data = await Promise.all(promises);
     setPlaces(data);
     setDone(true);
+
+    console.log(data);
   }
 
   return (
@@ -74,6 +76,8 @@ export default function HomeScreen({ navigation }) {
       <Text 
         style={{fontFamily: 'Open Sans', fontSize: 20}}>
           FOOD NEAR YOU</Text>
+
+      <View style={{marginTop: 14}}>
       <SimplePlaceView  
         name={places ? places[0].name : 
           // <ThreeDots
@@ -84,7 +88,7 @@ export default function HomeScreen({ navigation }) {
           //   ariaLabel="three-dots-loading"/>
           "loading..."
         }
-        address={places ? places[0].vicinity : 
+        address={places ? places[0].address : 
           // <ThreeDots
           //   height="40" 
           //   width="40" 
@@ -103,8 +107,10 @@ export default function HomeScreen({ navigation }) {
           //   ariaLabel="tail-spin-loading"/>
           "https://img.icons8.com/material-sharp/96/restaurant.png"
         }/>
+        </View>
 
-      <SimplePlaceView  
+      <View style={{marginTop: 14}}>
+      <SimplePlaceView
         name={places ? places[1].name : 
           // <ThreeDots
           //   height="40" 
@@ -114,7 +120,7 @@ export default function HomeScreen({ navigation }) {
           //   ariaLabel="three-dots-loading"/>
           "loading..."
         }
-        address={places ? places[1].vicinity : 
+        address={places ? places[1].address : 
           // <ThreeDots
           //   height="40" 
           //   width="40" 
@@ -133,6 +139,7 @@ export default function HomeScreen({ navigation }) {
           //   ariaLabel="tail-spin-loading"/>
           "https://img.icons8.com/material-sharp/96/restaurant.png"
         }/>
+        </View>
     </View>
 
     {/* <View style={{flexDirection: 'row', alignItems: 'center', marginTop: '200%', position: 'absolute'}}>
