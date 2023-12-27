@@ -4,6 +4,7 @@ import { useFonts } from 'expo-font';
 import ScreenHandler from './app/ScreenHandler.js'
 import { auth } from './app/firebase/config.js';
 import HomeScreen from './app/screens/HomeScreen.js';
+import MainNavContainer from './app/mainNavContainer.js';
 //import model from "./app/model.js";
 
 export default function App() {
@@ -19,7 +20,7 @@ export default function App() {
 
   //model();
     return(
-      <ScreenHandler/>
+      <MainNavContainer/>
     )
   
 }
