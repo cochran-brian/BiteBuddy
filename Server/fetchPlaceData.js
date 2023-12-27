@@ -7,14 +7,16 @@ const router = express.Router();
 // })
 
 router.post("/", async (req, res) => {
-    const data = await fetchData(42.11673643618475, -88.03444504789003, 100000);
+    console.log(req.body);
+    res.send("done");
+    //const data = await fetchData(42.11673643618475, -88.03444504789003, 100000);
     //await storeData();
-    res.send(data);
+    //res.send(data);
 })
 
-function generateCode() {
-    return Math.floor(Math.random() * 10000);
-}
+// function generateCode() {
+//     return Math.floor(Math.random() * 10000);
+// }
 
 async function fetchData(latitude, longitude, radius){
     var data = await fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+latitude+'%2C'+longitude+'&radius='+radius+'&type=restaurant&opennow=true&key='+process.env.GOOGLE_MAPS_API_KEY)
@@ -57,27 +59,27 @@ async function fetchData(latitude, longitude, radius){
 
 }
 
-async function storeData(data) {
-    const code = generateCode().toString();
-    data.map(async (place) => {
-        try {        
-        const placesDocRef = doc(collection(db, code), 'places');
-        await setDoc(placesDocRef, {
-            survey_code: code,
-            search_radius: slideValue * 1609.34,
-            host_latitude: locationLat,
-            host_longitude: locationLong,
-            host_email: auth.currentUser.email
-        });
+// async function storeData(data) {
+//     const code = generateCode().toString();
+//     data.map(async (place) => {
+//         try {        
+//         const placesDocRef = doc(collection(db, code), 'places');
+//         await setDoc(placesDocRef, {
+//             survey_code: code,
+//             search_radius: slideValue * 1609.34,
+//             host_latitude: locationLat,
+//             host_longitude: locationLong,
+//             host_email: auth.currentUser.email
+//         });
 
-        const subcollectionRef = collection(placesDocRef, 'restaurants');
-        const subDocRef = doc(subcollectionRef, place.name);
-        await setDoc(subDocRef, place);
+//         const subcollectionRef = collection(placesDocRef, 'restaurants');
+//         const subDocRef = doc(subcollectionRef, place.name);
+//         await setDoc(subDocRef, place);
 
-        } catch (error) {
-        console.error(error);
-        } 
-    })
-}
+//         } catch (error) {
+//         console.error(error);
+//         } 
+//     })
+// }
 
 module.exports = router;
