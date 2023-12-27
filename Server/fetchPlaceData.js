@@ -1,22 +1,29 @@
 const express = require("express");
 const router = express.Router();
+const db = require("./firebase/config");
+const { collection, setDoc, doc } = require('@firebase/firestore');
 
-// router.use((req, res, next) => {
-//     console.log("middleware");
-//     next();
-// })
+router.use((req, res, next) => {
+    next();
+})
+
+router.get("/", (req, res) => {
+    res.send({ message: "got it" })
+})
 
 router.post("/", async (req, res) => {
     console.log(req.body);
-    res.send("done");
-    //const data = await fetchData(42.11673643618475, -88.03444504789003, 100000);
-    //await storeData();
-    //res.send(data);
+    const data = await fetchData(req.body.latitude, req.body.longitude, req.body.radius);
+    // lat 42.11673643618475
+    // long -88.03444504789003
+    // rad 10000
+    await storeData(data, req.body.latitude, req.body.longitude, req.body.radius);
+    res.send(data);
 })
 
-// function generateCode() {
-//     return Math.floor(Math.random() * 10000);
-// }
+function generateCode() {
+    return Math.floor(Math.random() * 10000);
+}
 
 async function fetchData(latitude, longitude, radius){
     var data = await fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+latitude+'%2C'+longitude+'&radius='+radius+'&type=restaurant&opennow=true&key='+process.env.GOOGLE_MAPS_API_KEY)
@@ -24,7 +31,6 @@ async function fetchData(latitude, longitude, radius){
 
     promises = await data.results.slice(0, 20).map(async (place) => {
         try{
-        console.log(place.place_id);
         const imageResponse = await fetch('https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference='+place.photos[0].photo_reference+'&key='+process.env.GOOGLE_MAPS_API_KEY);
         var detailResponse = await fetch('https://maps.googleapis.com/maps/api/place/details/json?fields=website%2Cdelivery%2Cdine_in%2Creservable%2Cserves_beer%2Cserves_breakfast%2Cserves_brunch%2Cserves_lunch%2Cserves_dinner%2Cserves_vegetarian_food%2Cserves_wine%2Ctakeout&place_id='+place.place_id+'&key='+process.env.GOOGLE_MAPS_API_KEY);
         detailResponse = await detailResponse.json();
@@ -55,31 +61,30 @@ async function fetchData(latitude, longitude, radius){
 
     data = await Promise.all(promises);
     return data;
-
-
 }
 
-// async function storeData(data) {
-//     const code = generateCode().toString();
-//     data.map(async (place) => {
-//         try {        
-//         const placesDocRef = doc(collection(db, code), 'places');
-//         await setDoc(placesDocRef, {
-//             survey_code: code,
-//             search_radius: slideValue * 1609.34,
-//             host_latitude: locationLat,
-//             host_longitude: locationLong,
-//             host_email: auth.currentUser.email
-//         });
+async function storeData(data, latitude, longitude, radius) {
+    const code = generateCode().toString();
+    console.log(code);
+    data.map(async (place) => {
+        try {        
+        const placesDocRef = doc(collection(db, code), 'places');
+        await setDoc(placesDocRef, {
+            survey_code: code,
+            search_radius: radius,
+            host_latitude: latitude,
+            host_longitude: longitude,
+            //host_email: auth.currentUser.email
+        });
 
-//         const subcollectionRef = collection(placesDocRef, 'restaurants');
-//         const subDocRef = doc(subcollectionRef, place.name);
-//         await setDoc(subDocRef, place);
+        const subcollectionRef = collection(placesDocRef, 'restaurants');
+        const subDocRef = doc(subcollectionRef, place.name);
+        await setDoc(subDocRef, place);
 
-//         } catch (error) {
-//         console.error(error);
-//         } 
-//     })
-// }
+        } catch (error) {
+        console.error(error);
+        } 
+    })
+}
 
 module.exports = router;

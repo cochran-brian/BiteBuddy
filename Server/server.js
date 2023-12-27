@@ -6,6 +6,7 @@ const dotenv = require("dotenv").config();
 const fetchData = require("./fetchPlaceData")
 
 app.use(cors());
+app.use(express.json());
 
 app.use("/fetchData", fetchData);
 
