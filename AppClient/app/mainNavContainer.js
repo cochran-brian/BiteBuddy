@@ -13,6 +13,7 @@ import ResultScreen from './screens/ResultScreen';
 import JoinBiteScreen from './screens/JoinBiteScreen';
 import WaitingScreen from './screens/WaitingScreen';
 import AuthScreen from './screens/AuthScreen';
+import ScreenHandler from './ScreenHandler';
 
 
 
@@ -26,7 +27,6 @@ const Tab = createBottomTabNavigator();
 
 function MainNavContainer(){
     return(
-     <NavigationContainer>
         <Tab.Navigator
             initialRouteName='Home'
             screenOptions={({route}) => ({
@@ -55,36 +55,16 @@ function MainNavContainer(){
             })}
             
         >
-            <Tab.Screen name="Home" component={HomeScreen}/>
-            <Tab.Screen name="Nearby" component={HomeScreen}/>
-            <Tab.Screen name="Create" component={CreateScreen} options={({ navigation }) =>({
+            <Tab.Screen name="Home" component={ScreenHandler}/>
+            <Tab.Screen name="Nearby" component={ScreenHandler}/>
+            <Tab.Screen name="Create" component={ScreenHandler} options={({ navigation }) =>({
                 tabBarButton: () => (<TabNavButton onPress={() => navigation.navigate('Create')}/>),
                 })}/>
-            <Tab.Screen name="Recents" component={HomeScreen}/>
-            <Tab.Screen name="Profile" component={HomeScreen}/>
+            <Tab.Screen name="Recents" component={ScreenHandler}/>
+            <Tab.Screen name="Profile" component={ScreenHandler}/>
 
-            <Tab.Screen
-                name="Auth"
-                component={AuthScreen}
-           />
-            <Tab.Screen
-                name="Join"
-                component={JoinBiteScreen}
-            />
-            <Tab.Screen
-                name="Survey"
-                component={SurveyScreen}
-            />
-            <Tab.Screen
-                name="Result"
-                component={ResultScreen}
-            />
-            <Tab.Screen
-                name="Waiting"
-                component={WaitingScreen}
-            />
         </Tab.Navigator>
-    </NavigationContainer>
+   
     )
 }
 

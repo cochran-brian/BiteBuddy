@@ -21,7 +21,6 @@ const ScreenHandler = () => {
    // const [user, setUser] = useState(false);
 
     return(
-    <NavigationContainer>
      <Stack.Navigator>
      <Stack.Screen
             name="Home"
@@ -59,8 +58,7 @@ const ScreenHandler = () => {
             options={{headerShown: false}}
         />
      </Stack.Navigator>
-    </NavigationContainer>
-);
+    )
 };
 
 export default ScreenHandler;
