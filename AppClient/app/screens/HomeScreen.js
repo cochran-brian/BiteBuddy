@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
   dividerLineText: {
     marginLeft: 10, 
     marginRight: 10, 
-    color: 'green', 
+    color: colors.primaryLight, 
     fontFamily: 'Open Sans', 
     fontSize: 18
   },

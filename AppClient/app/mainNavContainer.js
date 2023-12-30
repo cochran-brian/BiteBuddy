@@ -8,13 +8,6 @@ import colors from './config/colors';
 
 import HomeScreen from './screens/HomeScreen';
 import CreateScreen from './screens/CreateScreen';
-import SurveyScreen from './screens/SurveyScreen';
-import ResultScreen from './screens/ResultScreen';
-import JoinBiteScreen from './screens/JoinBiteScreen';
-import WaitingScreen from './screens/WaitingScreen';
-import AuthScreen from './screens/AuthScreen';
-import ScreenHandler from './ScreenHandler';
-
 
 
 const homeName = 'Home'
@@ -30,24 +23,27 @@ function MainNavContainer(){
         <Tab.Navigator
             initialRouteName='Home'
             screenOptions={({route}) => ({
+                tabBarStyle: {height: 90, alignItems: 'center'},
+                tabBarLabelStyle: {fontFamily: 'Open Sans Light', fontSize: 12},
+                tabBarActiveTintColor: colors.primary,
                 tabBarIcon: ({ focused, color, size}) =>{
                     let iconName;
                     let rn = route.name;
 
                     if(rn == "Home"){
-                    iconName = focused ? "home" : "home-outline"
+                    iconName = focused ? "ios-home" : "ios-home-outline"
                     }else if (rn == "Nearby"){
-                    iconName = focused ? "trophy" : "trophy-outline"
+                    iconName = focused ? "ios-location-sharp" : "ios-location-outline"
                     }else if (rn == "Create"){
                     iconName = focused ? "pencil" : "pencil-outline"
                     }else if (rn == "Recents"){
-                    iconName = focused ? "person" : "person-outline"
+                    iconName = focused ? "ios-time" : "ios-time-outline"
                     }else if (rn == "Profile"){
-                    iconName = focused ? "people" : "people-outline"
+                    iconName = focused ? "ios-person" : "ios-person-outline"
                     }else{
                         return null
                     }
-                    return <Ionicons name = {iconName} size = {24} color = {colors.primary}/>;
+                    return <Ionicons style= {{marginTop: 6}} name = {iconName} size = {34} color = {colors.primary}/>;
                 },
                 headerShown: false,
                 
@@ -55,13 +51,13 @@ function MainNavContainer(){
             })}
             
         >
-            <Tab.Screen name="Home" component={ScreenHandler}/>
-            <Tab.Screen name="Nearby" component={ScreenHandler}/>
-            <Tab.Screen name="Create" component={ScreenHandler} options={({ navigation }) =>({
+            <Tab.Screen name="Home" component={HomeScreen}/>
+            <Tab.Screen name="Nearby" component={HomeScreen}/>
+            <Tab.Screen name="Create" component={CreateScreen} options={({ navigation }) =>({
                 tabBarButton: () => (<TabNavButton onPress={() => navigation.navigate('Create')}/>),
                 })}/>
-            <Tab.Screen name="Recents" component={ScreenHandler}/>
-            <Tab.Screen name="Profile" component={ScreenHandler}/>
+            <Tab.Screen name="Recents" component={HomeScreen}/>
+            <Tab.Screen name="Profile" component={HomeScreen}/>
 
         </Tab.Navigator>
    

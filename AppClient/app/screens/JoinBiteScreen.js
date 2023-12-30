@@ -6,6 +6,7 @@ import { CodeField, Cursor, useBlurOnFulfill, useClearByFocusCell } from 'react-
 import { collection, addDoc, setDoc, doc, getDocs, getCountFromServer, documentId } from "firebase/firestore" 
 import { db } from "../firebase/config"
 import colors from '../config/colors';
+import { AntDesign } from '@expo/vector-icons';
 
 export default function JoinBiteScreen({ navigation }) {
 
@@ -51,6 +52,9 @@ export default function JoinBiteScreen({ navigation }) {
             style={styles.container}>
                 <Pressable
                     onPress={() => Keyboard.dismiss()}>
+                    <Pressable style={styles.backButton} onPress={() => navigation.navigate('Home')}>
+                        <AntDesign name="arrowleft" size={34} color="black" />
+                </Pressable>
                     <Text 
                         style={styles.header}>JOIN BITE</Text>
                     <View
@@ -108,11 +112,14 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       //justifyContent: 'space-around'
     },
+    backButton:{
+        marginTop: 80,
+      },
     header:{
         color: 'black',
         fontFamily: 'Open Sans',
         fontSize: 45,
-        marginTop: '60%',
+        marginTop: '35%',
         marginBottom: 25,
         alignSelf: 'center'
       },

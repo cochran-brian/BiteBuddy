@@ -3,13 +3,12 @@ import { StyleSheet, Text, View } from 'react-native';
 import { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeScreen from './screens/HomeScreen';
 import AuthScreen from './screens/AuthScreen';
-import CreateScreen from './screens/CreateScreen';
 import SurveyScreen from './screens/SurveyScreen';
 import ResultScreen from './screens/ResultScreen';
 import JoinBiteScreen from './screens/JoinBiteScreen';
 import WaitingScreen from './screens/WaitingScreen';
+import MainNavContainer from './mainNavContainer';
 import { useFonts } from 'expo-font';
 import { auth } from './firebase/config';
 
@@ -21,20 +20,16 @@ const ScreenHandler = () => {
    // const [user, setUser] = useState(false);
 
     return(
+    <NavigationContainer>
      <Stack.Navigator>
-     <Stack.Screen
-            name="Home"
-            component={HomeScreen}
+        <Stack.Screen
+            name="MainTabs"
+            component={MainNavContainer}
             options={{headerShown: false}}
         />
         <Stack.Screen
             name="Auth"
             component={AuthScreen}
-            options={{headerShown: false}}
-        />
-        <Stack.Screen
-            name="Create"
-            component={CreateScreen}
             options={{headerShown: false}}
         />
         <Stack.Screen
@@ -58,6 +53,7 @@ const ScreenHandler = () => {
             options={{headerShown: false}}
         />
      </Stack.Navigator>
+    </NavigationContainer>
     )
 };
 
