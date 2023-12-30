@@ -5,6 +5,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Button } from 'react-native';
 import TabNavButton from './components/TabNavButton';
 import colors from './config/colors';
+import { auth } from './firebase/config';
 
 import HomeScreen from './screens/HomeScreen';
 import CreateScreen from './screens/CreateScreen';
@@ -23,7 +24,7 @@ function MainNavContainer(){
         <Tab.Navigator
             initialRouteName='Home'
             screenOptions={({route}) => ({
-                tabBarStyle: {height: 90, alignItems: 'center'},
+                tabBarStyle: {height: 85, alignItems: 'center'},
                 tabBarLabelStyle: {fontFamily: 'Open Sans Light', fontSize: 12},
                 tabBarActiveTintColor: colors.primary,
                 tabBarIcon: ({ focused, color, size}) =>{
@@ -43,7 +44,7 @@ function MainNavContainer(){
                     }else{
                         return null
                     }
-                    return <Ionicons style= {{marginTop: 6}} name = {iconName} size = {34} color = {colors.primary}/>;
+                    return <Ionicons style= {{marginTop: 5}} name = {iconName} size = {32} color = {colors.primary}/>;
                 },
                 headerShown: false,
                 
@@ -54,7 +55,13 @@ function MainNavContainer(){
             <Tab.Screen name="Home" component={HomeScreen}/>
             <Tab.Screen name="Nearby" component={HomeScreen}/>
             <Tab.Screen name="Create" component={CreateScreen} options={({ navigation }) =>({
-                tabBarButton: () => (<TabNavButton onPress={() => navigation.navigate('Create')}/>),
+                tabBarButton: () => (<TabNavButton onPress={() => {
+                    if(auth.currentUser){
+                        navigation.navigate("Create")
+                      } else {
+                        navigation.navigate("Auth");
+                      }
+            }}/>),
                 })}/>
             <Tab.Screen name="Recents" component={HomeScreen}/>
             <Tab.Screen name="Profile" component={HomeScreen}/>

@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Dimensions, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import { Dimensions, FlatList, SafeAreaView, ScrollView, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import { auth } from '../firebase/config';
 import colors from '../config/colors';
+import Carousel from 'react-native-snap-carousel';
 import SimplePlaceView from '../components/SimplePlaceView';
+import { Pagination } from 'react-native-snap-carousel';
 //import { ThreeDots, TailSpin } from 'react-loader-spinner';
 
 export default function HomeScreen({ navigation }) {
@@ -14,6 +16,8 @@ export default function HomeScreen({ navigation }) {
   const [locationLong, setLocationLong] = useState('-88.06476939999999'); 
   const [done, setDone] = useState(undefined);
   const [places, setPlaces] = useState(null);
+
+  const[carouselIndex, setCarouselIndex] = useState(0);
 
   // const[imgArray, setImgArray] = useState([]);
   // const [imgRefArray, setImgRefArray] = useState([]);
@@ -31,6 +35,15 @@ export default function HomeScreen({ navigation }) {
       setDone(true);
     }, 1000);
   }, []); 
+
+
+  renderCarouselItem = ({item, index}) => {
+    return (
+      <View style={styles.sponsorCard}>
+        <Text>TEST Sponsor</Text>
+      </View>
+    );
+}
   
   async function fetchData(){
     var data = await fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+locationLat+'%2C'+locationLong+'&radius='+radius+'&type=restaurant&opennow=true&key='+process.env.GOOGLE_MAPS_API_KEY)
@@ -67,125 +80,75 @@ export default function HomeScreen({ navigation }) {
     ):(
    <View 
     style={styles.container}>
-    <Text 
-      style={styles.header}>
+     <SafeAreaView>
+      <Text style={styles.header}>
         BITE BUDDY</Text>
+     </SafeAreaView>
+   <ScrollView showsVerticalScrollIndicator={false} width={'100%'}>
+
+   <View style={{height: 150, marginTop: 20}}>
+      <Carousel
+        ref={(c) => { this._carousel = c; }}
+        data={[1,2,3,4,5]}
+        renderItem={this.renderCarouselItem}
+        sliderWidth={400}
+        itemWidth={320}
+        containerCustomStyle={{flexGrow: 0}}
+        onSnapToItem={(index) => setCarouselIndex(index)}
+      />
+      <Pagination
+        containerStyle={{paddingVertical: 10}}
+        activeDotIndex={carouselIndex}
+        dotsLength={5}
+      />
+    </View>
 
     <View 
-      style={styles.recBox}>
+      style={[styles.recBox, {marginTop: 10}]}>
       <Text 
-        style={{fontFamily: 'Open Sans', fontSize: 20}}>
-          FOOD NEAR YOU</Text>
+        style={{fontFamily: 'Open Sans', fontSize: 28}}>
+          Food nearby</Text>
 
-      <View style={{marginTop: 14}}>
-      <SimplePlaceView  
-        name={places ? places[0].name : 
-          // <ThreeDots
-          //   height="40" 
-          //   width="40" 
-          //   radius="5"
-          //   color={colors.primary}
-          //   ariaLabel="three-dots-loading"/>
-          "loading..."
-        }
-        address={places ? places[0].address : 
-          // <ThreeDots
-          //   height="40" 
-          //   width="40" 
-          //   radius="5"
-          //   color={colors.primary}
-          //   ariaLabel="three-dots-loading"/>
-          "loading..."
-        }
-        rating={places ? places[0].rating : 0} 
-        imageUri={places ? places[0].imageURL : 
-          // <TailSpin
-          //   height="80"
-          //   width="80"
-          //   color={colors.primary}
-          //   radius="1"
-          //   ariaLabel="tail-spin-loading"/>
-          "https://img.icons8.com/material-sharp/96/restaurant.png"
-        }/>
-        </View>
-
-      <View style={{marginTop: 14}}>
-      <SimplePlaceView
-        name={places ? places[1].name : 
-          // <ThreeDots
-          //   height="40" 
-          //   width="40" 
-          //   radius="5"
-          //   color={colors.primary}
-          //   ariaLabel="three-dots-loading"/>
-          "loading..."
-        }
-        address={places ? places[1].address : 
-          // <ThreeDots
-          //   height="40" 
-          //   width="40" 
-          //   radius="5"
-          //   color={colors.primary}
-          //   ariaLabel="three-dots-loading"/>
-          "loading..."
-        }
-        rating={places ? places[1].rating : 0} 
-        imageUri={places ? places[1].imageURL : 
-          // <TailSpin
-          //   height="80"
-          //   width="80"
-          //   color={colors.primary}
-          //   radius="1"
-          //   ariaLabel="tail-spin-loading"/>
-          "https://img.icons8.com/material-sharp/96/restaurant.png"
-        }/>
-        </View>
+      <View style={styles.listContainer}>
+        <FlatList
+          horizontal= {true}
+          showsHorizontalScrollIndicator={false}
+          style={{width: Dimensions.get('screen').width, paddingLeft: 40}}
+          contentContainerStyle={{paddingRight: 42}}
+          data={[1, 2, 3, 4, 5]}
+          renderItem={() => {
+            return(
+            <View style={styles.restaurantCard}>
+              <Text>TEST Restaurant</Text>
+            </View>
+            )}}
+        />
+      </View>
     </View>
 
-    {/* <View style={{flexDirection: 'row', alignItems: 'center', marginTop: '200%', position: 'absolute'}}>
-      <View style={{height: 3, width: 130, backgroundColor: 'black'}}/>
-       <Pressable style={{width: 97, height: 32, backgroundColor: colors.primary, borderRadius: 10, justifyContent: 'center', alignItems: 'center'}}>
-        <Text style={{marginLeft: 10, marginRight: 10, color: 'white', fontFamily: 'Open Sans'}}>MORE →</Text>
-       </Pressable>
-      <View style={{height: 3, width: 130, backgroundColor: 'black'}}/>
-    </View> */}
-
-    <View>
-     <TouchableHighlight 
-      style={[styles.biteButtons, {marginTop: 100}]} 
-      underlayColor={colors.primaryDark} 
-      onPress={() => {
-        if(auth.currentUser){
-          navigation.navigate("Create")
-        } else {
-          navigation.navigate("Auth");
-        }
-      }}>
+    <View 
+      style={[styles.recBox, {marginTop: 58}]}>
       <Text 
-        style={styles.buttonText}>
-          CREATE A BITE</Text>
-     </TouchableHighlight>
+        style={{fontFamily: 'Open Sans', fontSize: 28}}>
+          For you</Text>
 
-     <View 
-      style={styles.dividerLineContainer}>
-      <View 
-        style={styles.dividerLine}/>
-        <Text 
-          style={styles.dividerLineText}>
-            OR</Text>
-      <View 
-        style={styles.dividerLine}/>
+      <View style={styles.listContainer}>
+        <FlatList
+          horizontal= {true}
+          showsHorizontalScrollIndicator={false}
+          style={{width: Dimensions.get('screen').width, paddingLeft: 40}}
+          contentContainerStyle={{paddingRight: 42}}
+          data={[1, 2, 3, 4, 5]}
+          renderItem={() => {
+            return(
+            <View style={styles.restaurantCard}>
+              <Text>TEST Restaurant</Text>
+            </View>
+            )}}
+        />
+      </View>
     </View>
-
-     <TouchableHighlight 
-      style={styles.biteButtons} 
-      underlayColor={colors.primaryDark} 
-      onPress={() => navigation.navigate("Join")}>
-        <Text 
-          style={styles.buttonText}>
-            JOIN A BITE</Text>
-     </TouchableHighlight>
-    </View>
+    </ScrollView>
    </View>
    )}
   </>);
@@ -201,13 +164,20 @@ const styles = StyleSheet.create({
     color: 'black',
     fontFamily: 'Open Sans',
     fontSize: 50,
-    marginTop: 80,
+    marginTop: 5,
     alignSelf: 'center'
+  },
+  sponsorCard: {
+    width: '100%', 
+    height: 120, 
+    borderRadius: 14, 
+    backgroundColor: 'lightgrey', 
+    marginRight: 10
   },
   recBox: {
     width: Dimensions.get('screen').width - 80,
     height: '30%',
-    marginTop: 34,
+    marginTop: 44,
     marginLeft: 40,
     marginRight: 40,
   },
@@ -222,23 +192,17 @@ const styles = StyleSheet.create({
     width: 90, 
     backgroundColor: 'black'
   },
-  dividerLineText: {
-    marginLeft: 10, 
-    marginRight: 10, 
-    color: colors.primaryLight, 
-    fontFamily: 'Open Sans', 
-    fontSize: 18
+  listContainer: {
+    marginTop: 14, 
+    height: 220, 
+    marginLeft: -40
   },
-  biteButtons: {
-    width: Dimensions.get('screen').width - 36,
-    marginLeft: 18,
-    marginRight: 18,
-    marginTop: 15,
-    height: 100,
-    backgroundColor: colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
+  restaurantCard: {
+    width: 150, 
+    height: 210, 
+    borderRadius: 14, 
+    backgroundColor: 'lightgrey', 
+    marginRight: 10
   },
   buttonText: {
     color: 'white',
