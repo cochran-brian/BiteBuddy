@@ -3,22 +3,21 @@ const router = express.Router();
 const db = require("./firebase/config");
 const { collection, setDoc, doc } = require('@firebase/firestore');
 
+var code = 0;
+
 router.use((req, res, next) => {
     next();
 })
 
-router.get("/", (req, res) => {
-    res.send({ message: "got it" })
-})
-
 router.post("/", async (req, res) => {
     console.log(req.body);
-    const data = await fetchData(req.body.latitude, req.body.longitude, req.body.radius);
-    // lat 42.11673643618475
-    // long -88.03444504789003
-    // rad 10000
-    await storeData(data, req.body.latitude, req.body.longitude, req.body.radius);
-    res.send(data);
+    try {
+        const data = await fetchData(req.body.latitude, req.body.longitude, req.body.radius);
+        await storeData(data, req.body.latitude, req.body.longitude, req.body.radius);
+        res.send({ data: data, code: code });
+    } catch (error) {
+        res.send({ error : "Fetching or storing error: " + error });
+    }
 })
 
 function generateCode() {
@@ -64,7 +63,7 @@ async function fetchData(latitude, longitude, radius){
 }
 
 async function storeData(data, latitude, longitude, radius) {
-    const code = generateCode().toString();
+    code = generateCode().toString();
     console.log(code);
     data.map(async (place) => {
         try {        
