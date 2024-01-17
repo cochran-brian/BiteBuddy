@@ -1,9 +1,10 @@
 import colors from '../config/colors';
-import { Keyboard, StyleSheet, Text, View, TextInput, TouchableHighlight } from 'react-native';
+import { Keyboard, StyleSheet, Text, View, TouchableHighlight } from 'react-native';
 import { useFonts } from 'expo-font';
 import { useState } from 'react';
 import { auth } from '../firebase/config';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import MainTextInput from './MainTextInput';
 
 export default function SignInView({navigation}) {
   
@@ -24,26 +25,19 @@ export default function SignInView({navigation}) {
   return (
     <View 
       style={styles.container}>
-        <View 
-          style={[styles.viewTextInput, {marginTop: 125}]}>
-          <TextInput 
-            style={styles.textInput} 
-            onChangeText={(email) => setEmail(email)} 
-            placeholder='Enter email' 
-            autoCapitalize='none' 
-            keyboardType='email-address' />
-        </View>
 
-        <View 
-          style={styles.viewTextInput}>
-          <TextInput 
-            style={styles.textInput} 
-            onChangeText={(password) => setPassword(password)} 
-            placeholder='Enter password' 
-            autoCapitalize='none' 
-            keyboardType='default' />
-        </View>
-
+        <MainTextInput
+          label={'Email'}
+          stateSetter={setEmail}
+          keyboardType={'email-address'}
+          password={false} />
+        
+        <MainTextInput
+          label={'Password'}
+          stateSetter={setPassword}
+          keyboardType={'default'} 
+          password={true}/>
+        
         <View 
           style={styles.emptyView}/>
 
