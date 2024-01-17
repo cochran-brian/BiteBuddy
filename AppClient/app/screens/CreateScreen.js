@@ -13,37 +13,64 @@ export default function CreateScreen({ navigation }) {
   const [locationLong, setLocationLong] = useState('-88.06476939999999');
   const [locationLat, setLocationLat] = useState('42.095271881586406');
 
-  const data = [];
-  const code = 0;
-
-  async function fetchData(){
+  fetchData = async (latitude, longitude, radius) => {
     try {
-        const response = await fetch('http://10.0.0.225:3000/fetchData', {
-          method: "POST",
-          mode: "cors",
-          credentials: "same-origin",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            latitude: "42.11673643618475",
-            longitude: "-88.03444504789003",
-            radius: "10000"
-          })
-        }); // apparently "localhost" makes the server host the phone instead of the computer
-        const result = await response.json();
-        console.log(result);
-        data = result.data;
-        code = result.code;
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
+      const response = await fetch('http://10.0.0.225:3000/fetchData', { // apparently "localhost" makes the server host the phone instead of the computer
+        method: "POST",
+        mode: "cors",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          latitude: latitude,
+          longitude: longitude,
+          radius: radius
+        })
+      }); 
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      console.error('Error fetching data:', error); // error handling here
+    }
+  }
 
+  storeData = async (data, latitude, longitude, radius) => {
+    try {
+      const response = await fetch('http://10.0.0.225:3000/storeRestaurants', { // apparently "localhost" makes the server host the phone instead of the computer
+        method: "POST",
+        mode: "cors",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          data: data,
+          latitude: latitude,
+          longitude: longitude,
+          radius: radius
+        })
+      }); 
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      console.error('Error fetching data:', error); // error handling here
+    }
+  }
+
+  changeScreens = (data, code) => {
     navigation.navigate('Survey', {
       allData: data,
       code: code
     })
   }
+
+  handlePress = async (latitude, longitude, radius) => {
+    const { data } = await fetchData(latitude, longitude, radius);
+    const { code } = await storeData(data, latitude, longitude, radius);
+    changeScreens(data, code);
+  }
+    
 
     return(
         <View 
@@ -74,7 +101,7 @@ export default function CreateScreen({ navigation }) {
                   style={styles.bottomButton} 
                   underlayColor={colors.primaryDark} 
                   onPress={() => {
-                    fetchData();
+                    handlePress("42.11673643618475", "-88.03444504789003", "10000");
                   }}>
 
                 <Text 
