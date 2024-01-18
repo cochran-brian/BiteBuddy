@@ -58,17 +58,17 @@ export default function CreateScreen({ navigation }) {
     }
   }
 
-  changeScreens = (data, code) => {
+  changeScreens = (data, uid) => {
     navigation.navigate('Survey', {
-      allData: data,
-      code: code
+      data: data,
+      uid: uid
     })
   }
 
   handlePress = async (latitude, longitude, radius) => {
     const { data } = await fetchData(latitude, longitude, radius);
-    const { code } = await storeData(data, latitude, longitude, radius);
-    changeScreens(data, code);
+    const { uid } = await storeData(data, latitude, longitude, radius);
+    changeScreens(data, uid);
   }
     
 

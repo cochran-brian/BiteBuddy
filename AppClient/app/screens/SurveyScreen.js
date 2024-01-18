@@ -11,12 +11,12 @@ export default function SurveySceen({ route, navigation }) {
 
   const [done, setDone] = useState(false);
 
-  const { allData, code, name } = route.params;
+  const { data, uid, name } = route.params;
 
   const LIMIT = 8;
 
-  const data = allData.slice(0, LIMIT);
-  const nonSurveyData = allData.slice(LIMIT);
+  const dataSubset = data.slice(0, LIMIT);
+  const nonSurveyData = data.slice(LIMIT);
 
   var localRatings = new Array(data.length);
 
@@ -24,7 +24,7 @@ export default function SurveySceen({ route, navigation }) {
   
 
  
-  console.log(data)
+  console.log(dataSubset)
 
   renderItem = ({item, index}) => {
     console.log(item);
@@ -43,7 +43,7 @@ rating = async(r) => {
 
   localRatings[this._carousel.currentIndex] = r
 
-  if(this._carousel.currentIndex >= data.length - 1) {
+  if(this._carousel.currentIndex >= dataSubset.length - 1) {
 
     
     if(auth.currentUser) {
@@ -52,9 +52,9 @@ rating = async(r) => {
       userName = name;
     }
 
-    const userRatingsDocRef =  doc(collection(db, code), 'ratings');
+    const userRatingsDocRef =  doc(collection(db, uid), 'ratings');
     await setDoc(userRatingsDocRef, {
-      survey_code: code,
+      survey_code: uid,
     });
     const subcollectionRef = collection(userRatingsDocRef, 'user_ratings');
     const subDocRef = doc(subcollectionRef, userName);
@@ -71,9 +71,9 @@ rating = async(r) => {
     // console.log("Similar => " + similarRecommendation);
 
     navigation.navigate('Waiting', {
-      data: data,
+      data: dataSubset,
       nonSurveyData: nonSurveyData,
-      code: code,
+      uid: uid,
       name: userName,
     })
   }
@@ -103,7 +103,7 @@ rating = async(r) => {
             <View style={{height: 490, marginTop: 20}}>
             <Carousel
               ref={(c) => { this._carousel = c; }}
-              data={data}
+              data={dataSubset}
               renderItem={this.renderItem}
               sliderWidth={400}
               itemWidth={320}
