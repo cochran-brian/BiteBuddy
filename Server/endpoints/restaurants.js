@@ -5,7 +5,7 @@ router.use((req, res, next) => {
     next();
 })
 
-router.post("/", async (req, res) => {
+router.get("/", async (req, res) => {
     console.log(req.body);
     try {
         const data = await fetchData(req.body.latitude, req.body.longitude, req.body.radius);

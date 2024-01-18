@@ -16,7 +16,7 @@ export default function CreateScreen({ navigation }) {
   fetchData = async (latitude, longitude, radius) => {
     try {
       const response = await fetch('http://10.0.0.225:3000/fetchData', { // apparently "localhost" makes the server host the phone instead of the computer
-        method: "POST",
+        method: "GET",
         mode: "cors",
         credentials: "same-origin",
         headers: {
