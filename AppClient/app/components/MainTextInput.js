@@ -1,27 +1,31 @@
 import * as React from 'react';
-import { Text, StyleSheet, View, Image } from 'react-native';
+import { Text, StyleSheet, View, Image, Dimensions } from 'react-native';
 import { Rating } from '@kolking/react-native-rating';
 import { TextInput } from 'react-native-paper'
 import colors from '../config/colors';
 
-function MainTextInput({ label, stateSetter, keyboardType, password }){
+function MainTextInput({ width, label, stateSetter, keyboardType, password }){
     return(
         <TextInput 
         mode='outlined'
-        contentStyle={{width: 270, fontFamily: 'Open Sans'}}
-        outlineStyle={{width: 270, borderRadius: 10, borderWidth: 2}}
-        onChangeText={(text) => stateSetter(text)} 
-        label={label}
+        contentStyle={{fontFamily: 'Open Sans'}}
+        outlineStyle={{borderRadius: 15, borderWidth: 1}}
         activeOutlineColor={colors.primary}
-        outlineColor='black'
+        onChangeText={(text) => stateSetter(text)} 
+        label={<Text style={{ fontFamily: 'Open Sans', backgroundColor: 'white'}}>{label}</Text>}
+        outlineColor='grey'
         secureTextEntry={password}
         autoCapitalize='none' 
-        keyboardType={keyboardType} />
+        keyboardType={keyboardType}
+        style={styles.box} />
 
 )}
 
 const styles = StyleSheet.create({
-    
+    box:{
+        width: Dimensions.get('screen').width * 0.7,
+        marginTop: 16,
+    }
 });
 
 export default MainTextInput;

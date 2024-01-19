@@ -26,17 +26,21 @@ export default function SignInView({navigation}) {
     <View 
       style={styles.container}>
 
+        <View style={styles.emptyView}/>
+
         <MainTextInput
           label={'Email'}
           stateSetter={setEmail}
           keyboardType={'email-address'}
-          password={false} />
+          password={false} 
+          width={200}/>
         
         <MainTextInput
           label={'Password'}
           stateSetter={setPassword}
           keyboardType={'default'} 
-          password={true}/>
+          password={true}
+          width={200}/>
         
         <View 
           style={styles.emptyView}/>

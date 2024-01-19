@@ -8,6 +8,7 @@ export default function App() {
 
   const [fontsLoaded] = useFonts({
     'Open Sans': require('./app/assets/fonts/OpenSans-ExtraBold.ttf'),
+    'Open Sans Medium': require('./app/assets/fonts/OpenSans-Medium.ttf'),
     'Open Sans Light': require('./app/assets/fonts/OpenSans-Regular.ttf'),
   });
 

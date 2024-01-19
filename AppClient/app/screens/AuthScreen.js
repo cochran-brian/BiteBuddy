@@ -1,16 +1,29 @@
-import { Keyboard, StyleSheet, Text, View, Pressable, TextInput, KeyboardAvoidingView, TouchableHighlight, ScrollView } from 'react-native';
+import { Keyboard, StyleSheet, Text, View, Pressable, TextInput, KeyboardAvoidingView, TouchableHighlight, ScrollView, Dimensions } from 'react-native';
 import colors from '../config/colors';
 import SignInView from "../components/SignInView";
 import RegisterView from '../components/RegisterView';
 import { useState } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { AntDesign } from '@expo/vector-icons';
+import MainTextInput from '../components/MainTextInput';
 
 export default function AuthScreen({ navigation }) {
 
   const [signingIn, setSigningIn] = useState(true);
 
-  
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  async function onSubmitPressed(){
+    try {
+      const user = await signInWithEmailAndPassword(auth, email, password)
+    } catch (error) {
+      alert(error);
+      return;
+    }
+    navigation.navigate("Home");
+    alert("success!")
+  }
 
   const changeDisplay = () => {
     if(signingIn) {
@@ -24,14 +37,22 @@ export default function AuthScreen({ navigation }) {
     <View style={styles.container}>
       <KeyboardAwareScrollView>
         <Pressable 
-          onPress={() => Keyboard.dismiss()}>
+          onPress={() => Keyboard.dismiss()} style={styles.pressableContainer}>
+
+         
+
             <Pressable style={styles.backButton} onPress={() => navigation.navigate('Home')}>
               <AntDesign name="arrowleft" size={34} color="black" />
             </Pressable>
+        <View style={styles.contentContainer}>
           <Text 
             style={styles.header}>
               BITE BUDDY</Text>
-            <View 
+          <Text 
+            style={[styles.lightText, {marginBottom: 16}]}>
+              Login to continue</Text>
+              
+            {/* <View 
               style={{flexDirection: 'row', alignSelf: 'center'}}>
                   <Pressable 
                     onPress={() => setSigningIn(true)} 
@@ -51,8 +72,43 @@ export default function AuthScreen({ navigation }) {
                         {color: signingIn ? 'black' : 'white'}]}>
                         Sign Up</Text>
                   </Pressable>
-            </View>
-            {changeDisplay()}
+            </View> */}
+
+          <View style={{alignItems: 'center'}}>
+          <MainTextInput
+            label={'Email'}
+            stateSetter={setEmail}
+            keyboardType={'email-address'}
+            password={false} />
+      
+          <MainTextInput
+            label={'Password'}
+            stateSetter={setPassword}
+            keyboardType={'default'} 
+            password={true}/>
+          </View>
+
+          <TouchableHighlight 
+            style= {styles.bottomButton} 
+            onPress={onSubmitPressed} 
+            underlayColor={colors.primaryDark}>
+            <Text 
+              style={styles.bottomButtonText}>
+                LOGIN</Text>
+          </TouchableHighlight>
+
+          <View style={styles.seperatorContainer}>
+            <View style={styles.seperatorLine}/>
+            <Text style={[styles.lightText, {fontSize: 16}]}>Or login with</Text>
+            <View style={styles.seperatorLine}/>
+          </View>
+
+        </View>
+
+        {/* <View style={{flex: 1}}/> */}
+
+          
+        
         </Pressable>
       </KeyboardAwareScrollView>
     </View>
@@ -61,21 +117,33 @@ export default function AuthScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   backButton:{
-    marginTop: 80,
+    marginTop: '20%',
+    marginLeft: '10%'
   },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
+    backgroundColor: 'white',
+  },
+  pressableContainer:{
+    height: Dimensions.get('screen').height,
+    backgroundColor: 'white'
+  },
+  contentContainer:{
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   header:{
-    color: 'black',
+    color: colors.primary,
     fontFamily: 'Open Sans',
     fontSize: 50,
-    marginTop: 10,
+    marginTop: '30%',
     alignSelf: 'center'
   },
+  lightText:{
+    color: colors.primary,
+    fontFamily: 'Open Sans Medium',
+    fontSize: 20
+  },  
   viewSelectButton:{
     width: 130,
     height: 40,
@@ -89,5 +157,31 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: 'Open Sans',
     fontSize: 16
-  }
+  },
+  bottomButton:{
+    width: 312,
+    height: 60,
+    borderRadius: 50,
+    marginTop: 46,
+    backgroundColor: colors.primary,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  bottomButtonText: {
+    color: 'white', 
+    fontFamily: 'Open Sans', 
+    fontSize: 24
+  },
+  seperatorContainer:{
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  seperatorLine:{
+    height: 1,
+    width: 25,
+    backgroundColor: colors.primary,
+    marginHorizontal: 5
+  },
 });
