@@ -14,12 +14,23 @@ export default function SignInView({navigation}) {
   async function onSubmitPressed(){
     try {
       const user = await signInWithEmailAndPassword(auth, email, password)
+      const response = await fetch('http://10.0.0.225:3000/auth', { // apparently "localhost" makes the server host the phone instead of the computer
+      method: "POST",
+      mode: "cors",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        firebaseToken: user
+      })
+    }); 
+    const result = await response.json();
+    return result;
     } catch (error) {
-      alert(error);
-      return;
+      console.error('Error authenticating user:', error); // error handling here
     }
     navigation.navigate("Home");
-    alert("success!")
   }
 
   return (

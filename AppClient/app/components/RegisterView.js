@@ -18,25 +18,51 @@ export default function RegisterView({navigation}) {
   async function onSubmitPressed(){
     try {
       const user = await createUserWithEmailAndPassword(auth, email, password)
-      const data = {
-          firstName,
-          lastName,
-          email,
-          phoneNumber
-      };
-      try {
-        const usersRef = doc(collection(db, 'users'), data.email);
-        await setDoc(usersRef, data);
-      } catch(error) {
-        alert(error);
-        return;
-      }
-    } catch(error) {
-      alert(error);
-      return;
+
+
+      const response = await fetch('http://10.0.0.225:3000/auth', { // apparently "localhost" makes the server host the phone instead of the computer
+        method: "POST",
+        mode: "cors",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          phoneNumber: phoneNumber,
+          firebaseToken: user
+        })
+      }); 
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      console.error('Error creating user:', error); // error handling here
     }
+
+
+
+
+    //   const data = {
+    //       firstName,
+    //       lastName,
+    //       email,
+    //       phoneNumber
+    //   };
+    //   try {
+    //     const usersRef = doc(collection(db, 'users'), data.email);
+    //     await setDoc(usersRef, data);
+    //   } catch(error) {
+    //     alert(error);
+    //     return;
+    //   }
+    // } catch(error) {
+    //   alert(error);
+    //   return;
+    // }
     navigation.navigate("Home");
-    alert("success!")
+    // alert("success!")
   }
     
   return (
