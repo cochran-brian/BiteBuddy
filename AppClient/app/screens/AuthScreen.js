@@ -6,6 +6,8 @@ import { useState } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { AntDesign } from '@expo/vector-icons';
 import MainTextInput from '../components/MainTextInput';
+import { auth } from '../firebase/config';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 export default function AuthScreen({ navigation }) {
 
@@ -14,15 +16,26 @@ export default function AuthScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  async function onSubmitPressed(){
+  async function handleSubmit() {
     try {
       const user = await signInWithEmailAndPassword(auth, email, password)
+        const response = await fetch('http://10.0.0.225:3000/auth', { // apparently "localhost" makes the server host the phone instead of the computer
+        method: "POST",
+        mode: "cors",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          firebaseToken: user
+        })
+      }); 
+      const result = await response.json();
+      return result;
     } catch (error) {
-      alert(error);
-      return;
+      console.error('Error authenticating user:', error); // error handling here
     }
     navigation.navigate("Home");
-    alert("success!")
   }
 
   const changeDisplay = () => {
@@ -90,7 +103,7 @@ export default function AuthScreen({ navigation }) {
 
           <TouchableHighlight 
             style= {styles.bottomButton} 
-            onPress={onSubmitPressed} 
+            onPress={() => handleSubmit()} 
             underlayColor={colors.primaryDark}>
             <Text 
               style={styles.bottomButtonText}>

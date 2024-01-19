@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../firebase/config");
-const { collection, setDoc, addDoc, doc } = require('@firebase/firestore');
+const admin = require('firebase-admin');
 
 router.use((req, res, next) => {
     next();
@@ -11,21 +10,10 @@ router.get("/", async (req, res) => {
     // implement hybrid approach
 
     // // Example backend token validation using Firebase Admin SDK
-    // const admin = require('firebase-admin');
-
-    // const validateFirebaseToken = async (firebaseToken) => {
-    // try {
-    //     const decodedToken = await admin.auth().verifyIdToken(firebaseToken);
-    //     // Access user information from decodedToken
-    //     const userId = decodedToken.uid;
-    //     const userEmail = decodedToken.email;
-    //     // Perform additional checks if needed
-
-    //     return { success: true, userId, userEmail };
-    // } catch (error) {
-    //     console.error('Error validating Firebase token:', error);
-    //     return { success: false, error: 'Invalid Firebase token' };
-    // }
+    const { userId, userEmail } = validateFirebaseToken(req.body.firebaseToken);
+    storeData(userId, userEmail);
+    
+    
 
     // // Example backend token generation using a library like jsonwebtoken
     // const jwt = require('jsonwebtoken');
@@ -56,5 +44,30 @@ router.get("/", async (req, res) => {
 
 });
 
+const validateFirebaseToken = async (firebaseToken) => {
+    try {
+        const decodedToken = await admin.auth().verifyIdToken(firebaseToken);
+        // Access user information from decodedToken
+        const userId = decodedToken.uid;
+        const userEmail = decodedToken.email;
+        // Perform additional checks if needed
+
+        return { userId, userEmail };
+    } catch (error) {
+        console.error('Error validating Firebase token:', error);
+        return { error: 'Invalid Firebase token' };
+    }
+}
+
+const storeData = async (uid, email) => {
+    try {
+        await addDoc(collection(db, 'users'), {
+        userId: uid,
+        userEmail: email
+        });
+    } catch (error) {
+        throw new Error("Error adding user: " + error);
+    }
+}
 
 module.exports = router;
