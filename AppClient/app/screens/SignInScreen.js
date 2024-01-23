@@ -17,7 +17,7 @@ export default function SignInScreen({ navigation }) {
   async function handleSubmit() {
     try {
       var user = await signInWithEmailAndPassword(auth, email, password)
-      const response = await fetch('http://10.20.226.90:3000/auth', { // apparently "localhost" makes the server host the phone instead of the computer
+      const response = await fetch('http://10.20.225.191:3000/auth', { // apparently "localhost" makes the server host the phone instead of the computer
         method: "POST",
         mode: "cors",
         credentials: "same-origin",
@@ -25,7 +25,8 @@ export default function SignInScreen({ navigation }) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          firebaseToken: user
+          newUser: false,
+          firebaseToken: user._tokenResponse.idToken
         })
       }); 
       const result = await response.json();

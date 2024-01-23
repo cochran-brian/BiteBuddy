@@ -1,35 +1,44 @@
 const express = require("express");
 const router = express.Router();
 const admin = require('firebase-admin');
+require('../firebase/adminConfig');
 
 router.use((req, res, next) => {
     next();
 })
 
+// FINISH IMPORTING DB AND STORING USER DATA
+
 router.post("/", async (req, res) => {
-    console.log("in backend")
-    const { userId, userEmail } = validateFirebaseToken(req.body.firebaseToken);
-    storeData(userId, userEmail);
-    const token = customToken(userId);
-    res.send({ token: token });
+    try{
+        console.log("Backend")
+        const { userId, userEmail } = validateFirebaseToken(req.body.firebaseToken);
+        if(req.body.newUser){
+            storeData(userId, userEmail, req.body.firstName);
+        }
+        const token = customToken(userId);
+        res.send({ token: token });
+    } catch(error) {
+        res.status(500).send({ error: error });
+    }    
 });
 
-const validateFirebaseToken = async (firebaseToken) => {
-    try {
-        const decodedToken = await admin.auth().verifyIdToken(firebaseToken);
-        // Access user information from decodedToken
+const validateFirebaseToken = (firebaseToken) => {
+    console.log("validating firebase token...")
+    admin.auth().verifyIdToken(firebaseToken)
+    .then((decodedToken) => {
         const userId = decodedToken.uid;
         const userEmail = decodedToken.email;
-        // Perform additional checks if needed
-
         return { userId, userEmail };
-    } catch (error) {
+    })
+    .catch((error) => {
         console.error('Error validating Firebase token:', error);
-        res.status(500).send({ error: 'Invalid Firebase token' });
-    }
+        throw new Error('Invalid Firebase token');
+    })
 }
 
 const customToken = (uid) => {
+    console.log("creating custom token...")
     admin.auth()
     .createCustomToken(uid)
     .then((customToken) => {
@@ -37,18 +46,24 @@ const customToken = (uid) => {
     })
   .catch((error) => {
     console.error('Error creating custom token:', error);
+    throw new Error('Custom token error');
   });
 }
 
-const storeData = async (uid, email) => {
-    try {
-        await addDoc(collection(db, 'users'), {
+const storeData = async (uid, email, firstName) => {
+    console.log("storing data...")
+    db.collection("users").doc(email).set({
         userId: uid,
+        firstName: firstName,
         userEmail: email
-        });
-    } catch (error) {
-        res.status(500).send({ error: 'Error adding user', error });
-    }
+    })
+    .then(() => {
+        console.log("Document successfully written!");
+    })
+    .catch((error) => {
+        console.error("Error writing document: ", error);
+        throw new Error('Error adding user');
+    });
 }
 
 module.exports = router;

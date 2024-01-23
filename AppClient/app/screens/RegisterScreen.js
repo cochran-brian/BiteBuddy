@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Ionicons, AntDesign } from '@expo/vector-icons';
 import MainTextInput from '../components/MainTextInput';
+import { auth } from '../firebase/config';
+import { signInWithEmailAndPassword, signInWithCustomToken, createUserWithEmailAndPassword } from 'firebase/auth';
 
 export default function RegisterScreen({ navigation }) {
 
@@ -17,9 +19,9 @@ export default function RegisterScreen({ navigation }) {
   async function onSubmitPressed(){
     try {
       const user = await createUserWithEmailAndPassword(auth, email, password)
+      console.log(user._tokenResponse.idToken)
 
-
-      const response = await fetch('http://10.0.0.225:3000/auth', { // apparently "localhost" makes the server host the phone instead of the computer
+      const response = await fetch('http://10.20.225.191:3000/auth', { // apparently "localhost" makes the server host the phone instead of the computer
         method: "POST",
         mode: "cors",
         credentials: "same-origin",
@@ -27,10 +29,10 @@ export default function RegisterScreen({ navigation }) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          newUser: true,
           firstName: name,
           email: email,
-          phoneNumber: phoneNumber,
-          firebaseToken: user
+          firebaseToken: user._tokenResponse.idToken
         })
       }); 
       const result = await response.json();
