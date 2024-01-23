@@ -3,14 +3,16 @@ import { StyleSheet, Text, View } from 'react-native';
 import { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import AuthScreen from './screens/AuthScreen';
+import MainNavContainer from './mainNavContainer';
+import SignInScreen from './screens/SignInScreen';
 import SurveyScreen from './screens/SurveyScreen';
 import ResultScreen from './screens/ResultScreen';
 import JoinBiteScreen from './screens/JoinBiteScreen';
 import WaitingScreen from './screens/WaitingScreen';
-import MainNavContainer from './mainNavContainer';
+import RegisterScreen from './screens/RegisterScreen';
 import { useFonts } from 'expo-font';
 import { auth } from './firebase/config';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -28,8 +30,13 @@ const ScreenHandler = () => {
             options={{headerShown: false}}
         />
         <Stack.Screen
-            name="Auth"
-            component={AuthScreen}
+            name="Sign In"
+            component={SignInScreen}
+            options={{headerShown: false}}
+        />
+        <Stack.Screen
+            name="Register"
+            component={RegisterScreen}
             options={{headerShown: false}}
         />
         <Stack.Screen

@@ -1,28 +1,45 @@
 import { Keyboard, StyleSheet, Text, View, Pressable, TextInput, KeyboardAvoidingView, TouchableHighlight, ScrollView, Dimensions } from 'react-native';
 import colors from '../config/colors';
-import SignInView from "../components/SignInView";
-import RegisterView from '../components/RegisterView';
 import { useState } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { AntDesign } from '@expo/vector-icons';
+import { Ionicons, AntDesign } from '@expo/vector-icons';
 import MainTextInput from '../components/MainTextInput';
 
-export default function AuthScreen({ navigation }) {
+export default function RegisterScreen({ navigation }) {
 
   const [signingIn, setSigningIn] = useState(true);
 
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confPassword, setConfPassword] = useState("");
 
   async function onSubmitPressed(){
     try {
-      const user = await signInWithEmailAndPassword(auth, email, password)
+      const user = await createUserWithEmailAndPassword(auth, email, password)
+
+
+      const response = await fetch('http://10.0.0.225:3000/auth', { // apparently "localhost" makes the server host the phone instead of the computer
+        method: "POST",
+        mode: "cors",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          firstName: name,
+          email: email,
+          phoneNumber: phoneNumber,
+          firebaseToken: user
+        })
+      }); 
+      const result = await response.json();
+      alert("Yipee!");
+      navigation.navigate('Home');
+      return result;
     } catch (error) {
-      alert(error);
-      return;
+      console.error('Error creating user:', error); // error handling here
     }
-    navigation.navigate("Home");
-    alert("success!")
   }
 
   const changeDisplay = () => {
@@ -39,42 +56,25 @@ export default function AuthScreen({ navigation }) {
         <Pressable 
           onPress={() => Keyboard.dismiss()} style={styles.pressableContainer}>
 
-         
+          <Pressable style={styles.backButton} onPress={() => navigation.navigate('Home')}>
+            <Ionicons name="arrow-back-circle-outline" size={42} color="black" />
+          </Pressable>
 
-            <Pressable style={styles.backButton} onPress={() => navigation.navigate('Home')}>
-              <AntDesign name="arrowleft" size={34} color="black" />
-            </Pressable>
         <View style={styles.contentContainer}>
           <Text 
             style={styles.header}>
               BITE BUDDY</Text>
           <Text 
             style={[styles.lightText, {marginBottom: 16}]}>
-              Login to continue</Text>
-              
-            {/* <View 
-              style={{flexDirection: 'row', alignSelf: 'center'}}>
-                  <Pressable 
-                    onPress={() => setSigningIn(true)} 
-                    style={[styles.viewSelectButton, 
-                      {backgroundColor: signingIn ? colors.primary : colors.neutral, borderTopLeftRadius: 20, borderBottomLeftRadius: 20}]}>
-                    <Text 
-                      style={[styles.viewChangeText, 
-                        {color: signingIn ? 'white' : 'black'}]}>
-                        Log In</Text>
-                  </Pressable>
-                  <Pressable 
-                    onPress={() => setSigningIn(false)} 
-                    style={[styles.viewSelectButton,
-                      {backgroundColor: signingIn ? colors.neutral : colors.primary, borderTopRightRadius: 20, borderBottomRightRadius: 20}]}>
-                    <Text 
-                      style={[styles.viewChangeText, 
-                        {color: signingIn ? 'black' : 'white'}]}>
-                        Sign Up</Text>
-                  </Pressable>
-            </View> */}
+              Sign up to continue</Text>
 
           <View style={{alignItems: 'center'}}>
+          <MainTextInput
+            label={'Name'}
+            stateSetter={setName}
+            keyboardType={'default'}
+            password={false} />
+
           <MainTextInput
             label={'Email'}
             stateSetter={setEmail}
@@ -86,6 +86,12 @@ export default function AuthScreen({ navigation }) {
             stateSetter={setPassword}
             keyboardType={'default'} 
             password={true}/>
+
+          <MainTextInput
+            label={'Confirm Password'}
+            stateSetter={setConfPassword}
+            keyboardType={'default'} 
+            password={true}/>
           </View>
 
           <TouchableHighlight 
@@ -94,18 +100,30 @@ export default function AuthScreen({ navigation }) {
             underlayColor={colors.primaryDark}>
             <Text 
               style={styles.bottomButtonText}>
-                LOGIN</Text>
+                SIGN UP</Text>
           </TouchableHighlight>
 
           <View style={styles.seperatorContainer}>
             <View style={styles.seperatorLine}/>
-            <Text style={[styles.lightText, {fontSize: 16}]}>Or login with</Text>
+            <Text style={[styles.lightText, {fontSize: 16}]}>Or sign up with</Text>
             <View style={styles.seperatorLine}/>
           </View>
 
+          <View style={styles.socialIconContainer}>
+            <AntDesign name="instagram" size={64} color="black" onPress={() => console.log('instagram')} />
+            <AntDesign name="apple1" size={56} color="black" onPress={() => console.log('apple')}/>
+            <AntDesign name="google" size={62} color="black" onPress={() => console.log('google')}/>
+          </View>
+
+        <View style={styles.bottomPromptContainer}>
+         <Text style={[styles.lightText, {fontSize: 16}]}>Already have an account? </Text>
+         <Text style={styles.pressableText} onPress={() => navigation.navigate("Sign In")}>Login here</Text>
+        </View>
+         
+
         </View>
 
-        {/* <View style={{flex: 1}}/> */}
+        
 
           
         
@@ -117,7 +135,7 @@ export default function AuthScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   backButton:{
-    marginTop: '20%',
+    marginTop: Dimensions.get('screen').height * 0.05,
     marginLeft: '10%'
   },
   container: {
@@ -126,22 +144,23 @@ const styles = StyleSheet.create({
   },
   pressableContainer:{
     height: Dimensions.get('screen').height,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   contentContainer:{
+    alignItems: 'center',
     justifyContent: 'center',
-    alignItems: 'center'
+    marginTop: Dimensions.get('screen').height * 0.05
+    
   },
   header:{
     color: colors.primary,
     fontFamily: 'Open Sans',
     fontSize: 50,
-    marginTop: '30%',
     alignSelf: 'center'
   },
   lightText:{
     color: colors.primary,
-    fontFamily: 'Open Sans Medium',
+    fontFamily: 'Open Sans SemiBold',
     fontSize: 20
   },  
   viewSelectButton:{
@@ -184,4 +203,21 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     marginHorizontal: 5
   },
+  socialIconContainer:{
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '60%',
+    marginVertical: 18,
+  },
+  bottomPromptContainer:{
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%'
+  },
+  pressableText:{
+    fontFamily: 'Open Sans',
+    fontSize: 16,
+  }
 });

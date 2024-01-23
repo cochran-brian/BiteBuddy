@@ -9,6 +9,7 @@ import { auth } from './firebase/config';
 
 import HomeScreen from './screens/HomeScreen';
 import CreateScreen from './screens/CreateScreen';
+import NearbyScreen from './screens/NearbyScreen';
 
 
 const homeName = 'Home'
@@ -53,13 +54,13 @@ function MainNavContainer(){
             
         >
             <Tab.Screen name="Home" component={HomeScreen}/>
-            <Tab.Screen name="Nearby" component={HomeScreen}/>
+            <Tab.Screen name="Nearby" component={NearbyScreen}/>
             <Tab.Screen name="Create" component={CreateScreen} options={({ navigation }) =>({
                 tabBarButton: () => (<TabNavButton onPress={() => {
                     if(auth.currentUser){
                         navigation.navigate("Create")
                       } else {
-                        navigation.navigate("Auth");
+                        navigation.navigate("Sign In");
                       }
             }}/>),
                 })}/>

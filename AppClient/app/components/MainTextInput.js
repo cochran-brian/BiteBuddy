@@ -12,7 +12,7 @@ function MainTextInput({ width, label, stateSetter, keyboardType, password }){
         outlineStyle={{borderRadius: 15, borderWidth: 1}}
         activeOutlineColor={colors.primary}
         onChangeText={(text) => stateSetter(text)} 
-        label={<Text style={{ fontFamily: 'Open Sans', backgroundColor: 'white'}}>{label}</Text>}
+        label={<Text style={{ fontFamily: 'Open Sans SemiBold', color: colors.primary, backgroundColor: 'white'}}>{label}</Text>}
         outlineColor='grey'
         secureTextEntry={password}
         autoCapitalize='none' 
