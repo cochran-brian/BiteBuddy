@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Ionicons, AntDesign } from '@expo/vector-icons';
 import MainTextInput from '../components/MainTextInput';
+import { auth } from '../firebase/config';
+import { signInWithEmailAndPassword, signInWithCustomToken, getAuth } from 'firebase/auth';
 
 export default function SignInScreen({ navigation }) {
 
@@ -12,29 +14,29 @@ export default function SignInScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  async function onSubmitPressed(){
+  async function handleSubmit() {
     try {
-      const user = await signInWithEmailAndPassword(auth, email, password)
-      const response = await fetch('http://10.0.0.225:3000/auth', { // apparently "localhost" makes the server host the phone instead of the computer
-      method: "POST",
-      mode: "cors",
-      credentials: "same-origin",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        firebaseToken: user
-      })
-    }); 
-    const result = await response.json();
-
-    alert("Yipee!");
-    navigation.navigate("Home");
-
-    return result;
+      var user = await signInWithEmailAndPassword(auth, email, password)
+      const response = await fetch('http://10.20.226.90:3000/auth', { // apparently "localhost" makes the server host the phone instead of the computer
+        method: "POST",
+        mode: "cors",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          firebaseToken: user
+        })
+      }); 
+      const result = await response.json();
+      console.log(result);
+      const userCredential = await signInWithCustomToken(auth, result)
+      user = userCredential.user;
+      console.log(user)
     } catch (error) {
       console.error('Error authenticating user:', error); // error handling here
     }
+    navigation.navigate("Home");
   }
 
   const changeDisplay = () => {
@@ -79,7 +81,7 @@ export default function SignInScreen({ navigation }) {
 
           <TouchableHighlight 
             style= {styles.bottomButton} 
-            onPress={onSubmitPressed} 
+            onPress={() => handleSubmit()} 
             underlayColor={colors.primaryDark}>
             <Text 
               style={styles.bottomButtonText}>

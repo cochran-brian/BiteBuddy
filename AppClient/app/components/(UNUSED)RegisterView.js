@@ -15,7 +15,7 @@ export default function RegisterView({navigation}) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
 
-  async function onSubmitPressed(){
+  async function handleSubmit(){
     try {
       const user = await createUserWithEmailAndPassword(auth, email, password)
 
@@ -116,7 +116,7 @@ export default function RegisterView({navigation}) {
           style={{flex: 1}}>
           <TouchableHighlight 
             style= {styles.bottomButton} 
-            onPress={onSubmitPressed} 
+            onPress={() => handleSubmit()} 
             underlayColor={colors.primaryDark}>
             <Text 
               style={styles.bottomButtonText}>

@@ -11,7 +11,7 @@ export default function SignInView({navigation}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  async function onSubmitPressed(){
+  async function handleSubmit(){
     try {
       const user = await signInWithEmailAndPassword(auth, email, password)
       const response = await fetch('http://10.0.0.225:3000/auth', { // apparently "localhost" makes the server host the phone instead of the computer
@@ -60,7 +60,7 @@ export default function SignInView({navigation}) {
           style={{flex: 1}}>
           <TouchableHighlight 
             style= {styles.bottomButton} 
-            onPress={onSubmitPressed} 
+            onPress={() => handleSubmit()} 
             underlayColor={colors.primaryDark}>
             <Text 
               style={styles.bottomButtonText}>
