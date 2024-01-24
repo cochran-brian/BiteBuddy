@@ -1,11 +1,11 @@
 const express = require("express");
+const authenticateMiddleware = require("../middleware/authenticateMiddleware");
 const router = express.Router();
+require('../firebase/adminConfig');
 
-router.use((req, res, next) => {
-    next();
-})
+router.use(authenticateMiddleware)
 
-router.get("/", async (req, res) => {
+router.post("/", async (req, res) => {
     console.log(req.body);
     try {
         const data = await fetchData(req.body.latitude, req.body.longitude, req.body.radius);

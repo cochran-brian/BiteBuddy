@@ -11,6 +11,7 @@ import HomeScreen from './screens/HomeScreen';
 import CreateScreen from './screens/CreateScreen';
 import NearbyScreen from './screens/NearbyScreen';
 import RecentScreen from './screens/RecentScreen';
+import ProfileScreen from './screens/ProfileScreen';
 
 
 const homeName = 'Home'
@@ -66,7 +67,7 @@ function MainNavContainer(){
             }}/>),
                 })}/>
             <Tab.Screen name="Recents" component={RecentScreen}/>
-            <Tab.Screen name="Profile" component={HomeScreen}/>
+            <Tab.Screen name="Profile" component={ProfileScreen}/>
 
         </Tab.Navigator>
    

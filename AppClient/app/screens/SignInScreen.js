@@ -17,7 +17,7 @@ export default function SignInScreen({ navigation }) {
   async function handleSubmit() {
     try {
       var user = await signInWithEmailAndPassword(auth, email, password)
-      const response = await fetch('http://10.20.225.191:3000/auth', { // apparently "localhost" makes the server host the phone instead of the computer
+      const response = await fetch('http://10.20.224.199:3000/auth', { // apparently "localhost" makes the server host the phone instead of the computer
         method: "POST",
         mode: "cors",
         credentials: "same-origin",
@@ -31,7 +31,7 @@ export default function SignInScreen({ navigation }) {
       }); 
       const result = await response.json();
       console.log(result);
-      const userCredential = await signInWithCustomToken(auth, result)
+      const userCredential = await signInWithCustomToken(auth, result.token)
       user = userCredential.user;
       console.log(user)
     } catch (error) {

@@ -21,7 +21,7 @@ export default function RegisterScreen({ navigation }) {
       const user = await createUserWithEmailAndPassword(auth, email, password)
       console.log(user._tokenResponse.idToken)
 
-      const response = await fetch('http://10.20.225.191:3000/auth', { // apparently "localhost" makes the server host the phone instead of the computer
+      const response = await fetch('http://10.20.224.199:3000/auth', { // apparently "localhost" makes the server host the phone instead of the computer
         method: "POST",
         mode: "cors",
         credentials: "same-origin",
@@ -36,9 +36,11 @@ export default function RegisterScreen({ navigation }) {
         })
       }); 
       const result = await response.json();
-      alert("Yipee!");
+      console.log(result);
+      const userCredential = await signInWithCustomToken(auth, result.token)
+      user = userCredential.user;
+      console.log(user)
       navigation.navigate('Home');
-      return result;
     } catch (error) {
       console.error('Error creating user:', error); // error handling here
     }
