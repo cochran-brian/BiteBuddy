@@ -10,6 +10,7 @@ import { auth } from './firebase/config';
 import HomeScreen from './screens/HomeScreen';
 import CreateScreen from './screens/CreateScreen';
 import NearbyScreen from './screens/NearbyScreen';
+import RecentScreen from './screens/RecentScreen';
 
 
 const homeName = 'Home'
@@ -64,7 +65,7 @@ function MainNavContainer(){
                       }
             }}/>),
                 })}/>
-            <Tab.Screen name="Recents" component={HomeScreen}/>
+            <Tab.Screen name="Recents" component={RecentScreen}/>
             <Tab.Screen name="Profile" component={HomeScreen}/>
 
         </Tab.Navigator>

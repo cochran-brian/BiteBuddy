@@ -1,11 +1,17 @@
 import * as React from 'react';
-import { Text, StyleSheet, View, Image } from 'react-native';
+import { Text, StyleSheet, View, Image, TouchableHighlight } from 'react-native';
 import { Rating } from '@kolking/react-native-rating';
+import { Feather } from '@expo/vector-icons';
 import colors from '../config/colors';
 
 function SimplePlaceView({ imageUri, name, address, rating}){
+
+    const onSharePressed = () => {
+        console.log('Share Pressed')
+    }
     return(
         <View style={styles.container}>
+          
             <Image
                 source={{uri: imageUri}}
                 style={styles.image}>
@@ -17,7 +23,7 @@ function SimplePlaceView({ imageUri, name, address, rating}){
                     <Text 
                         numberOfLines={1}
                         style={styles.textTitle}>
-                            {name.toUpperCase()}</Text>
+                            {name}</Text>
                     <Text 
                         numberOfLines={2}
                         style={styles.textSubheader}>
@@ -27,11 +33,17 @@ function SimplePlaceView({ imageUri, name, address, rating}){
                     style={styles.ratingContainer}>
                     <Rating
                         disabled={true}
-                        size={25}
+                        size={20}
                         rating={rating}
                         fillColor={'gold'}/>
                 </View>
             </View>
+            <TouchableHighlight 
+            underlayColor={'grey'}
+            onPress={onSharePressed}
+            style={styles.button}>
+                <Feather name="share" size={22} color="black" style={{marginLeft: 1}} />
+            </TouchableHighlight>
         </View>
     )}
 
@@ -39,13 +51,13 @@ const styles = StyleSheet.create({
     container:{
         flexDirection: 'row',
         width: '100%',
-        height: 130,
+        height: 110,
         backgroundColor: 'white',
         borderRadius: 10,
         borderWidth: 1,
         borderColor: 'grey',
         position: 'relative',
-        marginTop: 0
+        marginTop: 0,
     },
     image:{
         width: 120,
@@ -65,16 +77,28 @@ const styles = StyleSheet.create({
     },
     textTitle: {
         fontFamily: 'Open Sans', 
-        fontSize: 22
+        fontSize: 16
     },
     textSubheader: {
         fontFamily: 'Open Sans Light', 
-        fontSize: 16
+        fontSize: 12,
+        width: 130
     },
     ratingContainer: {
         justifyContent: 'flex-end', 
         flex: 1, 
-        marginBottom: 18
+        marginBottom: 42
+    },
+    button:{
+        height: 48,
+        width: 48,
+        borderRadius: 24,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: 2,
+        borderColor: colors.primary,
+        alignSelf: 'center',
+        marginRight: 12
     }
 });
 

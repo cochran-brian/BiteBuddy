@@ -16,7 +16,7 @@ function SurveyCard({ imageUri, name, address, rating }){
                 <Text 
                     numberOfLines={2}
                     style={styles.textTitle}>
-                    {name.toUpperCase()}
+                    {name}
                     {/* {(name.length > 25) ? name.substring(0, 25).toUpperCase() + "..." : name.toUpperCase()} */}
                 </Text>
                 <Text 
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
         height: 100,
         marginTop: 20, 
         marginLeft: 18,
-        marginRight: 18 
+        marginRight: 18
     },
     textTitle: {
         fontFamily: 'Open Sans', 

@@ -1,8 +1,13 @@
-import { StyleSheet, Text, View, SafeAreaView, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, Dimensions, FlatList } from 'react-native';
 import colors from '../config/colors';
+import SimplePlaceView from '../components/SimplePlaceView';
 
 
 export default function NearbyScreen({ navigation }) {
+
+  const onFilterPress = () => {
+    console.log('Filter Pressed')
+  }
     
   return (
     <View style={styles.container}>
@@ -13,8 +18,17 @@ export default function NearbyScreen({ navigation }) {
 
      <View style={styles.subHeadContainer}>
         <Text style={styles.subHeader}>Food nearby</Text>
-        <Text style={[styles.lightText, {color: "#000080"}]}>Filter</Text>
+        <Text style={[styles.lightText, {color: "#000080"}]} onPress={onFilterPress}>Filter</Text>
      </View>
+
+     <FlatList
+      data={[1, 2, 3, 4, 5, 6, 7, 8]}
+      renderItem={(name, rating, address, uri) => <SimplePlaceView name={'Chappies'} rating={3.4} address={'123 Testing St, Palatine'} imageUri={'https://s3-media0.fl.yelpcdn.com/bphoto/rfEpgx_TydswsZCxN4KcBA/348s.jpg'}/>}
+      ItemSeparatorComponent={<View style={{height: 32}}/>}
+      showsVerticalScrollIndicator={false}
+      style={styles.flatList}
+     />
+
     </View>
   );
 }
@@ -47,5 +61,9 @@ const styles = StyleSheet.create({
     fontFamily: 'Open Sans SemiBold',
     fontSize: 20
   },  
+  flatList:{
+    marginHorizontal: 38,
+    marginTop: 14
+  }
   
 });
