@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View, SafeAreaView, Dimensions, FlatList, useState } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, Dimensions, FlatList } from 'react-native';
+import { useState } from 'react';
 import colors from '../config/colors';
 import Carousel from 'react-native-snap-carousel';
 import { Pagination } from 'react-native-snap-carousel';
@@ -16,6 +17,7 @@ export default function RecentScreen({ navigation }) {
                 imageUri={'https://lh3.googleusercontent.com/p/AF1QipP4XlKpdvnDQkFQGzxvw02lSqoFaWH64OZbnsV5=s1360-w1360-h1020'}
                 address={'123 Test St, Palatine'}
                 rating={4.3}
+                date={'Fri, January ' + Math.round(Math.random() * 31 + 1)}
             />
         );
     }
@@ -27,7 +29,6 @@ export default function RecentScreen({ navigation }) {
                  BITE BUDDY</Text>
         </SafeAreaView>
      <View style={styles.subContainer}>
-     <Text style={styles.subHeader}>Wed, January 24</Text>
 
      <Carousel
               ref={(c) => { this._carousel = c; }}

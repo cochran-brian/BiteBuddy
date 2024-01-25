@@ -3,8 +3,10 @@ import { Text, StyleSheet, View, Image } from 'react-native';
 import { Rating } from '@kolking/react-native-rating';
 import colors from '../config/colors';
 
-function SurveyCard({ imageUri, name, address, rating }){
+function SurveyCard({ imageUri, name, address, rating, date }){
     return(
+    <View>
+     <Text style={styles.dateText}>{date}</Text>
     <View 
         style={[styles.container]}>
         <Image
@@ -24,6 +26,7 @@ function SurveyCard({ imageUri, name, address, rating }){
                     style={styles.textSubheader}>
                         {address}</Text>
             </View>
+        
             <Rating
                 disabled={true}
                 size={40}
@@ -31,7 +34,7 @@ function SurveyCard({ imageUri, name, address, rating }){
                 fillColor={'gold'}
                 style={styles.ratingsStyle}/>
     </View>
-
+    </View>
 )}
 
 const styles = StyleSheet.create({
@@ -44,6 +47,12 @@ const styles = StyleSheet.create({
         borderColor: 'grey',
         justifyContent: 'space-between'
     
+    },
+    dateText:{
+        fontFamily: 'Open Sans',
+        fontSize: 20,
+        marginBottom: 12,
+        alignSelf: 'center'
     },
     image:{
         width: '100%',
