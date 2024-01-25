@@ -4,16 +4,13 @@ import colors from '../config/colors';
 import Slider from '@react-native-community/slider';
 import { db, auth } from '../firebase/config';
 import { setDoc, doc, collection } from "firebase/firestore"
-import axios from 'axios';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function CreateScreen({ navigation }) {
 
   const [slideValue, setSlideValue] = useState(0);
-  const [locationLong, setLocationLong] = useState('-88.06476939999999');
-  const [locationLat, setLocationLat] = useState('42.095271881586406');
 
-  fetchData = async (latitude, longitude, radius) => {
+  const fetchData = async (latitude, longitude, radius, token) => {
     try {
       const response = await fetch('http://10.20.224.199:3000/restaurants', { // apparently "localhost" makes the server host the phone instead of the computer
         method: "POST",
@@ -21,6 +18,7 @@ export default function CreateScreen({ navigation }) {
         credentials: "same-origin",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({
           latitude: latitude,
@@ -35,14 +33,15 @@ export default function CreateScreen({ navigation }) {
     }
   }
 
-  storeData = async (data, latitude, longitude, radius) => {
+  const storeData = async (data, latitude, longitude, radius, token) => {
     try {
-      const response = await fetch('http://10.0.0.225:3000/storeRestaurants', { // apparently "localhost" makes the server host the phone instead of the computer
+      const response = await fetch('http://10.20.225.198:3000/storage', { // apparently "localhost" makes the server host the phone instead of the computer
         method: "POST",
         mode: "cors",
         credentials: "same-origin",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({
           data: data,
@@ -58,20 +57,33 @@ export default function CreateScreen({ navigation }) {
     }
   }
 
-  changeScreens = (data, uid) => {
+  const changeScreens = (data, uid) => {
     navigation.navigate('Survey', {
       data: data,
       uid: uid
     })
   }
 
-  handlePress = async (latitude, longitude, radius) => {
-    const { data } = await fetchData(latitude, longitude, radius);
-    const { uid } = await storeData(data, latitude, longitude, radius);
-    changeScreens(data, uid);
+  const getCustomToken = async (latitude, longitude, radius) => {
+    try {
+      const customToken = await AsyncStorage.getItem('customToken');
+      if (customToken) {
+        const { data } = await fetchData(latitude, longitude, radius, customToken);
+        console.log(data)
+        const { uid } = await storeData(data, latitude, longitude, radius, customToken);
+        console.log(uid)
+        return { data: data, uid: uid };
+      }
+    } catch (error) {
+      console.error('Error retrieving custom token:', error);
+    }
+  };
+
+  const handlePress = async (latitude, longitude, radius) => {
+    const result = await getCustomToken(latitude, longitude, radius);
+    changeScreens(result.data, result.uid);
   }
     
-
     return(
         <View 
           style={styles.container}>

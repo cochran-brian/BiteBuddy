@@ -4,6 +4,7 @@ const authenticateMiddleware = async (req, res, next) => {
     try {
         console.log("in middleware")
         const { authorization } = req.headers;
+        console.log(authorization)
         
         if (!authorization || !authorization.startsWith('Bearer ')) {
             return res.status(401).send({ error: 'Unauthorized' });
