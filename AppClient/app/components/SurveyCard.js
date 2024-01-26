@@ -8,7 +8,7 @@ function SurveyCard({ imageUri, name, address, rating, date }){
     <View>
      <Text style={styles.dateText}>{date}</Text>
     <View 
-        style={[styles.container]}>
+        style={styles.container}>
         <Image
             source={{uri: imageUri}}
             style={styles.image}>
@@ -21,15 +21,17 @@ function SurveyCard({ imageUri, name, address, rating, date }){
                     {name}
                     {/* {(name.length > 25) ? name.substring(0, 25).toUpperCase() + "..." : name.toUpperCase()} */}
                 </Text>
+                <Text style={[styles.textSubheader, {marginTop: 4}]} numberOfLines={1}>$ • Breakfast & Brunch</Text>
                 <Text 
                     numberOfLines={2}
                     style={styles.textSubheader}>
                         {address}</Text>
+                <Text style={styles.textSubheader} numberOfLines={1}>American Cuisine</Text>
             </View>
         
             <Rating
                 disabled={true}
-                size={40}
+                size={36}
                 rating={rating}
                 fillColor={'gold'}
                 style={styles.ratingsStyle}/>
@@ -40,11 +42,11 @@ function SurveyCard({ imageUri, name, address, rating, date }){
 const styles = StyleSheet.create({
     container:{
         width: '100%',
-        height: 490,
+        height: 480,
         backgroundColor: 'white',
         borderRadius: 30,
-        borderWidth: 1,
-        borderColor: 'grey',
+        borderWidth: 4,
+        borderColor: colors.primary,
         justifyContent: 'space-between'
     
     },
@@ -56,13 +58,13 @@ const styles = StyleSheet.create({
     },
     image:{
         width: '100%',
-        height: '55%',
+        height: '56%',
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30
     },
     textContainer: { 
-        height: 100,
-        marginTop: 20, 
+        height: 90,
+        marginTop: 38, 
         marginLeft: 18,
         marginRight: 18
     },
@@ -74,12 +76,13 @@ const styles = StyleSheet.create({
     },
     textSubheader: {
         fontFamily: 'Open Sans Light', 
-        fontSize: 18,
-        lineHeight: 25
+        fontSize: 20,
+        lineHeight: 26,
+        marginLeft: 2
     },
     ratingsStyle:{
-        marginBottom: 25,
-        marginLeft: 18
+        marginBottom: 24,
+        marginLeft: 18,
     }
 });
 

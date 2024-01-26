@@ -15,7 +15,7 @@ export default function RecentScreen({ navigation }) {
             <SurveyCard
                 name = {'Chappski'}
                 imageUri={'https://lh3.googleusercontent.com/p/AF1QipP4XlKpdvnDQkFQGzxvw02lSqoFaWH64OZbnsV5=s1360-w1360-h1020'}
-                address={'123 Test St, Palatine'}
+                address={'754 W Euclid Ave, Palatine'}
                 rating={4.3}
                 date={'Fri, January ' + Math.round(Math.random() * 31 + 1)}
             />
@@ -36,11 +36,11 @@ export default function RecentScreen({ navigation }) {
               renderItem={this.renderItem}
               sliderWidth={400}
               itemWidth={320}
-              containerCustomStyle={{flexGrow: 0}}
+              containerCustomStyle={{flexGrow: 0, marginTop: 8}}
               onSnapToItem={(index) => setCarouselIndex(index)}
       />
       <Pagination
-        containerStyle={{paddingVertical: 10}}
+        containerStyle={{paddingVertical: 14}}
         activeDotIndex={carouselIndex}
         dotsLength={5}
       />

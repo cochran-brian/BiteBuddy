@@ -95,7 +95,7 @@ export default function CreateScreen({ navigation }) {
                 style={{marginTop: 80}}>
                 <Text 
                   style={styles.promptText}>
-                    HOW FAR ARE YOU WILLING TO TRAVEL?</Text>
+                    Search Radius</Text>
                 <Slider
                   step={1}
                   minimumValue={5}
@@ -109,17 +109,16 @@ export default function CreateScreen({ navigation }) {
 
               <View 
                 style={styles.buttonContainer}>
-                <TouchableHighlight 
-                  style={styles.bottomButton} 
-                  underlayColor={colors.primaryDark} 
-                  onPress={() => {
-                    handlePress("42.11673643618475", "-88.03444504789003", "10000");
-                  }}>
-
-                <Text 
-                  style={styles.buttonText}>
-                    CREATE BITE</Text>
-              </TouchableHighlight>
+              <TouchableHighlight 
+              style= {styles.bottomButton} 
+              onPress={() => {
+                handlePress("42.11673643618475", "-88.03444504789003", "10000");
+              }} 
+              underlayColor={colors.primaryDark}>
+              <Text 
+                style={styles.buttonText}>
+                  CREATE BITE</Text>
+            </TouchableHighlight>
               </View>
 
           </View>
@@ -144,10 +143,10 @@ const styles = StyleSheet.create({
       justifyContent: 'flex-end'
     },
     bottomButton:{
-      width: 344,
+      width: 310,
       height: 54,
-      borderRadius: 10,
-      marginBottom: 14,
+      borderRadius: 50,
+      marginBottom: 38,
       backgroundColor: colors.primary,
       alignItems: 'center',
       justifyContent: 'center'
@@ -158,10 +157,10 @@ const styles = StyleSheet.create({
       fontSize: 20
     },
     promptText:{
-      fontFamily: 'Open Sans',
-      fontSize: 20,
+      fontFamily: 'Open Sans SemiBold',
+      fontSize: 22,
       width: 375,
-      textAlign: 'center'
+      textAlign: 'left'
     },
     slider: {
       alignSelf: 'center', 

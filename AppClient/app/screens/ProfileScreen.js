@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Dimensions, Image, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
-import { signOut } from 'firebase/auth';
+import { signOut, getAuth } from 'firebase/auth';
 import { auth } from '../firebase/config';
 import { Feather } from '@expo/vector-icons';
 import colors from '../config/colors';
 
 export default function ProfileScreen({ navigation }) {
+
+  const fire = getAuth();
+  const user = auth.currentUser;
 
     const logOut = async () => {
         try {
@@ -27,9 +30,11 @@ export default function ProfileScreen({ navigation }) {
          <View style={styles.profileContainer}>
             <Image 
             style={styles.image}
-            source={{url: 'https://isobarscience-1bfd8.kxcdn.com/wp-content/uploads/2020/09/default-profile-picture1.jpg'}}/>
+            source={{url: 'https://www.asiamediajournal.com/wp-content/uploads/2022/11/Default-PFP.jpg'}}/>
             <View style={styles.profileTextContainer}>
-              <Text style={styles.subheader}>Ben</Text>
+              <Text style={styles.subheader}>
+                {user? user.email.substring(0, user.email.indexOf('@')) : 'Guest'}
+              </Text>
               <Text style={styles.thirdHeader}>Palatine, IL</Text>
             </View>
 
@@ -76,7 +81,7 @@ export default function ProfileScreen({ navigation }) {
     },
     subheader:{
       fontFamily: 'Open Sans',
-      fontSize: 32,
+      fontSize: 28,
     },
     thirdHeader:{
       fontFamily: 'Open Sans',
