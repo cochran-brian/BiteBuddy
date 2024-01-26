@@ -12,7 +12,8 @@ export default function CreateScreen({ navigation }) {
 
   const fetchData = async (latitude, longitude, radius, token) => {
     try {
-      const response = await fetch('http://10.20.224.199:3000/restaurants', { // apparently "localhost" makes the server host the phone instead of the computer
+      console.log("fetching data...")
+      const response = await fetch('http://10.20.226.42:3000/restaurants', { // apparently "localhost" makes the server host the phone instead of the computer
         method: "POST",
         mode: "cors",
         credentials: "same-origin",
@@ -27,6 +28,7 @@ export default function CreateScreen({ navigation }) {
         })
       }); 
       const result = await response.json();
+      console.log("result", result)
       return result;
     } catch (error) {
       console.error('Error fetching data:', error); // error handling here
@@ -35,7 +37,7 @@ export default function CreateScreen({ navigation }) {
 
   const storeData = async (data, latitude, longitude, radius, token) => {
     try {
-      const response = await fetch('http://10.20.225.198:3000/storage', { // apparently "localhost" makes the server host the phone instead of the computer
+      const response = await fetch('http://10.20.226.42:3000/storage', { // apparently "localhost" makes the server host the phone instead of the computer
         method: "POST",
         mode: "cors",
         credentials: "same-origin",
@@ -66,7 +68,9 @@ export default function CreateScreen({ navigation }) {
 
   const getCustomToken = async (latitude, longitude, radius) => {
     try {
+      console.log("getting custom token...")
       const customToken = await AsyncStorage.getItem('customToken');
+      console.log("custom token found", customToken);
       if (customToken) {
         const { data } = await fetchData(latitude, longitude, radius, customToken);
         console.log(data)
@@ -80,6 +84,7 @@ export default function CreateScreen({ navigation }) {
   };
 
   const handlePress = async (latitude, longitude, radius) => {
+    console.log("button pressed")
     const result = await getCustomToken(latitude, longitude, radius);
     changeScreens(result.data, result.uid);
   }

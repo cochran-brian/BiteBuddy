@@ -18,8 +18,7 @@ export default function SignInScreen({ navigation }) {
   const handleSubmit = async () => {
     try {
       var user = await signInWithEmailAndPassword(auth, email, password)
-      console.log(user)
-      const response = await fetch('http://10.20.225.198:3000/auth', { // apparently "localhost" makes the server host the phone instead of the computer
+      const response = await fetch('http://10.20.226.42:3000/auth', { // apparently "localhost" makes the server host the phone instead of the computer
         method: "POST",
         mode: "cors",
         credentials: "same-origin",
@@ -31,15 +30,13 @@ export default function SignInScreen({ navigation }) {
           firebaseToken: user._tokenResponse.idToken
         })
       }); 
-      console.log(response.json())
-      const customToken = await response.json().token; // PROMISE FROM API IS NOT RESOLVING BEFORE THIS LINE
-      const userCredential = await signInWithCustomToken(auth, customToken)
-      console.log(userCredential.user)
-      storeCustomToken(customToken);
+      const tokenBody = await response.json();
+      const userCredential = await signInWithCustomToken(auth, tokenBody.token)
+      storeCustomToken(tokenBody.token);      
+      navigation.navigate("Home");
     } catch (error) {
       console.error('Error authenticating user:', error); // error handling here
     }
-    navigation.navigate("Home");
   }
 
   const storeCustomToken = async (token) => {
