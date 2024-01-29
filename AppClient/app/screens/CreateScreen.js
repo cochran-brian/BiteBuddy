@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { StyleSheet, Text, TouchableHighlight, View, Pressable } from 'react-native';
+import { StyleSheet, Text, TouchableHighlight, View, Pressable, Dimensions } from 'react-native';
 import colors from '../config/colors';
-import Slider from '@react-native-community/slider';
 import { db, auth } from '../firebase/config';
 import { setDoc, doc, collection } from "firebase/firestore"
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Slider } from '@miblanchard/react-native-slider';
+import { Makiko } from 'react-native-textinput-effects'
 
 export default function CreateScreen({ navigation }) {
 
@@ -92,19 +93,33 @@ export default function CreateScreen({ navigation }) {
                   CREATE A BITE</Text>
 
               <View 
-                style={{marginTop: 80}}>
-                <Text 
-                  style={styles.promptText}>
+                style={styles.contentContainer}>
+               <View>
+                <Text style={styles.promptText}>
+                    Location</Text>
+                <Makiko
+                  
+                />
+               </View>
+
+               <View>
+                <Text style={styles.promptText}>
                     Search Radius</Text>
                 <Slider
+                  containerStyle={{width: Dimensions.get('screen').width * 0.85}}
                   step={1}
                   minimumValue={5}
                   maximumValue={50}
-                  onValueChange={(val) => setSlideValue(val)}
+                  value={slideValue}
+                  onValueChange={val => setSlideValue(val)}
+                  renderThumbComponent={() => <View style={styles.sliderThumb}/>}
+                  renderBelowThumbComponent={() => 
+                    <Text style={styles.sliderText}>{slideValue} miles</Text>}
+                  trackStyle={{height: 8}}
+                  trackClickable={false}
                 />
-                <Text 
-                  style={styles.slider}>
-                    {slideValue} mi</Text>
+                </View>
+                
               </View>
 
               <View 
@@ -130,6 +145,12 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: '#fff',
       alignItems: 'center',
+    },
+    contentContainer:{
+      flex: 3,
+      marginTop: 80,
+      backgroundColor: 'pink',
+      justifyContent: 'space-around'
     },
     header:{
       color: 'black',
@@ -162,9 +183,16 @@ const styles = StyleSheet.create({
       width: 375,
       textAlign: 'left'
     },
-    slider: {
-      alignSelf: 'center', 
+    sliderText: {
+      alignSelf: 'center',
+      marginLeft: -36,
       fontFamily: 'Open Sans', 
       fontSize: 18
+    },
+    sliderThumb:{
+      width: 40,
+      height: 24,
+      borderRadius: 14,
+      backgroundColor: colors.primary
     }
 });

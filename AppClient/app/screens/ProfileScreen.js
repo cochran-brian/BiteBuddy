@@ -9,6 +9,7 @@ export default function ProfileScreen({ navigation }) {
 
   const fire = getAuth();
   const user = auth.currentUser;
+  console.log(user)
 
     const logOut = async () => {
         try {
@@ -58,7 +59,7 @@ export default function ProfileScreen({ navigation }) {
         </View>
         
         <View style={styles.footerContainer}>
-          <Text style={styles.footerText}>Joined on 1.25.23</Text>
+          <Text style={styles.footerText}>Joined on {Date(user.createdAt).toString().substring(0, 15)}</Text>
         </View>
         </View>
     );
