@@ -18,8 +18,8 @@ export default function SignInScreen({ navigation }) {
   const handleSubmit = async () => {
     try {
       var user = await signInWithEmailAndPassword(auth, email, password)
-      const response = await fetch('http://10.20.226.42:3000/auth', { // apparently "localhost" makes the server host the phone instead of the computer
-        method: "POST",
+      const response = await fetch(`http://${process.env.IP_ADDRESS}:${process.env.PORT}/auth`, { // apparently "localhost" makes the server host the phone instead of the computer
+        method: "POST", 
         mode: "cors",
         credentials: "same-origin",
         headers: {
@@ -30,20 +30,18 @@ export default function SignInScreen({ navigation }) {
           firebaseToken: user._tokenResponse.idToken
         })
       }); 
-      const tokenBody = await response.json();
-      const userCredential = await signInWithCustomToken(auth, tokenBody.token)
-      storeCustomToken(tokenBody.token);      
+      storeIdToken(user._tokenResponse.idToken);      
       navigation.navigate("Home");
     } catch (error) {
       console.error('Error authenticating user:', error); // error handling here
     }
   }
 
-  const storeCustomToken = async (token) => {
+  const storeIdToken = async (token) => {
     try {
-      await AsyncStorage.setItem('customToken', token);
+      await AsyncStorage.setItem('idToken', token);
     } catch (error) {
-      console.error('Error storing custom token:', error);
+      console.error('Error storing ID token:', error);
     }
   };
 

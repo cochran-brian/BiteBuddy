@@ -21,7 +21,7 @@ export default function RegisterScreen({ navigation }) {
       const user = await createUserWithEmailAndPassword(auth, email, password)
       console.log(user._tokenResponse.idToken)
 
-      const response = await fetch('http://10.20.226.42:3000/auth', { // apparently "localhost" makes the server host the phone instead of the computer
+      const response = await fetch(`http://${process.env.IP_ADDRESS}:${process.env.PORT}/auth`, { // apparently "localhost" makes the server host the phone instead of the computer
         method: "POST",
         mode: "cors",
         credentials: "same-origin",
@@ -35,9 +35,7 @@ export default function RegisterScreen({ navigation }) {
           firebaseToken: user._tokenResponse.idToken
         })
       }); 
-      const tokenBody = await response.json();
-      const userCredential = await signInWithCustomToken(auth, tokenBody.token)
-      storeCustomToken(tokenBody.token);      
+      storeIdToken(user._tokenResponse.idToken);         
       navigation.navigate('Home');
     } catch (error) {
       console.error('Error creating user:', error); // error handling here

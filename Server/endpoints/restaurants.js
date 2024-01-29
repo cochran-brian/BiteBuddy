@@ -9,9 +9,9 @@ router.post("/", async (req, res) => {
     console.log(req.body);
     try {
         const data = await fetchData(req.body.latitude, req.body.longitude, req.body.radius);
-        return res.send({ data: data, });
+        res.send({ data: data });
     } catch (error) {
-        return res.status(400).send({ message: error });
+        res.status(500).send({ error: error });
     }
 })
 

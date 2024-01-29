@@ -2,7 +2,7 @@ const admin = require('firebase-admin');
 
 const authenticateMiddleware = async (req, res, next) => {
     try {
-        console.log("in middleware")
+        console.log("Authenticating...")
         const { authorization } = req.headers;
         console.log(authorization)
         
@@ -14,7 +14,7 @@ const authenticateMiddleware = async (req, res, next) => {
 
         const decodedToken = await admin.auth().verifyIdToken(idToken);
         req.user = decodedToken; // Attach user information to the request object
-        console.log('user is authenticated')
+        console.log('User is authenticated')
         next();
     } catch (error) {
         console.error('Authentication error:', error);
