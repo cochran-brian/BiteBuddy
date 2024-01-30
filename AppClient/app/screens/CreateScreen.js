@@ -1,15 +1,16 @@
 import { useState } from 'react';
-import { StyleSheet, Text, TouchableHighlight, View, Pressable, Dimensions } from 'react-native';
+import { StyleSheet, Text, TouchableHighlight, View, Pressable, Dimensions, Touchable, TouchableWithoutFeedback, Keyboard, TextInput } from 'react-native';
 import colors from '../config/colors';
 import { db, auth } from '../firebase/config';
 import { setDoc, doc, collection } from "firebase/firestore"
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Slider } from '@miblanchard/react-native-slider';
-import { Makiko } from 'react-native-textinput-effects'
+import { FontAwesome5 } from '@expo/vector-icons';
 
 export default function CreateScreen({ navigation }) {
 
-  const [slideValue, setSlideValue] = useState(0);
+  const [slideValue, setSlideValue] = useState(5);
+  const [searchedLocation, setSearchedLocation] = useState('');
 
   const fetchData = async (latitude, longitude, radius, token) => {
     try {
@@ -92,6 +93,7 @@ export default function CreateScreen({ navigation }) {
   }
     
     return(
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View 
           style={styles.container}>
               <Text 
@@ -103,9 +105,13 @@ export default function CreateScreen({ navigation }) {
                <View>
                 <Text style={styles.promptText}>
                     Location</Text>
-                {/* <Makiko
-                  
-                /> */}
+
+                <View style={styles.textInput}>
+                  <FontAwesome5 name="search-location" size={32} color="black" style={{marginLeft: 10}} />
+                  <TextInput
+                    onChangeText={(text) => setSearchedLocation(text)} 
+                    style={styles.inputContent} />
+                </View>
                </View>
 
                <View>
@@ -141,8 +147,9 @@ export default function CreateScreen({ navigation }) {
                   CREATE BITE</Text>
             </TouchableHighlight>
               </View>
-
+           
           </View>
+          </TouchableWithoutFeedback>
       )
 }
 
@@ -182,6 +189,20 @@ const styles = StyleSheet.create({
       color: 'white', 
       fontFamily: 'Open Sans', 
       fontSize: 20
+    },
+    textInput:{
+      borderWidth: 4,
+      borderRadius: 60,
+      flexDirection: 'row',
+      alignItems: 'center',
+      height: 54,
+      marginTop: 6
+    },
+    inputContent:{
+      fontFamily: 'Open Sans',
+      width: Dimensions.get('screen').width * 0.75,
+      fontSize: 1,
+      marginLeft: 8
     },
     promptText:{
       fontFamily: 'Open Sans SemiBold',
