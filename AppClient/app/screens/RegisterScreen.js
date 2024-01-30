@@ -19,7 +19,6 @@ export default function RegisterScreen({ navigation }) {
   async function onSubmitPressed(){
     try {
       const user = await createUserWithEmailAndPassword(auth, email, password)
-      console.log(user._tokenResponse.idToken)
 
       const response = await fetch(`http://${process.env.IP_ADDRESS}:${process.env.PORT}/auth`, { // apparently "localhost" makes the server host the phone instead of the computer
         method: "POST",

@@ -1,10 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const { db } = require("../firebase/config");
+const authenticateMiddleware = require("../middleware/authenticateMiddleware");
 
-router.use((req, res, next) => {
-    next();
-})
+router.use(authenticateMiddleware)
 
 router.post("/", async (req, res) => {
     try {
