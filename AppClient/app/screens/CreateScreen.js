@@ -5,12 +5,26 @@ import { db, auth } from '../firebase/config';
 import { setDoc, doc, collection } from "firebase/firestore"
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Slider } from '@miblanchard/react-native-slider';
+import DropdownSelect from 'react-native-input-select';
 import { FontAwesome5 } from '@expo/vector-icons';
 
 export default function CreateScreen({ navigation }) {
 
   const [slideValue, setSlideValue] = useState(5);
   const [searchedLocation, setSearchedLocation] = useState('');
+  const [dropDownPicked, setDropDownPicked] = useState([])
+
+
+  const dropDownData =  [
+    {label: 'American 🇺🇸', value: 'AMR'},
+    {label: 'Italian 🇮🇹', value: 'ITA'},
+    {label: 'Mexican 🇲🇽', value: 'MEX'},
+    {label: 'Japanese 🇯🇵', value: 'JAP'},
+    {label: 'Chinese 🇨🇳', value: 'CHI'},
+    {label: 'Indian 🇮🇳', value: 'IND'},
+    {label: 'German 🇩🇪', value: 'GER'},
+    {label: 'French 🇫🇷', value: 'FRN'},
+  ]
 
   const fetchData = async (latitude, longitude, radius, token) => {
     try {
@@ -131,6 +145,21 @@ export default function CreateScreen({ navigation }) {
                   trackClickable={false}
                 />
                 </View>
+                  <Text style={styles.promptText}>
+                      Cuisine</Text>
+                 <DropdownSelect
+                    placeholder='Any'
+                    options={dropDownData}
+                    isMultiple={true}
+                    dropdownStyle={styles.dropDown}
+                    selectedValue={dropDownPicked}
+                    onValueChange={(itemValue) => setDropDownPicked(itemValue)}
+                    primaryColor={colors.primary}
+                    checkboxComponentStyles={{checkboxLabelStyle: styles.dropDownText}}
+                  />
+                <View>
+
+                </View>
                 
               </View>
 
@@ -163,7 +192,8 @@ const styles = StyleSheet.create({
       flex: 3,
       marginTop: 80,
       backgroundColor: 'pink',
-      justifyContent: 'space-around'
+      justifyContent: 'space-around',
+      alignItems: 'flex-start'
     },
     header:{
       color: 'black',
@@ -201,7 +231,8 @@ const styles = StyleSheet.create({
     inputContent:{
       fontFamily: 'Open Sans',
       width: Dimensions.get('screen').width * 0.75,
-      fontSize: 1,
+      height: 52,
+      fontSize: 16,
       marginLeft: 8
     },
     promptText:{
@@ -221,5 +252,16 @@ const styles = StyleSheet.create({
       height: 24,
       borderRadius: 14,
       backgroundColor: colors.primary
+    },
+    dropDown:{
+      width: Dimensions.get('screen').width * 0.85,
+      marginTop: -28,
+
+    },
+    dropDownText:{
+      fontFamily: 'Open Sans',
+      fontSize: 16,
+      color: colors.primary,
+    
     }
 });
