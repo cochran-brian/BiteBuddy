@@ -16,6 +16,8 @@ router.post("/", async (req, res) => {
 })
 
 async function storeData(data, latitude, longitude, radius) {
+
+    console.log(data)
     try {
       const docRef = await db.collection('bites').add({
         timestamp: Date.now(),

@@ -7,9 +7,7 @@ import colors from '../config/colors';
 
 export default function ProfileScreen({ navigation }) {
 
-  const fire = getAuth();
   const user = auth.currentUser;
-  console.log(user)
 
     const logOut = async () => {
         try {

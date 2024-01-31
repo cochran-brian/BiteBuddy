@@ -9,6 +9,7 @@ router.use((req, res, next) => {
 
 router.post("/", async (req, res) => {
     try{
+        console.log("auth")
         const decodedToken = await validateFirebaseToken(req.body.firebaseToken);
         const userId = decodedToken.uid;
         const userEmail = decodedToken.email;

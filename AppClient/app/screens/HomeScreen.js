@@ -9,13 +9,10 @@ import { Pagination } from 'react-native-snap-carousel';
 
 export default function HomeScreen({ navigation }) {
 
-  const ITERATION_LIMIT = 2;
-
   const [radius, setRadius] = useState(1500);
   const [locationLat, setLocationLat] = useState('42.095271881586406'); 
   const [locationLong, setLocationLong] = useState('-88.06476939999999'); 
-  const [done, setDone] = useState(undefined);
-  const [places, setPlaces] = useState(null);
+  const [data, setData] = useState([]);
 
   const[carouselIndex, setCarouselIndex] = useState(0);
 
@@ -30,10 +27,11 @@ export default function HomeScreen({ navigation }) {
   // }
 
   useEffect(() => {
-    setTimeout(() => {
-      //fetchData();
-      setDone(true);
-    }, 1000);
+    setData([0]) // TEMPORARILY HERE SO THAT THE HOME SCREEN LOADS WITHOUT GETTING THE ACTUAL API DATA
+    //fetchData("42.11673643618475", "-88.03444504789003", "10000");
+    // setTimeout(() => {
+      
+    // }, 500);
   }, []); 
 
 
@@ -45,33 +43,37 @@ export default function HomeScreen({ navigation }) {
     );
 }
   
-  async function fetchData(){
-    var data = await fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+locationLat+'%2C'+locationLong+'&radius='+radius+'&type=restaurant&opennow=true&key='+process.env.GOOGLE_MAPS_API_KEY)
-    data = await data.json();
-
-    promises = await data.results.slice(0, ITERATION_LIMIT).map(async (place) => {
-      try{
-        const response = await fetch('https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference='+place.photos[0].photo_reference+'&key='+process.env.GOOGLE_MAPS_API_KEY);
-        return {
-            name: place.name,
-            address: place.vicinity, 
-            rating: place.rating,
-            imageURL: response.url,
-          }
-      } catch (error) {
-        console.error(error);
-      }
-    })
-    data = await Promise.all(promises);
-    setPlaces(data);
-    setDone(true);
-
-    console.log(data);
+const fetchData = async (latitude, longitude, radius) => {
+  try {
+    console.log(process.env.PORT, process.env.IP_ADDRESS)
+    console.log("fetching data...")
+    const response = await fetch(`http://${process.env.IP_ADDRESS}:${process.env.PORT}/restaurants`, { // apparently "localhost" makes the server host the phone instead of the computer
+      method: "POST",
+      mode: "cors",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+        //Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        latitude: latitude,
+        longitude: longitude,
+        radius: radius,
+        //categories: dropDownPicked ? [...dropDownPicked] : []
+      })
+    }); 
+    const result = await response.json();
+    console.log("result", result)
+    setData(result.data.businesses);
+  } catch (error) {
+    console.error('Error fetching data:', error); // error handling here
   }
+}
+
 
   return (
     <>
-    {!done?(
+    {data.length == 0 ?(
       <View 
         style={[styles.container, {justifyContent: 'center'}]}>
         <Text 

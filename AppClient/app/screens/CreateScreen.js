@@ -28,6 +28,7 @@ export default function CreateScreen({ navigation }) {
 
   const fetchData = async (latitude, longitude, radius, token) => {
     try {
+      console.log(process.env.PORT, process.env.IP_ADDRESS)
       console.log("fetching data...")
       const response = await fetch(`http://${process.env.IP_ADDRESS}:${process.env.PORT}/restaurants`, { // apparently "localhost" makes the server host the phone instead of the computer
         method: "POST",
@@ -40,12 +41,13 @@ export default function CreateScreen({ navigation }) {
         body: JSON.stringify({
           latitude: latitude,
           longitude: longitude,
-          radius: radius
+          radius: radius,
+          //categories: dropDownPicked ? [...dropDownPicked] : []
         })
       }); 
       const result = await response.json();
       console.log("result", result)
-      return result.data;
+      return result.data.businesses;
     } catch (error) {
       console.error('Error fetching data:', error); // error handling here
     }
