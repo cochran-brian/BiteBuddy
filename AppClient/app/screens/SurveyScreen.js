@@ -5,13 +5,14 @@ import { db, auth } from '../firebase/config';
 import { setDoc, doc, collection, getDocs } from "firebase/firestore"
 import SurveyCard from '../components/SurveyCard';
 import Carousel from 'react-native-snap-carousel';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function SurveySceen({ route, navigation }) {
 
   const [done, setDone] = useState(false);
 
-  const { data, uid, name } = route.params;
+  const { data, uid } = route.params;
 
   const LIMIT = 8;
 
@@ -38,44 +39,55 @@ export default function SurveySceen({ route, navigation }) {
     );
 }
 
+const storeRatings = async (ratings, name, uid, token) => {
+  try {
+    const response = await fetch(`http://${process.env.IP_ADDRESS}:${process.env.PORT}/survey`, { // apparently "localhost" makes the server host the phone instead of the computer
+      method: "POST",
+      mode: "cors",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ratings: ratings,
+        name: name,
+        token: token,
+        uid: uid
+      })
+    }); 
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error('Error storing data:', error); // error handling here
+  }
+}
+
 rating = async(r) => {
-  console.log('Index: ' + this._carousel.currentIndex + ' => ' + r);
 
   localRatings[this._carousel.currentIndex] = r
 
-  if(this._carousel.currentIndex >= dataSubset.length - 1) {
+  if(this._carousel.currentIndex >= dataSubset.length - 1) { // LAST CARD
+    // const userRatingsDocRef =  doc(collection(db, uid), 'ratings');
+    // await setDoc(userRatingsDocRef, {
+    //   survey_code: uid,
+    // });
+    // const subcollectionRef = collection(userRatingsDocRef, 'user_ratings');
+    // const subDocRef = doc(subcollectionRef, userName);
+    // await setDoc(subDocRef, {
+    //   ratings_array: localRatings
+    // });
 
-    
-    if(auth.currentUser) {
-      userName = auth.currentUser.email;
-    } else {
-      userName = name;
-    }
+    const idToken = await AsyncStorage.getItem('idToken');
 
-    const userRatingsDocRef =  doc(collection(db, uid), 'ratings');
-    await setDoc(userRatingsDocRef, {
-      survey_code: uid,
-    });
-    const subcollectionRef = collection(userRatingsDocRef, 'user_ratings');
-    const subDocRef = doc(subcollectionRef, userName);
-    await setDoc(subDocRef, {
-      ratings_array: localRatings
-    });
+    storeRatings(localRatings, null, uid, idToken);
 
-
-    
-
-    
-    
-    // console.log("Top => " + topRecommendation);
-    // console.log("Similar => " + similarRecommendation);
-
-    navigation.navigate('Waiting', {
-      data: dataSubset,
-      nonSurveyData: nonSurveyData,
-      uid: uid,
-      name: userName,
-    })
+    // navigation.navigate('Waiting', {
+    //   data: dataSubset,
+    //   nonSurveyData: nonSurveyData,
+    //   uid: uid,
+    //   name: userName,
+    // })
+    navigation.navigate('Waiting')
   }
 }
 

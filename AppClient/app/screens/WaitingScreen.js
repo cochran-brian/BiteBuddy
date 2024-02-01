@@ -14,7 +14,7 @@ export default function WaitingScreen({route, navigation}){
 
     const[refreshing, setRefreshing] = useState(false);
 
-    const {data, nonSurveyData, code, name} = route.params;
+    // const {data, nonSurveyData, code, name} = route.params;
 
     //TODO Create state var that contains the users joining the survey
     const[surveyUsers, setSurveyUsers] = useState([name]);

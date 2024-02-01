@@ -17,6 +17,7 @@ export default function SignInScreen({ navigation }) {
 
   const handleSubmit = async () => {
     try {
+      console.log(process.env.IP_ADDRESS, process.env.PORT)
       var user = await signInWithEmailAndPassword(auth, email, password)
       const response = await fetch(`http://${process.env.IP_ADDRESS}:${process.env.PORT}/auth`, { // apparently "localhost" makes the server host the phone instead of the computer
         method: "POST", 
