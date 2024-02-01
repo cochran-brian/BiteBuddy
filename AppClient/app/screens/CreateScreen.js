@@ -10,9 +10,10 @@ import { FontAwesome5 } from '@expo/vector-icons';
 
 export default function CreateScreen({ navigation }) {
 
-  const [slideValue, setSlideValue] = useState(5);
-  const [searchedLocation, setSearchedLocation] = useState('');
-  const [dropDownPicked, setDropDownPicked] = useState([])
+  const [slideValue, setSlideValue] = useState(5); // Value displayed on slider
+  const [searchedLocation, setSearchedLocation] = useState(''); // String entered by user
+  const [dropDownPicked, setDropDownPicked] = useState([]) // Array of the values from dropdown selections
+  const [plPicked, setPlPicked] = useState(0) // 0-None Selected, 1-$, 2-$$, 3-$$$,
 
 
   const dropDownData =  [
@@ -25,6 +26,10 @@ export default function CreateScreen({ navigation }) {
     {label: 'German 🇩🇪', value: 'GER'},
     {label: 'French 🇫🇷', value: 'FRN'},
   ]
+
+  const onPlPress = (num) => {
+    setPlPicked(num);
+  }
 
   const fetchData = async (latitude, longitude, radius, token) => {
     try {
@@ -147,20 +152,35 @@ export default function CreateScreen({ navigation }) {
                   trackClickable={false}
                 />
                 </View>
+                <View>
                   <Text style={styles.promptText}>
                       Cuisine</Text>
                  <DropdownSelect
                     placeholder='Any'
+                    placeholderStyle={[styles.header, {fontSize: 16, marginTop: 0}]}
                     options={dropDownData}
                     isMultiple={true}
                     dropdownStyle={styles.dropDown}
+                    dropdownContainerStyle={{height: 50}}
                     selectedValue={dropDownPicked}
                     onValueChange={(itemValue) => setDropDownPicked(itemValue)}
                     primaryColor={colors.primary}
                     checkboxComponentStyles={{checkboxLabelStyle: styles.dropDownText}}
+                    multipleSelectedItemStyle={{fontFamily: 'Open Sans SemiBold'}}
+                    dropdownIconStyle={{top: 30, right: 12}}
                   />
+                </View>
                 <View>
-
+                  <Text style={styles.promptText}>
+                        Price Level</Text>
+                  <View style={styles.plButtonContainer}>
+                    <TouchableHighlight style={plPicked == 1? styles.curPLButton : styles.plButton} onPress={() => onPlPress(1)}>
+                      <Text style={plPicked == 1? styles.curPlText : styles.plText}>$</Text></TouchableHighlight>
+                    <TouchableHighlight style={plPicked == 2? styles.curPLButton : styles.plButton} onPress={() => onPlPress(2)}>
+                      <Text style={plPicked == 2? styles.curPlText : styles.plText}>$$</Text></TouchableHighlight>
+                    <TouchableHighlight style={plPicked == 3? styles.curPLButton : styles.plButton} onPress={() => onPlPress(3)}>
+                      <Text style={plPicked == 3? styles.curPlText : styles.plText}>$$$</Text></TouchableHighlight>
+                  </View>
                 </View>
                 
               </View>
@@ -191,8 +211,8 @@ const styles = StyleSheet.create({
       alignItems: 'center',
     },
     contentContainer:{
-      flex: 3,
-      marginTop: 80,
+      flex: 4,
+      marginTop: 20,
       backgroundColor: 'pink',
       justifyContent: 'space-around',
       alignItems: 'flex-start'
@@ -234,7 +254,7 @@ const styles = StyleSheet.create({
       fontFamily: 'Open Sans',
       width: Dimensions.get('screen').width * 0.75,
       height: 52,
-      fontSize: 16,
+      fontSize: 18,
       marginLeft: 8
     },
     promptText:{
@@ -257,13 +277,46 @@ const styles = StyleSheet.create({
     },
     dropDown:{
       width: Dimensions.get('screen').width * 0.85,
-      marginTop: -28,
-
+      marginTop: 6,
+      borderRadius: 28
     },
     dropDownText:{
       fontFamily: 'Open Sans',
       fontSize: 16,
       color: colors.primary,
-    
+    },
+    plButtonContainer: {
+      flexDirection:'row',
+      justifyContent: 'space-around',
+      alignItems: 'center',
+      marginHorizontal: 14,
+      marginTop: 8,
+    },
+    plButton:{
+      width: 100, 
+      height: 74,
+      borderRadius: 26,
+      borderColor: colors.primary,
+      borderWidth: 4,
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    curPLButton:{
+     backgroundColor: colors.primary,
+     width: 100, 
+     height: 74,
+     borderRadius: 26,
+     justifyContent: 'center',
+     alignItems: 'center'
+    },
+    plText:{
+      fontSize: 24,
+      fontFamily: 'Open Sans',
+      color: colors.primary
+    },
+    curPlText:{
+      fontSize: 24,
+      fontFamily: 'Open Sans',
+      color: 'white'
     }
 });
