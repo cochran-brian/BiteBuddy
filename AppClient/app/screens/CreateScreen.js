@@ -5,6 +5,7 @@ import { db, auth } from '../firebase/config';
 import { setDoc, doc, collection } from "firebase/firestore"
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Slider } from '@miblanchard/react-native-slider';
+import { Rating } from '@kolking/react-native-rating';
 import DropdownSelect from 'react-native-input-select';
 import { FontAwesome5 } from '@expo/vector-icons';
 
@@ -14,6 +15,7 @@ export default function CreateScreen({ navigation }) {
   const [searchedLocation, setSearchedLocation] = useState(''); // String entered by user
   const [dropDownPicked, setDropDownPicked] = useState([]) // Array of the values from dropdown selections
   const [plPicked, setPlPicked] = useState(0) // 0-None Selected, 1-$, 2-$$, 3-$$$,
+  const [rating, setRating] = useState(0) //Rating selected on stars (/5)
 
 
   const dropDownData =  [
@@ -139,7 +141,7 @@ export default function CreateScreen({ navigation }) {
                 <Text style={styles.promptText}>
                     Search Radius</Text>
                 <Slider
-                  containerStyle={{width: Dimensions.get('screen').width * 0.85}}
+                  containerStyle={{width: Dimensions.get('screen').width * 0.85, alignSelf: 'center'}}
                   step={1}
                   minimumValue={5}
                   maximumValue={50}
@@ -161,12 +163,12 @@ export default function CreateScreen({ navigation }) {
                     options={dropDownData}
                     isMultiple={true}
                     dropdownStyle={styles.dropDown}
-                    dropdownContainerStyle={{height: 50}}
+                    dropdownContainerStyle={{height: 34,  alignSelf: 'center'}}
                     selectedValue={dropDownPicked}
                     onValueChange={(itemValue) => setDropDownPicked(itemValue)}
                     primaryColor={colors.primary}
                     checkboxComponentStyles={{checkboxLabelStyle: styles.dropDownText}}
-                    multipleSelectedItemStyle={{fontFamily: 'Open Sans SemiBold'}}
+                    multipleSelectedItemStyle={{fontFamily: 'Open Sans', height: 34, borderRadius: 18}}
                     dropdownIconStyle={{top: 30, right: 12}}
                   />
                 </View>
@@ -182,7 +184,19 @@ export default function CreateScreen({ navigation }) {
                       <Text style={plPicked == 3? styles.curPlText : styles.plText}>$$$</Text></TouchableHighlight>
                   </View>
                 </View>
-                
+
+                <View>
+                  <Text style={[styles.promptText, {marginTop: -8}]}>
+                          Min Rating</Text>
+                  <Rating
+                        size={52}
+                        rating={rating}
+                        spacing={10}
+                        onChange={(rating) => setRating(rating)}
+                        fillColor={colors.primary}
+                        touchColor={colors.primary}
+                        style={styles.ratingsStyle}/>
+                </View>
               </View>
 
               <View 
@@ -211,14 +225,15 @@ const styles = StyleSheet.create({
       alignItems: 'center',
     },
     contentContainer:{
-      flex: 4,
-      marginTop: 20,
-      backgroundColor: 'pink',
-      justifyContent: 'space-around',
+      flex: 5,
+      marginTop: 4,
+      paddingVertical: 8,
+      //ackgroundColor: 'pink',
+      justifyContent: 'space-between',
       alignItems: 'flex-start'
     },
     header:{
-      color: 'black',
+      color: colors.primary,
       fontFamily: 'Open Sans',
       fontSize: 45,
       marginTop: 80,
@@ -226,7 +241,7 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
       flex: 1, 
-      justifyContent: 'flex-end'
+      justifyContent: 'flex-end',
     },
     bottomButton:{
       width: 310,
@@ -247,6 +262,7 @@ const styles = StyleSheet.create({
       borderRadius: 60,
       flexDirection: 'row',
       alignItems: 'center',
+      alignSelf: 'center',
       height: 54,
       marginTop: 6
     },
@@ -277,8 +293,10 @@ const styles = StyleSheet.create({
     },
     dropDown:{
       width: Dimensions.get('screen').width * 0.85,
+      height: 74,
       marginTop: 6,
-      borderRadius: 28
+      borderRadius: 28,
+     
     },
     dropDownText:{
       fontFamily: 'Open Sans',
@@ -318,5 +336,8 @@ const styles = StyleSheet.create({
       fontSize: 24,
       fontFamily: 'Open Sans',
       color: 'white'
-    }
+    },
+    ratingsStyle:{
+      alignSelf:"center",
+    },
 });
