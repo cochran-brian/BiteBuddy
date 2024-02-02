@@ -4,19 +4,9 @@ const { db } = require("../firebase/config");
 
 router.post("/", async (req, res) => {
     try {
-        var name = "";
         console.log(req.body.data)
-        if(req.body.token) {
-            const decodedToken = await validateFirebaseToken(req.body.firebaseToken);
-            console.log(decodedToken)
-            name = decodedToken.name;
-        } else if (req.body.name) {
-            name = req.body.name;
-        } else {
-            name = "Guest";
-        }
-
-        await storeData(req.body.ratings, name, req.body.uid);
+        const decodedToken = await validateFirebaseToken(req.body.firebaseToken);
+        await storeData(req.body.ratings, decodedToken ? decodedToken.name : "Guest", req.body.uid);
         return res.send({ message: "Success" });
     } catch (error) {
         return res.status(500).send({ error: "Error storing data " + error });

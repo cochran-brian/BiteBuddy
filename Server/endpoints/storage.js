@@ -8,14 +8,16 @@ router.use(authenticateMiddleware)
 router.post("/", async (req, res) => {
     try {
         console.log(req.body.data)
-        const uid = await storeData(req.body.data, req.body.latitude, req.body.longitude, req.body.radius);
+        const { authorization } = req.headers;
+        const idToken = authorization.split('Bearer ')[1];
+        const uid = await storeData(req.body.data, req.body.latitude, req.body.longitude, req.body.radiu, idToken);
         return res.send({ uid: uid });
     } catch (error) {
         return res.status(500).send({ error: "Error storing data " + error });
     }
 })
 
-async function storeData(data, latitude, longitude, radius) {
+async function storeData(data, latitude, longitude, radius, token) {
 
     console.log(data)
     try {
@@ -24,7 +26,7 @@ async function storeData(data, latitude, longitude, radius) {
         search_radius: radius,
         host_latitude: latitude,
         host_longitude: longitude,
-        //host_email: auth.currentUser.email
+        host_id_token: token
       });
   
       await Promise.all(data.map(async (place) => {

@@ -10,22 +10,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function SurveySceen({ route, navigation }) {
 
-  const [done, setDone] = useState(false);
-
   const { data, uid } = route.params;
-
-  const LIMIT = 8;
-
-  const dataSubset = data.slice(0, LIMIT);
-  const nonSurveyData = data.slice(LIMIT);
-
   var localRatings = new Array(data.length);
-
-  var userName;
-  
-
- 
-  console.log(dataSubset)
 
   renderItem = ({item, index}) => {
     console.log(item);
@@ -39,7 +25,7 @@ export default function SurveySceen({ route, navigation }) {
     );
 }
 
-const storeRatings = async (ratings, name, uid, token) => {
+const storeRatings = async (ratings, uid, token) => {
   try {
     const response = await fetch(`http://${process.env.IP_ADDRESS}:${process.env.PORT}/survey`, { // apparently "localhost" makes the server host the phone instead of the computer
       method: "POST",
@@ -50,7 +36,6 @@ const storeRatings = async (ratings, name, uid, token) => {
       },
       body: JSON.stringify({
         ratings: ratings,
-        name: name,
         token: token,
         uid: uid
       })
@@ -62,9 +47,9 @@ const storeRatings = async (ratings, name, uid, token) => {
   }
 }
 
-rating = async(r) => {
+rating = async (rating) => {
 
-  localRatings[this._carousel.currentIndex] = r
+  localRatings[this._carousel.currentIndex] = rating
 
   if(this._carousel.currentIndex >= dataSubset.length - 1) { // LAST CARD
     // const userRatingsDocRef =  doc(collection(db, uid), 'ratings');
@@ -78,8 +63,8 @@ rating = async(r) => {
     // });
 
     const idToken = await AsyncStorage.getItem('idToken');
-
-    storeRatings(localRatings, null, uid, idToken);
+    await storeRatings(localRatings, uid, idToken); // RIGHT NOW ONLY AUTHENTICATED USERS WILL HAVE NAME
+    // NEED TO CHANGE THIS WHEN WE MAKE THE WEBSITE
 
     // navigation.navigate('Waiting', {
     //   data: dataSubset,
@@ -91,24 +76,15 @@ rating = async(r) => {
   }
 }
 
-
-  useEffect(() => {
-    setTimeout(() => {
-      console.log("Loading Datum")
-      setDone(true);
-    }, 1000);
-  }, []); 
-
-
     return(
       <>
-      {!done ? (
+      {/* {!done ? (
         <View 
           style={[styles.container, {justifyContent: 'center'}]}>
           <Text 
             style={[styles.header, {marginTop: 0}]}>BITE BUDDY</Text>
         </View>
-      ) : (
+      ) : ( */}
         <SafeAreaView style={styles.container}>
             <Text style={styles.header}>BITE BUDDY</Text>
 
@@ -151,8 +127,8 @@ rating = async(r) => {
             </View>
             
           </SafeAreaView>
-        )
-      }
+        {/* )
+      } */}
       </>
     )
 }
