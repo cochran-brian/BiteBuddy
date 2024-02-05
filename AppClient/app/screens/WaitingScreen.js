@@ -17,7 +17,8 @@ export default function WaitingScreen({route, navigation}){
     // const {data, nonSurveyData, code, name} = route.params;
 
     //TODO Create state var that contains the users joining the survey
-    const[surveyUsers, setSurveyUsers] = useState([name]);
+    
+    //const[surveyUsers, setSurveyUsers] = useState([name]);
     
     const[isHost, setIsHost] = useState(false);
 
@@ -29,8 +30,8 @@ export default function WaitingScreen({route, navigation}){
       }, 1500);
     }
 
-    const userRatingsDocRef =  doc(collection(db, code), 'ratings');
-    const subcollectionRef = collection(userRatingsDocRef, 'user_ratings');
+    // const userRatingsDocRef =  doc(collection(db, code), 'ratings');
+    // const subcollectionRef = collection(userRatingsDocRef, 'user_ratings');
     
     async function getNames() {
       const querySnapshot = await getDocs(subcollectionRef);
@@ -74,14 +75,14 @@ export default function WaitingScreen({route, navigation}){
 
     
 
-    useEffect(() => {
-        setTimeout(() => {
-          console.log("Loading")
-          checkForHost()
-          getNames()
-          setDone(true);
-        }, 1500);
-      }, []); 
+    // useEffect(() => {
+    //     setTimeout(() => {
+    //       console.log("Loading")
+    //       checkForHost()
+    //       getNames()
+    //       setDone(true);
+    //     }, 1500);
+    //   }, []); 
 
   return (
     <>

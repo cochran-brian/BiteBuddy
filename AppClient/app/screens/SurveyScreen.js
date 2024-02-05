@@ -6,6 +6,7 @@ import { setDoc, doc, collection, getDocs } from "firebase/firestore"
 import SurveyCard from '../components/SurveyCard';
 import Carousel from 'react-native-snap-carousel';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {IP_ADDRESS, PORT} from "@env"
 
 
 export default function SurveySceen({ route, navigation }) {
@@ -27,7 +28,7 @@ export default function SurveySceen({ route, navigation }) {
 
 const storeRatings = async (ratings, uid, token) => {
   try {
-    const response = await fetch(`http://${process.env.IP_ADDRESS}:${process.env.PORT}/survey`, { // apparently "localhost" makes the server host the phone instead of the computer
+    const response = await fetch(`http://${IP_ADDRESS}:${PORT}/survey`, { // apparently "localhost" makes the server host the phone instead of the computer
       method: "POST",
       mode: "cors",
       credentials: "same-origin",
@@ -51,7 +52,7 @@ rating = async (rating) => {
 
   localRatings[this._carousel.currentIndex] = rating
 
-  if(this._carousel.currentIndex >= dataSubset.length - 1) { // LAST CARD
+  if(this._carousel.currentIndex >= data.length - 1) { // LAST CARD
     // const userRatingsDocRef =  doc(collection(db, uid), 'ratings');
     // await setDoc(userRatingsDocRef, {
     //   survey_code: uid,
@@ -91,7 +92,7 @@ rating = async (rating) => {
             <View style={{height: 490, marginTop: 20}}>
             <Carousel
               ref={(c) => { this._carousel = c; }}
-              data={dataSubset}
+              data={data}
               renderItem={this.renderItem}
               sliderWidth={400}
               itemWidth={320}

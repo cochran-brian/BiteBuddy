@@ -6,6 +6,7 @@ import { Ionicons, AntDesign } from '@expo/vector-icons';
 import MainTextInput from '../components/MainTextInput';
 import { auth } from '../firebase/config';
 import { signInWithEmailAndPassword, signInWithCustomToken, createUserWithEmailAndPassword } from 'firebase/auth';
+import {IP_ADDRESS, PORT} from "@env"
 
 export default function RegisterScreen({ navigation }) {
 
@@ -21,7 +22,7 @@ export default function RegisterScreen({ navigation }) {
       
       const user = await createUserWithEmailAndPassword(auth, email, password)
 
-      const response = await fetch(`http://${process.env.IP_ADDRESS}:${process.env.PORT}/auth`, { // apparently "localhost" makes the server host the phone instead of the computer
+      const response = await fetch(`http://${IP_ADDRESS}:${PORT}/auth`, { // apparently "localhost" makes the server host the phone instead of the computer
         method: "POST",
         mode: "cors",
         credentials: "same-origin",

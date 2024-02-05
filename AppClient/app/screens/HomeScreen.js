@@ -6,6 +6,7 @@ import Carousel from 'react-native-snap-carousel';
 import SimplePlaceView from '../components/SimplePlaceView';
 import { Pagination } from 'react-native-snap-carousel';
 //import { ThreeDots, TailSpin } from 'react-loader-spinner';
+import {IP_ADDRESS, PORT} from "@env"
 
 export default function HomeScreen({ navigation }) {
 
@@ -47,7 +48,7 @@ const fetchData = async (latitude, longitude, radius) => {
   try {
     console.log(process.env.PORT, process.env.IP_ADDRESS)
     console.log("fetching data...")
-    const response = await fetch(`http://${process.env.IP_ADDRESS}:${process.env.PORT}/restaurants`, { // apparently "localhost" makes the server host the phone instead of the computer
+    const response = await fetch(`http://${IP_ADDRESS}:${PORT}/restaurants`, { // apparently "localhost" makes the server host the phone instead of the computer
       method: "POST",
       mode: "cors",
       credentials: "same-origin",

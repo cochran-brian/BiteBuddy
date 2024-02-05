@@ -8,6 +8,7 @@ import { Slider } from '@miblanchard/react-native-slider';
 import { Rating } from '@kolking/react-native-rating';
 import DropdownSelect from 'react-native-input-select';
 import { FontAwesome5 } from '@expo/vector-icons';
+import {IP_ADDRESS, PORT} from "@env"
 
 export default function CreateScreen({ navigation }) {
 
@@ -35,9 +36,9 @@ export default function CreateScreen({ navigation }) {
 
   const fetchData = async (latitude, longitude, radius, token) => {
     try {
-      console.log(process.env.PORT, process.env.IP_ADDRESS)
+      console.log(PORT, IP_ADDRESS)
       console.log("fetching data...")
-      const response = await fetch(`http://${process.env.IP_ADDRESS}:${process.env.PORT}/restaurants`, { // apparently "localhost" makes the server host the phone instead of the computer
+      const response = await fetch(`http://${IP_ADDRESS}:${PORT}/restaurants`, { // apparently "localhost" makes the server host the phone instead of the computer
         method: "POST",
         mode: "cors",
         credentials: "same-origin",
@@ -63,7 +64,7 @@ export default function CreateScreen({ navigation }) {
   const storeData = async (data, latitude, longitude, radius, token) => {
     try {
       console.log("storing data")
-      const response = await fetch(`http://${process.env.IP_ADDRESS}:${process.env.PORT}/storage`, { // apparently "localhost" makes the server host the phone instead of the computer
+      const response = await fetch(`http://${IP_ADDRESS}:${PORT}/storage`, { // apparently "localhost" makes the server host the phone instead of the computer
         method: "POST",
         mode: "cors",
         credentials: "same-origin",
@@ -98,11 +99,15 @@ export default function CreateScreen({ navigation }) {
       const idToken = await AsyncStorage.getItem('idToken');
       console.log("ID token found", idToken);
       if (idToken) {
-        const data = await fetchData(latitude, longitude, radius, idToken);
-        console.log(data)
-        const uid = await storeData(data, latitude, longitude, radius, idToken);
-        console.log(uid)
-        return { data: data, uid: uid };
+        try {
+          const data = await fetchData(latitude, longitude, radius, idToken);
+          console.log(data)
+          const uid = await storeData(data, latitude, longitude, radius, idToken);
+          console.log(uid)
+          return { data: data, uid: uid };
+        } catch (error) {
+          console.error("Error fetching or storing data: ", error);
+        }
       }
     } catch (error) {
       console.error('Error retrieving custom token:', error);
