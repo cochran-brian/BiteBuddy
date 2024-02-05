@@ -27,6 +27,7 @@ export default function NearbyScreen({ navigation }) {
       ItemSeparatorComponent={<View style={{height: 32}}/>}
       showsVerticalScrollIndicator={false}
       style={styles.flatList}
+      contentContainerStyle={{paddingBottom: 28}}
      />
 
     </View>
@@ -63,7 +64,7 @@ const styles = StyleSheet.create({
   },  
   flatList:{
     marginHorizontal: 38,
-    marginTop: 14
+    marginTop: 14,
   }
   
 });

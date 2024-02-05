@@ -122,7 +122,7 @@ export default function CreateScreen({ navigation }) {
               <Text 
                 style={styles.header}>
                   CREATE A BITE</Text>
-
+              
               <View 
                 style={styles.contentContainer}>
                <View>
@@ -198,7 +198,7 @@ export default function CreateScreen({ navigation }) {
                         style={styles.ratingsStyle}/>
                 </View>
               </View>
-
+            
               <View 
                 style={styles.buttonContainer}>
               <TouchableHighlight 
@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
       flex: 5,
       marginTop: 4,
       paddingVertical: 8,
-      //ackgroundColor: 'pink',
+      // backgroundColor: 'pink',
       justifyContent: 'space-between',
       alignItems: 'flex-start'
     },
