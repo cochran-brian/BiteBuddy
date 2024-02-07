@@ -11,8 +11,10 @@ import {IP_ADDRESS, PORT} from "@env"
 
 export default function SurveySceen({ route, navigation }) {
 
-  const { data, uid } = route.params;
-  var localRatings = new Array(data.length);
+  const { latitude, longitude, radius } = route.params;
+  var localRating;
+  const [data, setData] = useState([])
+  var uid;
 
   renderItem = ({item, index}) => {
     console.log(item);
@@ -26,15 +28,96 @@ export default function SurveySceen({ route, navigation }) {
     );
 }
 
-const storeRatings = async (ratings, uid, token) => {
+useEffect(() => {
+  getIdToken(latitude, longitude, radius);
+}, [])
+
+const fetchData = async (latitude, longitude, radius, token) => {
   try {
-    const response = await fetch(`http://${IP_ADDRESS}:${PORT}/survey`, { // apparently "localhost" makes the server host the phone instead of the computer
+    console.log(PORT, IP_ADDRESS)
+    console.log("fetching data...")
+    const response = await fetch(`http://localhost:3000/restaurants`, { // apparently "localhost" makes the server host the phone instead of the computer
       method: "POST",
       mode: "cors",
       credentials: "same-origin",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        latitude: latitude,
+        longitude: longitude,
+        radius: radius,
+        //categories: dropDownPicked ? [...dropDownPicked] : []
+      })
+    }); 
+    const result = await response.json();
+    console.log("result", result)
+    return result.data.businesses;
+  } catch (error) {
+    console.error('Error fetching data:', error); // error handling here
+  }
+}
+
+const storeData = async (data, latitude, longitude, radius, token) => {
+  try {
+    console.log("storing data")
+    const response = await fetch(`http://localhost:3000/storage`, { // apparently "localhost" makes the server host the phone instead of the computer
+      method: "POST",
+      mode: "cors",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        data: data,
+        latitude: latitude,
+        longitude: longitude,
+        radius: radius
+      })
+    }); 
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error('Error fetching data:', error); // error handling here
+  }
+}
+
+const getIdToken = async (latitude, longitude, radius) => {
+  try {
+    console.log("getting ID token...")
+    const idToken = await AsyncStorage.getItem('idToken');
+    console.log("ID token found", idToken);
+    if (idToken) {
+      try {
+        const data = await fetchData(latitude, longitude, radius, idToken);
+        console.log(data)
+        const docUid = await storeData(data, latitude, longitude, radius, idToken);
+        console.log(uid)
+        // return { data: data, uid: uid };
+        uid = docUid;
+        localRatings = new Array(data.length);
+        setData(data)
+      } catch (error) {
+        console.error("Error fetching or storing data: ", error);
+      }
+    }
+  } catch (error) {
+    console.error('Error retrieving custom token:', error);
+  }
+};
+
+
+const storeRatings = async (ratings, uid, token) => {
+  try {
+    const response = await fetch(`http://localhost:3000/survey`, { // apparently "localhost" makes the server host the phone instead of the computer
+      method: "POST",
+      mode: "cors",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+        //Authorization: `Bearer ${token}`
       },
       body: JSON.stringify({
         ratings: ratings,
@@ -48,44 +131,27 @@ const storeRatings = async (ratings, uid, token) => {
   }
 }
 
-rating = async (rating) => {
-
+const rating = async (rating) => {
   localRatings[this._carousel.currentIndex] = rating
-
   if(this._carousel.currentIndex >= data.length - 1) { // LAST CARD
-    // const userRatingsDocRef =  doc(collection(db, uid), 'ratings');
-    // await setDoc(userRatingsDocRef, {
-    //   survey_code: uid,
-    // });
-    // const subcollectionRef = collection(userRatingsDocRef, 'user_ratings');
-    // const subDocRef = doc(subcollectionRef, userName);
-    // await setDoc(subDocRef, {
-    //   ratings_array: localRatings
-    // });
 
     const idToken = await AsyncStorage.getItem('idToken');
     await storeRatings(localRatings, uid, idToken); // RIGHT NOW ONLY AUTHENTICATED USERS WILL HAVE NAME
     // NEED TO CHANGE THIS WHEN WE MAKE THE WEBSITE
 
-    // navigation.navigate('Waiting', {
-    //   data: dataSubset,
-    //   nonSurveyData: nonSurveyData,
-    //   uid: uid,
-    //   name: userName,
-    // })
     navigation.navigate('Waiting')
   }
 }
 
     return(
       <>
-      {/* {!done ? (
+      {data.length === 0 ? (
         <View 
           style={[styles.container, {justifyContent: 'center'}]}>
           <Text 
             style={[styles.header, {marginTop: 0}]}>BITE BUDDY</Text>
         </View>
-      ) : ( */}
+      ) : (
         <SafeAreaView style={styles.container}>
             <Text style={styles.header}>BITE BUDDY</Text>
 
@@ -128,8 +194,8 @@ rating = async (rating) => {
             </View>
             
           </SafeAreaView>
-        {/* )
-      } */}
+        )
+      }
       </>
     )
 }

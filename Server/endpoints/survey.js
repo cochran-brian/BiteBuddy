@@ -8,16 +8,19 @@ router.post("/", async (req, res) => {
         console.log(req.body.uid)
       
         const name = "Guest"
-        const { authorization } = req.headers;
-        if (authorization.startsWith('Bearer ')) {
-            console.log(authorization)
-            const idToken = authorization.split('Bearer ')[1];
-            name = await auth.verifyIdToken(idToken);
-        }
-        console.log(name)
+        // const { authorization } = req.headers;
+        // if (authorization.startsWith('Bearer ')) {
+        //     console.log(authorization)
+        //     const idToken = authorization.split('Bearer ')[1];
+        //     console.log(idToken)
+        //     name = await auth.verifyIdToken(idToken);
+        //     console.log(name)
+        // }
+        // console.log(name)
 
-        await storeData(req.body.ratings, name, req.body.uid);
-        return res.send({ message: "Success" });
+        const userUid = await storeData(req.body.ratings, name, req.body.uid);
+        console.log(userUid);
+        return res.send({ userUid: userUid });
     } catch (error) {
         return res.status(500).send({ error: "Error storing data " + error });
     }
@@ -26,10 +29,12 @@ router.post("/", async (req, res) => {
 async function storeData(ratings, name, uid) {    
     try {
       console.log(uid)
-      await db.collection('bites').doc(uid).collection('ratings').doc(name).set({
+      const docRef = await db.collection('bites').doc(uid.uid).collection('ratings').add({
+        name: name,
         ratings: ratings,
         timestamp: Date.now()
     })
+    return docRef.id;
     } catch (error) {
       throw new Error("Couldn't add document: " + error);
     }

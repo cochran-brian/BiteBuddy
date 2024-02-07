@@ -20,7 +20,7 @@ export default function SignInScreen({ navigation }) {
     try {
       console.log(IP_ADDRESS,PORT)
       var user = await signInWithEmailAndPassword(auth, email, password)
-      const response = await fetch(`http://${IP_ADDRESS}:${PORT}/auth`, { // apparently "localhost" makes the server host the phone instead of the computer
+      const response = await fetch(`http://localhost:3000/auth`, { // apparently "localhost" makes the server host the phone instead of the computer
         method: "POST", 
         mode: "cors",
         credentials: "same-origin",

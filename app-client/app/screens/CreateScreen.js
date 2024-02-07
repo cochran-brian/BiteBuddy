@@ -34,90 +34,18 @@ export default function CreateScreen({ navigation }) {
     setPlPicked(num);
   }
 
-  const fetchData = async (latitude, longitude, radius, token) => {
-    try {
-      console.log(PORT, IP_ADDRESS)
-      console.log("fetching data...")
-      const response = await fetch(`http://${IP_ADDRESS}:${PORT}/restaurants`, { // apparently "localhost" makes the server host the phone instead of the computer
-        method: "POST",
-        mode: "cors",
-        credentials: "same-origin",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          latitude: latitude,
-          longitude: longitude,
-          radius: radius,
-          //categories: dropDownPicked ? [...dropDownPicked] : []
-        })
-      }); 
-      const result = await response.json();
-      console.log("result", result)
-      return result.data.businesses;
-    } catch (error) {
-      console.error('Error fetching data:', error); // error handling here
-    }
-  }
-
-  const storeData = async (data, latitude, longitude, radius, token) => {
-    try {
-      console.log("storing data")
-      const response = await fetch(`http://${IP_ADDRESS}:${PORT}/storage`, { // apparently "localhost" makes the server host the phone instead of the computer
-        method: "POST",
-        mode: "cors",
-        credentials: "same-origin",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          data: data,
-          latitude: latitude,
-          longitude: longitude,
-          radius: radius
-        })
-      }); 
-      const result = await response.json();
-      return result;
-    } catch (error) {
-      console.error('Error fetching data:', error); // error handling here
-    }
-  }
-
-  const changeScreens = (data, uid) => {
+  const changeScreens = (latitude, longitude, radius) => {
     navigation.navigate('Survey', {
-      data: data,
-      uid: uid
+      latitude: latitude,
+      longitude: longitude,
+      radius: radius
     })
   }
 
-  const getIdToken = async (latitude, longitude, radius) => {
-    try {
-      console.log("getting ID token...")
-      const idToken = await AsyncStorage.getItem('idToken');
-      console.log("ID token found", idToken);
-      if (idToken) {
-        try {
-          const data = await fetchData(latitude, longitude, radius, idToken);
-          console.log(data)
-          const uid = await storeData(data, latitude, longitude, radius, idToken);
-          console.log(uid)
-          return { data: data, uid: uid };
-        } catch (error) {
-          console.error("Error fetching or storing data: ", error);
-        }
-      }
-    } catch (error) {
-      console.error('Error retrieving custom token:', error);
-    }
-  };
-
   const handlePress = async (latitude, longitude, radius) => {
     console.log("button pressed")
-    const result = await getIdToken(latitude, longitude, radius);
-    changeScreens(result.data, result.uid);
+    // const result = await getIdToken(latitude, longitude, radius);
+    changeScreens(latitude, longitude, radius)
   }
     
     return(
