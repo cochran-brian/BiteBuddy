@@ -12,9 +12,9 @@ import {IP_ADDRESS, PORT} from "@env"
 export default function SurveySceen({ route, navigation }) {
 
   const { latitude, longitude, radius } = route.params;
-  var localRating;
   const [data, setData] = useState([])
-  var uid;
+  const [uid, setUid] = useState(null)
+  var ratings = [];
 
   renderItem = ({item, index}) => {
     console.log(item);
@@ -52,7 +52,6 @@ const fetchData = async (latitude, longitude, radius, token) => {
       })
     }); 
     const result = await response.json();
-    console.log("result", result)
     return result.data.businesses;
   } catch (error) {
     console.error('Error fetching data:', error); // error handling here
@@ -61,7 +60,7 @@ const fetchData = async (latitude, longitude, radius, token) => {
 
 const storeData = async (data, latitude, longitude, radius, token) => {
   try {
-    console.log("storing data")
+    console.log("Storing data...")
     const response = await fetch(`http://localhost:3000/storage`, { // apparently "localhost" makes the server host the phone instead of the computer
       method: "POST",
       mode: "cors",
@@ -92,13 +91,10 @@ const getIdToken = async (latitude, longitude, radius) => {
     if (idToken) {
       try {
         const data = await fetchData(latitude, longitude, radius, idToken);
-        console.log(data)
-        const docUid = await storeData(data, latitude, longitude, radius, idToken);
-        console.log(uid)
-        // return { data: data, uid: uid };
-        uid = docUid;
-        localRatings = new Array(data.length);
+        const response = await storeData(data, latitude, longitude, radius, idToken);
         setData(data)
+        console.log(response.uid)
+        setUid(response.uid);
       } catch (error) {
         console.error("Error fetching or storing data: ", error);
       }
@@ -111,6 +107,7 @@ const getIdToken = async (latitude, longitude, radius) => {
 
 const storeRatings = async (ratings, uid, token) => {
   try {
+    console.log(uid)
     const response = await fetch(`http://localhost:3000/survey`, { // apparently "localhost" makes the server host the phone instead of the computer
       method: "POST",
       mode: "cors",
@@ -132,11 +129,13 @@ const storeRatings = async (ratings, uid, token) => {
 }
 
 const rating = async (rating) => {
-  localRatings[this._carousel.currentIndex] = rating
+  // localRatings[this._carousel.currentIndex] = rating
+  ratings.push(rating);
   if(this._carousel.currentIndex >= data.length - 1) { // LAST CARD
 
     const idToken = await AsyncStorage.getItem('idToken');
-    await storeRatings(localRatings, uid, idToken); // RIGHT NOW ONLY AUTHENTICATED USERS WILL HAVE NAME
+    console.log(uid)
+    await storeRatings(ratings, uid, idToken); // RIGHT NOW ONLY AUTHENTICATED USERS WILL HAVE NAME
     // NEED TO CHANGE THIS WHEN WE MAKE THE WEBSITE
 
     navigation.navigate('Waiting')

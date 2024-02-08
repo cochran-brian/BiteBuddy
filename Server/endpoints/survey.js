@@ -29,7 +29,7 @@ router.post("/", async (req, res) => {
 async function storeData(ratings, name, uid) {    
     try {
       console.log(uid)
-      const docRef = await db.collection('bites').doc(uid.uid).collection('ratings').add({
+      const docRef = await db.collection('bites').doc(uid).collection('ratings').add({
         name: name,
         ratings: ratings,
         timestamp: Date.now()
