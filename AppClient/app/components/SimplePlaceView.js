@@ -3,6 +3,7 @@ import { Text, StyleSheet, View, Image, TouchableHighlight } from 'react-native'
 import { Rating } from '@kolking/react-native-rating';
 import { Feather } from '@expo/vector-icons';
 import colors from '../config/colors';
+import RatingStars from './RatingStars';
 
 function SimplePlaceView({ imageUri, name, address, rating}){
 
@@ -31,11 +32,11 @@ function SimplePlaceView({ imageUri, name, address, rating}){
                 </View>
                 <View 
                     style={styles.ratingContainer}>
-                    <Rating
-                        disabled={true}
-                        size={20}
+                     <RatingStars
                         rating={rating}
-                        fillColor={'gold'}/>
+                        width={120}
+                        height={30}
+                     />
                 </View>
             </View>
             <TouchableHighlight 
@@ -87,7 +88,8 @@ const styles = StyleSheet.create({
     ratingContainer: {
         justifyContent: 'flex-end', 
         flex: 1, 
-        marginBottom: 42
+        marginBottom: 42,
+        marginLeft: 6
     },
     button:{
         height: 48,

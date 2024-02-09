@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Text, StyleSheet, View, Image } from 'react-native';
 import { Rating } from '@kolking/react-native-rating';
 import colors from '../config/colors';
+import RatingStars from './RatingStars';
 
 function SurveyCard({ imageUri, name, address, rating, date }){
     return(
@@ -29,12 +30,13 @@ function SurveyCard({ imageUri, name, address, rating, date }){
                 <Text style={styles.textSubheader} numberOfLines={1}>American Cuisine</Text>
             </View>
         
-            <Rating
-                disabled={true}
-                size={36}
+            <View style={styles.ratingsStyle}>
+             <RatingStars
                 rating={rating}
-                fillColor={'gold'}
-                style={styles.ratingsStyle}/>
+                width={160}
+                height={30}
+             />
+            </View>
     </View>
     </View>
 )}
@@ -81,7 +83,7 @@ const styles = StyleSheet.create({
         marginLeft: 2
     },
     ratingsStyle:{
-        marginBottom: 24,
+        paddingBottom: 22,
         marginLeft: 18,
     }
 });

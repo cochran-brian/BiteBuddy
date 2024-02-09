@@ -1,36 +1,45 @@
-import { StyleSheet, Text, View, SafeAreaView, Dimensions, FlatList } from 'react-native';
+import { StyleSheet, Image } from 'react-native';
 import colors from '../config/colors';
 
-function RatingStars({rating}) {
+function RatingStars({rating, width, height}) {
     var imgPath = "";
 
     if(rating == 0){
-        imgPath = '../assets/yelpStars/zero'
+        imgPath = require('../assets/yelpStars/zero.png')
     }else if(rating == 0.5){
-        imgPath = '../assets/yelpStars/half'
+        imgPath = require('../assets/yelpStars/half.png')
     }else if(rating == 1.5){
-        imgPath = '../assets/yelpStars/oneAndHalf'
+        imgPath = require('../assets/yelpStars/oneAndHalf.png')
     }else if(rating == 2){
-        imgPath = '../assets/yelpStars/two'
+        imgPath = require('../assets/yelpStars/two.png')
     }else if(rating == 2.5){
-        imgPath = '../assets/yelpStars/twoAndHalf'
+        imgPath = require('../assets/yelpStars/twoAndHalf.png')
     }else if(rating == 3){
-        imgPath = '../assets/yelpStars/three'
+        imgPath = require('../assets/yelpStars/three.png')
     }else if(rating == 3.5){
-        imgPath = '../assets/yelpStars/threeAndHalf'
+        imgPath = require('../assets/yelpStars/threeAndHalf.png')
     }else if(rating == 4){
-        imgPath = '../assets/yelpStars/four'
+        imgPath = require('../assets/yelpStars/four.png')
     }else if(rating == 4.5){
-        imgPath = '../assets/yelpStars/fourAndHalf'
-    }else if(rating == 5){
-        imgPath = '../assets/yelpStars/five'
+        imgPath = require('../assets/yelpStars/fourAndHalf.png')
+    }else{
+        imgPath = require('../assets/yelpStars/five.png')
     }
 
     return(
         <Image
-          
+        style={[styles.image, {width: width}, {height: height}]}
+        source={imgPath}
         />
     )
 }
+
+const styles = StyleSheet.create({
+    image:{
+        resizeMode: 'contain',
+        width: 50,
+        height: 50
+    }
+})
 
 export default RatingStars;

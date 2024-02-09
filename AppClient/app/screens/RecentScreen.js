@@ -16,7 +16,7 @@ export default function RecentScreen({ navigation }) {
                 name = {'Chappski'}
                 imageUri={'https://lh3.googleusercontent.com/p/AF1QipP4XlKpdvnDQkFQGzxvw02lSqoFaWH64OZbnsV5=s1360-w1360-h1020'}
                 address={'754 W Euclid Ave, Palatine'}
-                rating={4.3}
+                rating={Math.round(Math.random() * 7 + 3) * 0.5}
                 date={'Fri, January ' + Math.round(Math.random() * 31 + 1)}
             />
         );
