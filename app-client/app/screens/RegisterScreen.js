@@ -5,46 +5,43 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { Ionicons, AntDesign } from '@expo/vector-icons';
 import MainTextInput from '../components/MainTextInput';
 import { auth } from '../firebase/config';
-import { signInWithEmailAndPassword, signInWithCustomToken, getAuth } from 'firebase/auth';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { signInWithEmailAndPassword, signInWithCustomToken, createUserWithEmailAndPassword } from 'firebase/auth';
+import {IP_ADDRESS, PORT} from "@env"
 
-export default function SignInScreen({ navigation }) {
+export default function RegisterScreen({ navigation }) {
 
   const [signingIn, setSigningIn] = useState(true);
 
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confPassword, setConfPassword] = useState("");
 
-  const handleSubmit = async () => {
+  async function onSubmitPressed(){
     try {
-      console.log(process.env.IP_ADDRESS, process.env.PORT)
-      var user = await signInWithEmailAndPassword(auth, email, password)
-      const response = await fetch(`http://${process.env.IP_ADDRESS}:${process.env.PORT}/auth`, { // apparently "localhost" makes the server host the phone instead of the computer
-        method: "POST", 
+      
+      const user = await createUserWithEmailAndPassword(auth, email, password)
+
+      const response = await fetch(`http://localhost:3000/auth`, { // apparently "localhost" makes the server host the phone instead of the computer
+        method: "POST",
         mode: "cors",
         credentials: "same-origin",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          newUser: false,
+          newUser: true,
+          firstName: name,
+          email: email,
           firebaseToken: user._tokenResponse.idToken
         })
       }); 
-      storeIdToken(user._tokenResponse.idToken);      
-      navigation.navigate("Home");
+      storeIdToken(user._tokenResponse.idToken);         
+      navigation.navigate('Home');
     } catch (error) {
-      console.error('Error authenticating user:', error); // error handling here
+      console.error('Error creating user:', error); // error handling here
     }
   }
-
-  const storeIdToken = async (token) => {
-    try {
-      await AsyncStorage.setItem('idToken', token);
-    } catch (error) {
-      console.error('Error storing ID token:', error);
-    }
-  };
 
   const changeDisplay = () => {
     if(signingIn) {
@@ -70,9 +67,15 @@ export default function SignInScreen({ navigation }) {
               BITE BUDDY</Text>
           <Text 
             style={[styles.lightText, {marginBottom: 16}]}>
-              Login to continue</Text>
+              Sign up to continue</Text>
 
           <View style={{alignItems: 'center'}}>
+          <MainTextInput
+            label={'Name'}
+            stateSetter={setName}
+            keyboardType={'default'}
+            password={false} />
+
           <MainTextInput
             label={'Email'}
             stateSetter={setEmail}
@@ -84,20 +87,26 @@ export default function SignInScreen({ navigation }) {
             stateSetter={setPassword}
             keyboardType={'default'} 
             password={true}/>
+
+          <MainTextInput
+            label={'Confirm Password'}
+            stateSetter={setConfPassword}
+            keyboardType={'default'} 
+            password={true}/>
           </View>
 
           <TouchableHighlight 
             style= {styles.bottomButton} 
-            onPress={() => handleSubmit()} 
+            onPress={onSubmitPressed} 
             underlayColor={colors.primaryDark}>
             <Text 
               style={styles.bottomButtonText}>
-                LOGIN</Text>
+                SIGN UP</Text>
           </TouchableHighlight>
 
           <View style={styles.seperatorContainer}>
             <View style={styles.seperatorLine}/>
-            <Text style={[styles.lightText, {fontSize: 16}]}>Or login with</Text>
+            <Text style={[styles.lightText, {fontSize: 16}]}>Or sign up with</Text>
             <View style={styles.seperatorLine}/>
           </View>
 
@@ -108,8 +117,8 @@ export default function SignInScreen({ navigation }) {
           </View>
 
         <View style={styles.bottomPromptContainer}>
-         <Text style={[styles.lightText, {fontSize: 16}]}>Don't have an account? </Text>
-         <Text style={styles.pressableText} onPress={() => navigation.navigate('Register')}>Sign up here</Text>
+         <Text style={[styles.lightText, {fontSize: 16}]}>Already have an account? </Text>
+         <Text style={styles.pressableText} onPress={() => navigation.navigate("Sign In")}>Login here</Text>
         </View>
          
 
@@ -141,7 +150,7 @@ const styles = StyleSheet.create({
   contentContainer:{
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: Dimensions.get('screen').height * 0.125
+    marginTop: Dimensions.get('screen').height * 0.05
     
   },
   header:{

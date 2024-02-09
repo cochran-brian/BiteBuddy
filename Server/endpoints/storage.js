@@ -10,7 +10,7 @@ router.post("/", async (req, res) => {
         console.log(req.body.data)
         const { authorization } = req.headers;
         const idToken = authorization.split('Bearer ')[1];
-        const uid = await storeData(req.body.data, req.body.latitude, req.body.longitude, req.body.radiu, idToken);
+        const uid = await storeData(req.body.data, req.body.latitude, req.body.longitude, req.body.radius, idToken);
         return res.send({ uid: uid });
     } catch (error) {
         return res.status(500).send({ error: "Error storing data " + error });
