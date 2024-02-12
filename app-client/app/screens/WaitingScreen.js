@@ -4,6 +4,7 @@ import { doc, collection, getDocs, getDoc } from "firebase/firestore"
 import { db, auth } from '../firebase/config';
 import { Foundation } from '@expo/vector-icons';
 import model from '../model';
+import RNEventSource from 'react-native-sse';
 
 import UserView from "../components/UserView";
 import colors from "../config/colors";
@@ -17,6 +18,30 @@ export default function WaitingScreen({route, navigation}){
     // const {data, nonSurveyData, code, name} = route.params;
 
     //TODO Create state var that contains the users joining the survey
+
+    const [eventData, setEventData] = useState(null);
+
+    useEffect(() => {
+      const eventSource = new RNEventSource('http://localhost:3000/waiting');
+  
+      // Event listener for receiving SSE messages
+      eventSource.addEventListener('message', (event) => {
+        const parsedData = JSON.parse(event.data);
+        console.log(parsedData)
+        setEventData(parsedData);
+      });
+  
+      // Event listener for handling errors
+      eventSource.addEventListener('error', (error) => {
+        console.error('SSE Error:', error);
+        eventSource.close();
+      });
+  
+      // Cleanup: Close the EventSource when the component unmounts
+      return () => {
+        eventSource.close();
+      };
+    }, []);
     
     //const[surveyUsers, setSurveyUsers] = useState([name]);
     
