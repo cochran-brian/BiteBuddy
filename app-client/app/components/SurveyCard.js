@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, StyleSheet, View, Image } from 'react-native';
+import { Text, StyleSheet, View, Image, TouchableHighlight } from 'react-native';
 import { Rating } from '@kolking/react-native-rating';
 import colors from '../config/colors';
 import RatingStars from './RatingStars';
@@ -36,6 +36,16 @@ function SurveyCard({ imageUri, name, address, rating, date }){
                 width={160}
                 height={30}
              />
+             <TouchableHighlight 
+                onPress={() => console.log("Yelp Pressed")} 
+                underlayColor={'lightgrey'}
+                style={{marginLeft: 20}}>
+              <Image
+                resizeMode='contain'
+                style={styles.yelpLogo}
+                source={require('../assets/yelp_logos/Logo/yelp_logo.png')}
+              />
+             </TouchableHighlight>
             </View>
     </View>
     </View>
@@ -83,8 +93,17 @@ const styles = StyleSheet.create({
         marginLeft: 2
     },
     ratingsStyle:{
-        paddingBottom: 22,
+        paddingBottom: 0,
         marginLeft: 18,
+        flexDirection: 'row',
+        alignItems: 'center',
+        height: 40,
+        marginBottom: 20
+    },
+    yelpLogo:{
+        width: 80, 
+        height: 30,
+        alignSelf: 'center'
     }
 });
 

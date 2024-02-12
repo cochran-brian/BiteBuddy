@@ -19,6 +19,7 @@ function SimplePlaceView({ imageUri, name, address, rating}){
             </Image>
             <View 
                 style={styles.textContainer}>
+                <View style={{flexDirection: 'row'}}>
                 <View 
                     style={{marginLeft: 5}}>
                     <Text 
@@ -30,6 +31,13 @@ function SimplePlaceView({ imageUri, name, address, rating}){
                         style={styles.textSubheader}>
                             {address}</Text>
                 </View>
+                    <TouchableHighlight 
+                        underlayColor={'grey'}
+                        onPress={onSharePressed}
+                        style={styles.button}>
+                            <Feather name="share" size={16} color="black" style={{marginLeft: 1}} />
+                    </TouchableHighlight>
+                </View>
                 <View 
                     style={styles.ratingContainer}>
                      <RatingStars
@@ -37,14 +45,13 @@ function SimplePlaceView({ imageUri, name, address, rating}){
                         width={120}
                         height={30}
                      />
+                     <Image 
+                      resizeMode='contain'
+                      style={styles.yelpLogo}
+                      source={require('../assets/yelp_logos/Logo/yelp_logo.png')}/>
                 </View>
             </View>
-            <TouchableHighlight 
-            underlayColor={'grey'}
-            onPress={onSharePressed}
-            style={styles.button}>
-                <Feather name="share" size={22} color="black" style={{marginLeft: 1}} />
-            </TouchableHighlight>
+            
         </View>
     )}
 
@@ -87,20 +94,28 @@ const styles = StyleSheet.create({
     },
     ratingContainer: {
         justifyContent: 'flex-end', 
+        alignItems: 'center',
+        flexDirection: 'row',
         flex: 1, 
         marginBottom: 42,
+        marginTop: 12,
         marginLeft: 6
     },
+    yelpLogo:{
+        height: 20,
+        width: 60,
+        marginLeft: 12
+    },
     button:{
-        height: 48,
-        width: 48,
-        borderRadius: 24,
+        height: 32,
+        width: 32,
+        borderRadius: 16,
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 2,
         borderColor: colors.primary,
         alignSelf: 'center',
-        marginRight: 12
+        marginLeft: 44
     }
 });
 
