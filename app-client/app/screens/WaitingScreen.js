@@ -11,9 +11,9 @@ import colors from "../config/colors";
 
 export default function WaitingScreen({route, navigation}){
 
-    const [done, setDone] = useState(false);
+    const [done, setDone] = useState(true);
 
-    const[refreshing, setRefreshing] = useState(false);
+    // const[refreshing, setRefreshing] = useState(false);
 
     // const {data, nonSurveyData, code, name} = route.params;
 
@@ -21,14 +21,16 @@ export default function WaitingScreen({route, navigation}){
 
     const [eventData, setEventData] = useState(null);
 
+    const { uid } = route.params
+
     useEffect(() => {
-      const eventSource = new RNEventSource('http://localhost:3000/waiting');
+      const eventSource = new RNEventSource(`http://localhost:3000/waiting?uid=${uid}`);
   
       // Event listener for receiving SSE messages
       eventSource.addEventListener('message', (event) => {
         const parsedData = JSON.parse(event.data);
         console.log(parsedData)
-        setEventData(parsedData);
+        setEventData(parsedData.names);
       });
   
       // Event listener for handling errors
@@ -45,29 +47,29 @@ export default function WaitingScreen({route, navigation}){
     
     //const[surveyUsers, setSurveyUsers] = useState([name]);
     
-    const[isHost, setIsHost] = useState(false);
+    // const[isHost, setIsHost] = useState(false);
 
-    function handleRefresh() {
-      setRefreshing(true);
-      setTimeout(() => {
-        getNames()
-        setRefreshing(false);
-      }, 1500);
-    }
+    // function handleRefresh() {
+    //   setRefreshing(true);
+    //   setTimeout(() => {
+    //     getNames()
+    //     setRefreshing(false);
+    //   }, 1500);
+    // }
 
     // const userRatingsDocRef =  doc(collection(db, code), 'ratings');
     // const subcollectionRef = collection(userRatingsDocRef, 'user_ratings');
     
-    async function getNames() {
-      const querySnapshot = await getDocs(subcollectionRef);
-      var userNames = [];
-      querySnapshot.forEach((doc) => {
-        //data.push(doc.data());
-        userNames.push(doc.id);
-        //user_ratings[doc.id] = doc.data().ratings_array;
-      });
-      setSurveyUsers(userNames);
-    }
+    // async function getNames() {
+    //   const querySnapshot = await getDocs(subcollectionRef);
+    //   var userNames = [];
+    //   querySnapshot.forEach((doc) => {
+    //     //data.push(doc.data());
+    //     userNames.push(doc.id);
+    //     //user_ratings[doc.id] = doc.data().ratings_array;
+    //   });
+    //   setSurveyUsers(userNames);
+    // }
 
     async function handleClick(){
       const querySnapshot = await getDocs(subcollectionRef);
@@ -75,28 +77,29 @@ export default function WaitingScreen({route, navigation}){
       querySnapshot.forEach((doc) => {
         user_ratings[doc.id] = doc.data().ratings_array;
       });
-
-      const modelResponse = model(data, nonSurveyData, user_ratings)
-      const topRecommendation = modelResponse.topVoted;
-      const similarRecommendation = modelResponse.topSimilar
-      const bottomRecomendation = modelResponse.bottomVoted
-
-      navigation.navigate('Result', {
-        top: topRecommendation,
-        similar: similarRecommendation,
-        bottom: bottomRecomendation
-      })
     }
 
-    async function checkForHost(){
-      const placesDocRef = doc(collection(db, code), 'places');
-      const placesDocSnap = await getDoc(placesDocRef);
-      setIsHost(name == placesDocSnap.data().host_email);
-    }
+    //   const modelResponse = model(data, nonSurveyData, user_ratings)
+    //   const topRecommendation = modelResponse.topVoted;
+    //   const similarRecommendation = modelResponse.topSimilar
+    //   const bottomRecomendation = modelResponse.bottomVoted
 
-    function navToHome(){
-      navigation.navigate("Home");
-    }
+    //   navigation.navigate('Result', {
+    //     top: topRecommendation,
+    //     similar: similarRecommendation,
+    //     bottom: bottomRecomendation
+    //   })
+    // }
+
+    // async function checkForHost(){
+    //   const placesDocRef = doc(collection(db, code), 'places');
+    //   const placesDocSnap = await getDoc(placesDocRef);
+    //   setIsHost(name == placesDocSnap.data().host_email);
+    // }
+
+    // function navToHome(){
+    //   navigation.navigate("Home");
+    // }
 
     
 
@@ -118,21 +121,18 @@ export default function WaitingScreen({route, navigation}){
         </View>
       ) : (
         <View style={styles.container}>
-          <ScrollView
-            refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={() => handleRefresh()} />
-        }>
+          <ScrollView>
    
       <View style={styles.headerContainer}>
         <Text style={styles.header}>BITE BUDDY</Text>
       </View>
 
-      <Text style={[styles.header, {fontSize: 32, marginTop: 0}]}>CODE: {code}</Text>
+      <Text style={[styles.header, {fontSize: 32, marginTop: 0}]}>CODE: </Text>
       
       <View style={{marginTop: '10%'}}/>
 
       <FlatList
-        data = {surveyUsers} 
+        data={eventData} 
         renderItem={({item}) => <UserView name={item} readyStatus={true}/>}
         scrollEnabled={false}
         // onRefresh={() => getNames()}
@@ -146,11 +146,13 @@ export default function WaitingScreen({route, navigation}){
     <TouchableHighlight 
         style={styles.bottomButton} 
         underlayColor={colors.primaryDark} 
-        onPress={isHost? () => {handleClick();} : () => {navToHome();}}>
+        // onPress={isHost? () => {handleClick();} : () => {navToHome();}}>
+        onPress={() => handleClick()}>
 
     <Text 
         style={styles.buttonText}>
-        {isHost? 'GET RESULTS' : 'BACK TO HOME'}</Text>
+        {/* {isHost? 'GET RESULTS' : 'BACK TO HOME'} */}
+        </Text>
       </TouchableHighlight>
     </View>
     </View>

@@ -10,9 +10,12 @@ router.get("/", async (req, res) => {
   
       // Send a comment to keep the connection open
       res.write(':ok\n\n');
+
+      console.log(req.query.uid)
   
-      const unsubscribe = db.collection('bites').doc(uid).collection('ratings')
+      const unsubscribe = db.collection('bites').doc(req.query.uid).collection('ratings')
         .onSnapshot((querySnapshot) => {
+            console.log("snapshot change")
           var names = [];
           querySnapshot.forEach((doc) => {
             names.push(doc.data().name);

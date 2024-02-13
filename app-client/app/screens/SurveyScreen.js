@@ -138,7 +138,9 @@ const rating = async (rating) => {
     await storeRatings(ratings, uid, idToken); // RIGHT NOW ONLY AUTHENTICATED USERS WILL HAVE NAME
     // NEED TO CHANGE THIS WHEN WE MAKE THE WEBSITE
 
-    navigation.navigate('Waiting')
+    navigation.navigate('Waiting', {
+      uid: uid
+    })
   }
 }
 
