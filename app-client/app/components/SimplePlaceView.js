@@ -19,7 +19,7 @@ function SimplePlaceView({ imageUri, name, address, rating}){
             </Image>
             <View 
                 style={styles.textContainer}>
-                <View style={{flexDirection: 'row'}}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <View 
                     style={{marginLeft: 5}}>
                     <Text 
@@ -45,11 +45,18 @@ function SimplePlaceView({ imageUri, name, address, rating}){
                         width={120}
                         height={30}
                      />
-                     <Image 
-                      resizeMode='contain'
-                      style={styles.yelpLogo}
-                      source={require('../assets/yelp_logos/Logo/yelp_logo.png')}/>
+                     <TouchableHighlight 
+                        onPress={() => console.log("Yelp Pressed")} 
+                        underlayColor={'lightgrey'}
+                        style={{marginLeft: 26}}>
+                        <Image 
+                            resizeMode='contain'
+                            style={styles.yelpLogo}
+                            source={require('../assets/yelp_logos/Logo/yelp_logo.png')}/>
+                    </TouchableHighlight>
                 </View>
+                <Text style={[styles.textSubheader, {marginLeft: 6}]}>
+                    Based on 523 reviews</Text>
             </View>
             
         </View>
@@ -75,7 +82,7 @@ const styles = StyleSheet.create({
     },
     textContainer: {
         flexDirection: 'column', 
-        height: 125, 
+        height: 94, 
         alignItems: 'left', 
         marginTop: 10, 
         marginLeft: 10, 
@@ -97,14 +104,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         flex: 1, 
-        marginBottom: 42,
         marginTop: 12,
         marginLeft: 6
     },
     yelpLogo:{
         height: 20,
         width: 60,
-        marginLeft: 12
     },
     button:{
         height: 32,
