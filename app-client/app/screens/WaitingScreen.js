@@ -11,9 +11,7 @@ import colors from "../config/colors";
 
 export default function WaitingScreen({route, navigation}){
 
-    const [done, setDone] = useState(true);
     const [eventData, setEventData] = useState(null);
-
     const { uid } = route.params
 
     useEffect(() => {
@@ -107,7 +105,7 @@ export default function WaitingScreen({route, navigation}){
 
   return (
     <>
-    {!done ? (
+    {!eventData ? (
         <View style={[styles.container, {justifyContent: 'center'}]}>
           <Text 
             style={[styles.header, {marginTop: 0}]}>BITE BUDDY</Text>
@@ -119,8 +117,6 @@ export default function WaitingScreen({route, navigation}){
       <View style={styles.headerContainer}>
         <Text style={styles.header}>BITE BUDDY</Text>
       </View>
-
-      <Text style={[styles.header, {fontSize: 32, marginTop: 0}]}>CODE: </Text>
       
       <View style={{marginTop: '10%'}}/>
 

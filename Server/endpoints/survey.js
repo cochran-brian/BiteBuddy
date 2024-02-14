@@ -11,9 +11,7 @@ router.post("/", async (req, res) => {
             const idToken = authorization.split('Bearer ')[1];
             try {
               const decodedToken = await admin.auth().verifyIdToken(idToken);
-              console.log(decodedToken)
               const doc = await db.collection('users').doc(decodedToken.email).get();
-              console.log(doc)
               if(doc.exists) {
                 name = doc.data().firstName
                 console.log(name)
@@ -24,9 +22,7 @@ router.post("/", async (req, res) => {
               console.error(error)
             }   
         }
-        console.log(name)
         const userUid = await storeData(req.body.ratings, name, req.body.uid);
-        console.log(userUid);
         return res.send({ userUid: userUid });
     } catch (error) {
         return res.status(500).send({ error: "Error storing data " + error });
