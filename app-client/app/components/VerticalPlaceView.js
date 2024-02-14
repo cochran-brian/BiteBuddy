@@ -5,11 +5,7 @@ import { Feather } from '@expo/vector-icons';
 import colors from '../config/colors';
 import RatingStars from './RatingStars';
 
-function SimplePlaceView({ imageUri, name, address, rating}){
-
-    const onSharePressed = () => {
-        console.log('Share Pressed')
-    }
+function VerticalPlaceView({ imageUri, name, address, rating}){
 
     const onYelpPress = () => {
         console.log("Yelp Pressed")
@@ -36,24 +32,18 @@ function SimplePlaceView({ imageUri, name, address, rating}){
                         style={styles.textSubheader}>
                             {address}</Text>
                 </View>
-                    <TouchableHighlight 
-                        underlayColor={'grey'}
-                        onPress={onSharePressed}
-                        style={styles.button}>
-                            <Feather name="share" size={16} color="black" style={{marginLeft: 1}} />
-                    </TouchableHighlight>
                 </View>
                 <View 
                     style={styles.ratingContainer}>
                      <RatingStars
                         rating={rating}
-                        width={120}
+                        width={90}
                         height={30}
                      />
                      <TouchableHighlight 
                         onPress={onYelpPress} 
                         underlayColor={'lightgrey'}
-                        style={{marginLeft: 26}}>
+                        style={{marginLeft: 8}}>
                         <Image 
                             resizeMode='contain'
                             style={styles.yelpLogo}
@@ -61,7 +51,7 @@ function SimplePlaceView({ imageUri, name, address, rating}){
                     </TouchableHighlight>
                 </View>
                 <Text style={[styles.textSubheader, {lineHeight: 10, marginLeft: 6,  fontSize: 10}]}>
-                    Based on 523 reviews</Text>
+                    (523 reviews)</Text>
             </View>
             
         </View>
@@ -69,9 +59,8 @@ function SimplePlaceView({ imageUri, name, address, rating}){
 
 const styles = StyleSheet.create({
     container:{
-        flexDirection: 'row',
-        width: '100%',
-        height: 110,
+        width: 160,
+        height: 210,
         backgroundColor: 'white',
         borderRadius: 12,
         borderWidth: 2,
@@ -80,13 +69,12 @@ const styles = StyleSheet.create({
         marginTop: 0,
     },
     image:{
-        width: 120,
-        height: '100%',
+        width: '100%',
+        height: 110,
         borderTopLeftRadius: 10,
-        borderBottomLeftRadius: 10
+        borderTopRightRadius: 10
     },
     textContainer: {
-        flexDirection: 'column', 
         height: 94, 
         alignItems: 'left', 
         marginTop: 10, 
@@ -114,7 +102,7 @@ const styles = StyleSheet.create({
     },
     yelpLogo:{
         height: 20,
-        width: 60,
+        width: 50,
     },
     button:{
         height: 32,
@@ -129,4 +117,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default SimplePlaceView;
+export default VerticalPlaceView;

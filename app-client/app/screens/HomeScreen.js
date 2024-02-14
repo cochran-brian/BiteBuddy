@@ -7,6 +7,7 @@ import SimplePlaceView from '../components/SimplePlaceView';
 import { Pagination } from 'react-native-snap-carousel';
 //import { ThreeDots, TailSpin } from 'react-loader-spinner';
 import {IP_ADDRESS, PORT} from "@env"
+import VerticalPlaceView from '../components/VerticalPlaceView';
 
 export default function HomeScreen({ navigation }) {
 
@@ -121,9 +122,10 @@ const fetchData = async (latitude, longitude, radius) => {
           data={[1, 2, 3, 4, 5]}
           renderItem={() => {
             return(
-            <View style={styles.restaurantCard}>
-              <Text>TEST Restaurant</Text>
-            </View>
+            <VerticalPlaceView
+              name={'Chappskido'}
+              address={'754 W Euclid Ave'}
+              imageUri={'https://lh3.googleusercontent.com/p/AF1QipP4XlKpdvnDQkFQGzxvw02lSqoFaWH64OZbnsV5=s1360-w1360-h1020'}/>
             )}}
         />
       </View>

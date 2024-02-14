@@ -24,7 +24,7 @@ export default function NearbyScreen({ navigation }) {
      <FlatList
       data={[1, 2, 3, 4, 5, 6, 7, 8]}
       renderItem={(name, rating, address, uri) => <SimplePlaceView name={'Chappies'} rating={Math.round(Math.random() * 7 + 3) * 0.5} address={'123 Testing St, Palatine'} imageUri={'https://s3-media0.fl.yelpcdn.com/bphoto/rfEpgx_TydswsZCxN4KcBA/348s.jpg'}/>}
-      ItemSeparatorComponent={<View style={{height: 32}}/>}
+      ItemSeparatorComponent={<View style={{height: 14}}/>}
       showsVerticalScrollIndicator={false}
       style={styles.flatList}
       contentContainerStyle={{paddingBottom: 28}}
