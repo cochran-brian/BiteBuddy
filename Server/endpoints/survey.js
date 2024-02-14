@@ -1,23 +1,30 @@
 const express = require("express");
 const router = express.Router();
+const admin = require('firebase-admin');
 const { db, auth } = require("../firebase/config");
 
 router.post("/", async (req, res) => {
-    try {
-        console.log(req.body.ratings)
-        console.log(req.body.uid)
-      
-        const name = "Guest"
-        // const { authorization } = req.headers;
-        // if (authorization.startsWith('Bearer ')) {
-        //     console.log(authorization)
-        //     const idToken = authorization.split('Bearer ')[1];
-        //     console.log(idToken)
-        //     name = await auth.verifyIdToken(idToken);
-        //     console.log(name)
-        // }
-        // console.log(name)
-
+    try {      
+        var name = "Guest"
+        const { authorization } = req.headers;
+        if (authorization.startsWith('Bearer ')) {
+            const idToken = authorization.split('Bearer ')[1];
+            try {
+              const decodedToken = await admin.auth().verifyIdToken(idToken);
+              console.log(decodedToken)
+              const doc = await db.collection('users').doc(decodedToken.email).get();
+              console.log(doc)
+              if(doc.exists) {
+                name = doc.data().firstName
+                console.log(name)
+              } else {
+                console.log("No such document")
+              }
+            } catch (error) {
+              console.error(error)
+            }   
+        }
+        console.log(name)
         const userUid = await storeData(req.body.ratings, name, req.body.uid);
         console.log(userUid);
         return res.send({ userUid: userUid });

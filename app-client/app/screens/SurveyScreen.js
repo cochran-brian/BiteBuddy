@@ -114,7 +114,7 @@ const storeRatings = async (ratings, uid, token) => {
       credentials: "same-origin",
       headers: {
         "Content-Type": "application/json",
-        //Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`
       },
       body: JSON.stringify({
         ratings: ratings,

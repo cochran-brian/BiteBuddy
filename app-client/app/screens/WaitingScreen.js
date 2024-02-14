@@ -12,13 +12,6 @@ import colors from "../config/colors";
 export default function WaitingScreen({route, navigation}){
 
     const [done, setDone] = useState(true);
-
-    // const[refreshing, setRefreshing] = useState(false);
-
-    // const {data, nonSurveyData, code, name} = route.params;
-
-    //TODO Create state var that contains the users joining the survey
-
     const [eventData, setEventData] = useState(null);
 
     const { uid } = route.params

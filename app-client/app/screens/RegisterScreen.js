@@ -43,6 +43,14 @@ export default function RegisterScreen({ navigation }) {
     }
   }
 
+  const storeIdToken = async (token) => {
+    try {
+      await AsyncStorage.setItem('idToken', token);
+    } catch (error) {
+      console.error('Error storing ID token:', error);
+    }
+  };
+
   const changeDisplay = () => {
     if(signingIn) {
       return <SignInView navigation={navigation}/>
