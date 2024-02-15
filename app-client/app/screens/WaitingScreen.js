@@ -62,13 +62,6 @@ export default function WaitingScreen({route, navigation}){
     //   setSurveyUsers(userNames);
     // }
 
-    async function handleClick(){
-      const querySnapshot = await getDocs(subcollectionRef);
-      var user_ratings = {};
-      querySnapshot.forEach((doc) => {
-        user_ratings[doc.id] = doc.data().ratings_array;
-      });
-    }
 
     //   const modelResponse = model(data, nonSurveyData, user_ratings)
     //   const topRecommendation = modelResponse.topVoted;
@@ -136,7 +129,9 @@ export default function WaitingScreen({route, navigation}){
         style={styles.bottomButton} 
         underlayColor={colors.primaryDark} 
         // onPress={isHost? () => {handleClick();} : () => {navToHome();}}>
-        onPress={() => handleClick()}>
+        onPress={() => {
+          navigation.navigate('Result', { uid })
+        }}>
 
     <Text 
         style={styles.buttonText}>

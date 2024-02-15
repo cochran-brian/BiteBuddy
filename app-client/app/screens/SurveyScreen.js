@@ -179,7 +179,7 @@ const rating = async (rating) => {
               <Pressable style={styles.button} 
               onPress={
                 () => {
-                rating(1)
+                rating(2)
                 this._carousel.snapToNext()
             }}>
                 <Text style={styles.emojis}>😐</Text>
@@ -187,7 +187,7 @@ const rating = async (rating) => {
               <Pressable style={styles.button} 
               onPress={
                 () => {
-                  rating(2)
+                  rating(5)
                   this._carousel.snapToNext()
                 }}>
                 <Text style={styles.emojis}>😁</Text>

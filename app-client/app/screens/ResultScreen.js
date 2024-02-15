@@ -7,7 +7,33 @@ import SimplePlaceView from '../components/SimplePlaceView';
 
 export default function ResultScreen({route, navigation}) {
 
-  const {top, similar, bottom} = route.params
+  const { uid } = route.params
+
+  useEffect(() => {
+    getRecommendation();
+  }, [])
+
+  const getRecommendation = async () => {
+    try {
+      console.log("fetching recommendation...")
+      const response = await fetch(`http://localhost:3000/results`, { // apparently "localhost" makes the server host the phone instead of the computer
+        method: "POST",
+        mode: "cors",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
+          // Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          uid: uid
+        })
+      }); 
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      console.error('Error fetching data:', error); // error handling here
+    }
+  }
 
   async function shareResults() {
     try {
@@ -30,12 +56,12 @@ export default function ResultScreen({route, navigation}) {
                 source={require('../assets/crown.png')}/> 
                 {/* Image courtesy of zky.icon via flaticon.com */}
               <Text 
-                style={styles.sectionTitle}>TOP RECOMMENDATION</Text>
-              <SimplePlaceView
+                style={styles.sectionTitle}>GROUP FAVORITE</Text>
+              {/* <SimplePlaceView
                 name={top.name}
                 address={top.address}
                 rating={top.rating}
-                imageUri={top.image_url}/>
+                imageUri={top.image_url}/> */}
             </SafeAreaView>
 
             <View 
@@ -45,22 +71,22 @@ export default function ResultScreen({route, navigation}) {
               style={{margin: '10%', marginTop: 16, marginBottom: '7%', alignItems: 'center'}}>
             <Text 
               style={[styles.sectionTitle, {fontSize: 22}]}>SOMEWHERE SIMILAR</Text>
-              <SimplePlaceView
+              {/* <SimplePlaceView
                 name={similar.name}
                 address={similar.address}
                 rating={similar.rating}
-                imageUri={similar.image_url}/>
+                imageUri={similar.image_url}/> */}
             </View>
 
             <View 
               style={{margin: '10%', marginTop: 0, marginBottom: '7%', alignItems: 'center'}}>
             <Text 
               style={[styles.sectionTitle, {fontSize: 22}]}>LEAST LIKED</Text>
-              <SimplePlaceView
+              {/* <SimplePlaceView
                 name={bottom.name}
                 address={bottom.address}
                 rating={bottom.rating}
-                imageUri={bottom.image_url}/>
+                imageUri={bottom.image_url}/> */}
             </View>
 
           <View 
