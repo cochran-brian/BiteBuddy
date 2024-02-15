@@ -103,15 +103,21 @@ const fetchData = async (latitude, longitude, radius) => {
       <Pagination
         containerStyle={{paddingVertical: 10}}
         activeDotIndex={carouselIndex}
-        dotsLength={5}
+        dotsLength={5} //TODO Change this to be length of data
       />
     </View>
 
     <View 
       style={[styles.recBox, {marginTop: 10}]}>
-      <Text 
-        style={{fontFamily: 'Open Sans', fontSize: 28}}>
-          Food nearby</Text>
+        <View style={styles.sectionHeaderContainer}>
+          <Text 
+            style={{fontFamily: 'Open Sans', fontSize: 28}}>
+              Food nearby</Text>
+          <Text 
+            onPress={() => navigation.navigate('Nearby')}
+            style={{fontFamily: 'Open Sans SemiBold', fontSize: 20, color: colors.primaryLight}}>
+              See All</Text>
+        </View>
 
       <View style={styles.listContainer}>
         <FlatList
@@ -120,12 +126,13 @@ const fetchData = async (latitude, longitude, radius) => {
           style={{width: Dimensions.get('screen').width, paddingLeft: 40}}
           contentContainerStyle={{paddingRight: 42}}
           data={[1, 2, 3, 4, 5]}
-          renderItem={() => {
+          renderItem={(name, address, imageUri, rating) => {
             return(
             <VerticalPlaceView
               name={'Chappskido'}
-              address={'754 W Euclid Ave'}
-              imageUri={'https://lh3.googleusercontent.com/p/AF1QipP4XlKpdvnDQkFQGzxvw02lSqoFaWH64OZbnsV5=s1360-w1360-h1020'}/>
+              address={'754 W Euclid Ave Palatine IL'}
+              imageUri={'https://lh3.googleusercontent.com/p/AF1QipP4XlKpdvnDQkFQGzxvw02lSqoFaWH64OZbnsV5=s1360-w1360-h1020'}
+              rating={4.5}/>
             )}}
         />
       </View>
@@ -201,6 +208,11 @@ const styles = StyleSheet.create({
     marginTop: 14, 
     height: 220, 
     marginLeft: -40
+  },
+  sectionHeaderContainer:{
+    flexDirection: 'row',
+    alignItems: 'flex-end', 
+    justifyContent: 'space-between'
   },
   restaurantCard: {
     width: 150, 

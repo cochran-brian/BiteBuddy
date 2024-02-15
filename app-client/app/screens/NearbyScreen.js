@@ -18,7 +18,7 @@ export default function NearbyScreen({ navigation }) {
 
      <View style={styles.subHeadContainer}>
         <Text style={styles.subHeader}>Food nearby</Text>
-        <Text style={[styles.lightText, {color: "#000080"}]} onPress={onFilterPress}>Filter</Text>
+        <Text style={[styles.lightText, {color: colors.primaryLight}]} onPress={onFilterPress}>Filter</Text>
      </View>
 
      <FlatList
