@@ -26,9 +26,9 @@ function SurveyCard({ imageUri, name, address, rating, date }){
                     {name}
                     {/* {(name.length > 25) ? name.substring(0, 25).toUpperCase() + "..." : name.toUpperCase()} */}
                 </Text>
-                <Text style={styles.textSubheader} numberOfLines={1}>$ • Breakfast & Brunch</Text>
+                <Text style={[styles.textSubheader, {fontFamily: 'Open Sans Medium'}]} numberOfLines={1}>$ • Breakfast & Brunch</Text>
                 <Text 
-                    numberOfLines={2}
+                    numberOfLines={1}
                     style={styles.textSubheader}>
                         {address}</Text>
                 <Text style={styles.textSubheader} numberOfLines={1}>American Cuisine</Text>
@@ -89,14 +89,14 @@ const styles = StyleSheet.create({
     },
     textTitle: {
         fontFamily: 'Open Sans', 
-        marginTop: -30,
-        fontSize: 30,
-        lineHeight: 35,
+        marginTop: -36,
+        fontSize: 26,
+        lineHeight: 38,
     },
     textSubheader: {
         fontFamily: 'Open Sans Light', 
-        fontSize: 20,
-        lineHeight: 26,
+        fontSize: 18,
+        lineHeight: 23,
         marginLeft: 2
     },
     ratingsStyle:{
@@ -110,11 +110,14 @@ const styles = StyleSheet.create({
     baseText: {
         fontFamily: 'Open Sans Light', 
         fontSize: 12,
-        width: 130
+        width: 130,
+        marginTop: 2,
+        color: 'grey'
     },
     yelpLogo:{
         width: 80, 
         height: 30,
+        marginBottom: 22,
         alignSelf: 'center'
     }
 });

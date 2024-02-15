@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Text, StyleSheet, View, Image, TouchableHighlight } from 'react-native';
 import { Rating } from '@kolking/react-native-rating';
-import { Feather } from '@expo/vector-icons';
+import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import colors from '../config/colors';
 import RatingStars from './RatingStars';
 
@@ -40,7 +40,7 @@ function SimplePlaceView({ imageUri, name, address, rating}){
                         underlayColor={'grey'}
                         onPress={onSharePressed}
                         style={styles.button}>
-                            <Feather name="share" size={16} color="black" style={{marginLeft: 1}} />
+                            <MaterialCommunityIcons name="share-variant" size={18} color="black" style={{marginLeft: 1}} />
                     </TouchableHighlight>
                 </View>
                 <View 
@@ -60,7 +60,7 @@ function SimplePlaceView({ imageUri, name, address, rating}){
                             source={require('../assets/yelp_logos/Logo/yelp_logo.png')}/>
                     </TouchableHighlight>
                 </View>
-                <Text style={[styles.textSubheader, {lineHeight: 10, marginLeft: 6,  fontSize: 10}]}>
+                <Text style={styles.reviewCountText}>
                     Based on 523 reviews</Text>
             </View>
             
@@ -104,6 +104,14 @@ const styles = StyleSheet.create({
         fontSize: 12,
         width: 130
     },
+    reviewCountText:{
+        fontFamily: 'Open Sans Light', 
+        color: 'grey',
+        width: 130,
+        lineHeight: 10, 
+        marginLeft: 6,  
+        fontSize: 10
+    },
     ratingContainer: {
         justifyContent: 'flex-end', 
         alignItems: 'center',
@@ -124,8 +132,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderWidth: 2,
         borderColor: colors.primary,
+        backgroundColor: '#fafafa',
         alignSelf: 'center',
-        marginLeft: 44
+        marginLeft: 42
     }
 });
 

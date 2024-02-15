@@ -22,13 +22,13 @@ function VerticalPlaceView({ imageUri, name, address, rating}){
                 style={styles.textContainer}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <View 
-                    style={{marginLeft: 5}}>
+                    style={{marginLeft: 2}}>
                     <Text 
                         numberOfLines={1}
                         style={styles.textTitle}>
                             {name}</Text>
                     <Text 
-                        numberOfLines={2}
+                        numberOfLines={1}
                         style={styles.textSubheader}>
                             {address}</Text>
                 </View>
@@ -38,19 +38,19 @@ function VerticalPlaceView({ imageUri, name, address, rating}){
                      <RatingStars
                         rating={rating}
                         width={90}
-                        height={30}
+                        height={20}
                      />
                      <TouchableHighlight 
                         onPress={onYelpPress} 
                         underlayColor={'lightgrey'}
-                        style={{marginLeft: 8}}>
+                        style={{marginLeft: 2}}>
                         <Image 
                             resizeMode='contain'
                             style={styles.yelpLogo}
                             source={require('../assets/yelp_logos/Logo/yelp_logo.png')}/>
                     </TouchableHighlight>
                 </View>
-                <Text style={[styles.textSubheader, {lineHeight: 10, marginLeft: 6,  fontSize: 10}]}>
+                <Text style={styles.reviewCountText}>
                     (523 reviews)</Text>
             </View>
             
@@ -59,14 +59,14 @@ function VerticalPlaceView({ imageUri, name, address, rating}){
 
 const styles = StyleSheet.create({
     container:{
-        width: 160,
-        height: 210,
+        width: 164,
+        height: 220,
         backgroundColor: 'white',
         borderRadius: 12,
         borderWidth: 2,
         borderColor: colors.primary,
         position: 'relative',
-        marginTop: 0,
+        marginRight: 10,
     },
     image:{
         width: '100%',
@@ -81,7 +81,6 @@ const styles = StyleSheet.create({
         marginLeft: 10, 
         marginRight: 10,
         flex: 1, 
-        flexWrap: 'wrap'
     },
     textTitle: {
         fontFamily: 'Open Sans', 
@@ -90,18 +89,28 @@ const styles = StyleSheet.create({
     textSubheader: {
         fontFamily: 'Open Sans Light', 
         fontSize: 12,
-        width: 130
+        width: 140,
+        marginLeft: 2
+    },
+    reviewCountText: {
+        fontFamily: 'Open Sans Light', 
+        color: 'grey',
+        width: 130,
+        lineHeight: 10, 
+        marginLeft: 4,  
+        fontSize: 10, 
+        marginBottom: 10,
+        marginTop: -10
     },
     ratingContainer: {
-        justifyContent: 'flex-end', 
+       
         alignItems: 'center',
         flexDirection: 'row',
         flex: 1, 
-        marginTop: 12,
-        marginLeft: 6
+        marginLeft: 2
     },
     yelpLogo:{
-        height: 20,
+        height: 16,
         width: 50,
     },
     button:{
