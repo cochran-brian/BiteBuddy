@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Open Sans', 
         marginTop: -36,
         fontSize: 26,
-        lineHeight: 38,
+        lineHeight: 28,
     },
     textSubheader: {
         fontFamily: 'Open Sans Light', 
