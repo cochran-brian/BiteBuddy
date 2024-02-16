@@ -156,7 +156,7 @@ const rating = async (rating) => {
         <SafeAreaView style={styles.container}>
             <Text style={styles.header}>BITE BUDDY</Text>
 
-            <View style={{height: 490, marginTop: 20}}>
+            <View style={{height: 510, marginTop: 20}}>
             <Carousel
               ref={(c) => { this._carousel = c; }}
               data={data}

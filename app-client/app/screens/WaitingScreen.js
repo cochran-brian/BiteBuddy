@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, TouchableHighlight, FlatList, Pressable, ScrollView, RefreshControl } from "react-native";
+import { StyleSheet, View, Text, TouchableHighlight, FlatList, Pressable, ScrollView, RefreshControl, Dimensions } from "react-native";
 import { doc, collection, getDocs, getDoc } from "firebase/firestore"
 import { db, auth } from '../firebase/config';
 import { Foundation } from '@expo/vector-icons';
@@ -8,6 +8,7 @@ import RNEventSource from 'react-native-sse';
 
 import UserView from "../components/UserView";
 import colors from "../config/colors";
+import UserCard from "../components/UserCard";
 
 export default function WaitingScreen({route, navigation}){
 
@@ -115,8 +116,9 @@ export default function WaitingScreen({route, navigation}){
 
       <FlatList
         data={eventData} 
-        renderItem={({item}) => <UserView name={item} readyStatus={true}/>}
+        renderItem={({item}) => <UserCard name={'Brian'}/>}
         scrollEnabled={false}
+        style={styles.flatList}
         // onRefresh={() => getNames()}
         // refreshing={refreshing}
      />
@@ -160,6 +162,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  flatList:{
+    width: Dimensions.get('screen').width,
+    paddingHorizontal: 24
   },
   buttonContainer: {
     flex: 1, 
