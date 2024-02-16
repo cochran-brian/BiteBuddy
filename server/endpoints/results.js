@@ -15,12 +15,29 @@ router.post("/", async (req, res) => {
 })
 
 const getRatings = async (uid) => {
-    const querySnapshot = await db.collection('bites').doc(uid).collection('ratings').get().data();
-    querySnapshot.forEach((doc) => {
-        console.log(doc.data())
+    var ratingsArr = [];
+    
+    console.log("Getting ratings...")
+    const ratingsQuerySnapshot = await db.collection('bites').doc(uid).collection('ratings').get();
+    ratingsQuerySnapshot.forEach((doc) => {
+        console.log(doc.data().ratings)
+        ratingsArr.push(doc.data().ratings)
     })
-    const restaurants = await db.collection('bites').doc(uid).collection('restaurants').get().data();
-    console.log(restaurants)
+
+
+    var columnSums = new Array(ratingsArr.length);
+    for(let i = 0; i < ratingsArr[0].length; i++) {
+        for(let j = 0; j < ratingsArr.length; i++) {
+            columnSums[i] += ratingsArr[j][i];
+        }
+    }
+
+    const indexOfMaxSum = columnSums.indexOf(Math.max(...columnSums));
+
+    // const restaurantsQuerySnapshot = await db.collection('bites').doc(uid).collection('restaurants').get().where(id);
+    // restaurantsQuerySnapshot.forEach((doc) => {
+    //     console.log(doc.data())
+    // })
 }
 
 const fetchData = async () => { // MAX RADIUS IS 25 MILES
