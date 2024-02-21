@@ -105,18 +105,17 @@ export default function WaitingScreen({route, navigation}){
             style={[styles.header, {marginTop: 0}]}>BITE BUDDY</Text>
         </View>
       ) : (
-        <View style={styles.container}>
-          <ScrollView>
+      <View style={styles.container}>
+        <View style={styles.headerContainer}>
+          <Text style={styles.header}>BITE BUDDY</Text>
+        </View>
+        <ScrollView>
    
-      <View style={styles.headerContainer}>
-        <Text style={styles.header}>BITE BUDDY</Text>
-      </View>
-      
       <View style={{marginTop: '10%'}}/>
 
       <FlatList
         data={eventData} 
-        renderItem={({item}) => <UserCard name={'Brian'}/>}
+        renderItem={({item}) => <UserCard name={'Brian'} imageUri={'https://x.dpstatic.com/d/avatars/l/987/987650.jpg?1643200221'}/>}
         scrollEnabled={false}
         style={styles.flatList}
         // onRefresh={() => getNames()}
@@ -127,18 +126,16 @@ export default function WaitingScreen({route, navigation}){
     </ScrollView>
     <View 
     style={styles.buttonContainer}>
-    <TouchableHighlight 
-        style={styles.bottomButton} 
-        underlayColor={colors.primaryDark} 
-        // onPress={isHost? () => {handleClick();} : () => {navToHome();}}>
-        onPress={() => {
-          navigation.navigate('Result', { uid })
-        }}>
-
-    <Text 
-        style={styles.buttonText}>
-        {/* {isHost? 'GET RESULTS' : 'BACK TO HOME'} */}
-        </Text>
+      <TouchableHighlight 
+              style= {styles.bottomButton} 
+              onPress={() => {
+                navigation.navigate('Result', { uid });
+              }} 
+              underlayColor={colors.primaryDark}>
+              <Text style={styles.buttonText}>
+                SEE RESULTS{
+              /*isHost? SEE RESULTS : BACK HOME */}
+              </Text>
       </TouchableHighlight>
     </View>
     </View>
@@ -152,7 +149,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   header:{
-    color: 'black',
+    color: colors.primary,
     fontFamily: 'Open Sans',
     fontSize: 45,
     marginTop: 80,
@@ -172,10 +169,10 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end'
   },
   bottomButton:{
-    width: 344,
+    width: 310,
     height: 54,
-    borderRadius: 10,
-    marginBottom: 14,
+    borderRadius: 50,
+    marginBottom: 38,
     backgroundColor: colors.primary,
     alignItems: 'center',
     justifyContent: 'center'
