@@ -5,16 +5,16 @@ const { db } = require('../firebase/config');
 router.post("/", async (req, res) => {
     console.log(req.body);
     try {
-        const ratings = await getRatings(req.body.uid)
-        console.log(ratings)
+        const topRestaurant = await getTopRestaurant(req.body.uid)
+        console.log(topRestaurant)
         // const data = await fetchData();
-        // res.send({ data: data });
+        res.send({ data: "hi" });
     } catch (error) {
         res.status(500).send({ error: error });
     }
 })
 
-const getRatings = async (uid) => {
+const getTopRestaurant = async (uid) => {
     var ratingsArr = [];
     
     console.log("Getting ratings...")
@@ -23,34 +23,44 @@ const getRatings = async (uid) => {
         console.log(doc.data().ratings)
         ratingsArr.push(doc.data().ratings)
     })
+    console.log(ratingsArr)
 
 
-    var columnSums = new Array(ratingsArr.length);
+    var columnSums = new Array(ratingsArr[0].length);
     for(let i = 0; i < ratingsArr[0].length; i++) {
-        for(let j = 0; j < ratingsArr.length; i++) {
-            columnSums[i] += ratingsArr[j][i];
+        for(let j = 0; j < ratingsArr.length; j++) {
+            columnSums[i] += (columnSums[i] || 0) + ratingsArr[j][i];
         }
     }
+    console.log(columnSums)
 
     const indexOfMaxSum = columnSums.indexOf(Math.max(...columnSums));
+    console.log(indexOfMaxSum)
 
-    // const restaurantsQuerySnapshot = await db.collection('bites').doc(uid).collection('restaurants').get().where(id);
-    // restaurantsQuerySnapshot.forEach((doc) => {
-    //     console.log(doc.data())
-    // })
-}
+    var restaurantsArr = [];
 
-const fetchData = async () => { // MAX RADIUS IS 25 MILES
-    var data = await fetch(`https://api.yelp.com/v3/businesses/search?latitude=${latitude}&longitude=${longitude}&radius=${radius}&sort_by=best_match&limit=10`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.YELP_API_KEY}`
-        },
+    const restaurantsQuerySnapshot = await db.collection('bites').doc(uid).collection('restaurants').get();
+    console.log(doc.data())
+    restaurantsQuerySnapshot.forEach((doc) => {
+        console.log(doc.data())
+        // restaurantsArr.push(doc.data())
     })
-    data = await data.json();
-    console.log(data)
-    return data;
+    console.log(restaurantsArr)
+
+    return restaurantsArr[indexOfMaxSum];
 }
+
+// const getSimilarRestaurant = async (topRestaurant) => { // MAX RADIUS IS 25 MILES
+//     var data = await fetch(`https://api.yelp.com/v3/businesses/search?latitude=${latitude}&longitude=${longitude}&radius=${radius}&sort_by=best_match&limit=10`, {
+//         method: "GET",
+//         headers: {
+//             "Content-Type": "application/json",
+//             Authorization: `Bearer ${process.env.YELP_API_KEY}`
+//         },
+//     })
+//     data = await data.json();
+//     console.log(data)
+//     return data;
+// }
 
 module.exports = router;
