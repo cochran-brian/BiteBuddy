@@ -92,7 +92,7 @@ const getIdToken = async (latitude, longitude, radius) => {
       try {
         const data = await fetchData(latitude, longitude, radius, idToken);
         const response = await storeData(data, latitude, longitude, radius, idToken);
-        setData(data)
+        setData(data.sort())
         console.log(response.uid)
         setUid(response.uid);
       } catch (error) {

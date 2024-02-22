@@ -7,8 +7,9 @@ router.post("/", async (req, res) => {
     try {
         const topRestaurant = await getTopRestaurant(req.body.uid)
         console.log(topRestaurant)
-        // const data = await fetchData();
-        res.send({ data: "hi" });
+        const similarRestaurants = await getSimilarRestaurants(topRestaurant)
+        console.log(similarRestaurants)
+        res.send({ topRestaurant: topRestaurant, getSimilarRestaurants: similarRestaurants });
     } catch (error) {
         res.status(500).send({ error: error });
     }
@@ -26,10 +27,10 @@ const getTopRestaurant = async (uid) => {
     console.log(ratingsArr)
 
 
-    var columnSums = new Array(ratingsArr[0].length);
+    var columnSums = new Array(ratingsArr[0].length).fill(0);
     for(let i = 0; i < ratingsArr[0].length; i++) {
         for(let j = 0; j < ratingsArr.length; j++) {
-            columnSums[i] += (columnSums[i] || 0) + ratingsArr[j][i];
+            columnSums[i] += ratingsArr[j][i];
         }
     }
     console.log(columnSums)
@@ -40,27 +41,34 @@ const getTopRestaurant = async (uid) => {
     var restaurantsArr = [];
 
     const restaurantsQuerySnapshot = await db.collection('bites').doc(uid).collection('restaurants').get();
-    console.log(doc.data())
     restaurantsQuerySnapshot.forEach((doc) => {
-        console.log(doc.data())
-        // restaurantsArr.push(doc.data())
+        restaurantsArr.push(doc.data())
     })
-    console.log(restaurantsArr)
-
+    
     return restaurantsArr[indexOfMaxSum];
 }
 
-// const getSimilarRestaurant = async (topRestaurant) => { // MAX RADIUS IS 25 MILES
-//     var data = await fetch(`https://api.yelp.com/v3/businesses/search?latitude=${latitude}&longitude=${longitude}&radius=${radius}&sort_by=best_match&limit=10`, {
-//         method: "GET",
-//         headers: {
-//             "Content-Type": "application/json",
-//             Authorization: `Bearer ${process.env.YELP_API_KEY}`
-//         },
-//     })
-//     data = await data.json();
-//     console.log(data)
-//     return data;
-// }
+const getSimilarRestaurants = async (restaurant) => {
+    console.log(restaurant.categories)
+    var categories = '';
+    for(let i = 0; i < restaurant.categories.length; i++) {
+        if(i != restaurant.categories.length - 1) {
+            categories += restaurant.categories.alias + ','
+        } else {
+            categories += restaurant.categories.alias
+        }
+    }
+    console.log(categories)
+    var data = await fetch(`https://api.yelp.com/v3/businesses/search?latitude=${latitude}&longitude=${longitude}&radius=${radius}&categories=${categories}&price=${topRestaurant.price}&sort_by=best_match&limit=10`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.YELP_API_KEY}`
+        },
+    })
+    data = await data.json();
+    console.log(data)
+    return data;
+}
 
 module.exports = router;
