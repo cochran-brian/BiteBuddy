@@ -8,7 +8,7 @@ import { Slider } from '@miblanchard/react-native-slider';
 import { Rating } from '@kolking/react-native-rating';
 import DropdownSelect from 'react-native-input-select';
 import { FontAwesome5 } from '@expo/vector-icons';
-import {IP_ADDRESS, PORT} from "@env"
+import {IP_ADDRESS, PORT, LOCATION_IQ_KEY} from "@env"
 
 export default function CreateScreen({ navigation }) {
 
@@ -32,6 +32,12 @@ export default function CreateScreen({ navigation }) {
 
   const onPlPress = (num) => {
     setPlPicked(num);
+  }
+
+  const autoFill = async (input) => {
+    const response = await fetch('https://api.locationiq.com/v1/autocomplete?key='+LOCATION_IQ_KEY+'&q='+input+'&limit=3')
+    const result = await response.json()
+    console.log(input, result);
   }
 
   const changeScreens = (latitude, longitude, radius) => {
@@ -65,8 +71,14 @@ export default function CreateScreen({ navigation }) {
                 <View style={styles.textInput}>
                   <FontAwesome5 name="search-location" size={32} color="black" style={{marginLeft: 10}} />
                   <TextInput
-                    onChangeText={(text) => setSearchedLocation(text)} 
-                    style={styles.inputContent} />
+                    onChangeText={(text) => {
+                      setSearchedLocation(text);
+                    }} 
+                    style={styles.inputContent}/>
+                  <TouchableHighlight style={styles.locationSearch} onPress={console.log('Pressed')//autoFill(searchedLocation) 
+                  }>
+                    <Text style={{color: 'white'}}>Search</Text>
+                  </TouchableHighlight>
                 </View>
                </View>
 
@@ -198,6 +210,12 @@ const styles = StyleSheet.create({
       alignSelf: 'center',
       height: 54,
       marginTop: 6
+    },
+    locationSearch:{
+      width: 60, 
+      height: 20,
+      backgroundColor: colors.primary,
+      borderRadius: 20
     },
     inputContent:{
       fontFamily: 'Open Sans',
