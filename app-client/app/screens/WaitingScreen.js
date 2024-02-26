@@ -13,7 +13,7 @@ import UserCard from "../components/UserCard";
 export default function WaitingScreen({route, navigation}){
 
     const [eventData, setEventData] = useState(null);
-    const { uid } = route.params
+    const { uid, latitude, longitude, radius } = route.params;
 
     useEffect(() => {
       const eventSource = new RNEventSource(`http://localhost:3000/waiting?uid=${uid}`);
@@ -129,7 +129,12 @@ export default function WaitingScreen({route, navigation}){
       <TouchableHighlight 
               style= {styles.bottomButton} 
               onPress={() => {
-                navigation.navigate('Result', { uid });
+                navigation.navigate('Result', { 
+                  uid: uid,
+                  latitude: latitude,
+                  longitude: longitude,
+                  radius: radius 
+                });
               }} 
               underlayColor={colors.primaryDark}>
               <Text style={styles.buttonText}>

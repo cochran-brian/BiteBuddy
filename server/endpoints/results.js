@@ -7,7 +7,7 @@ router.post("/", async (req, res) => {
     try {
         const topRestaurant = await getTopRestaurant(req.body.uid)
         console.log(topRestaurant)
-        const similarRestaurants = await getSimilarRestaurants(topRestaurant)
+        const similarRestaurants = await getSimilarRestaurants(topRestaurant, req.body.latitude, req.body.longitude, req.body.radius)
         console.log(similarRestaurants)
         res.send({ topRestaurant: topRestaurant, getSimilarRestaurants: similarRestaurants });
     } catch (error) {
@@ -48,18 +48,18 @@ const getTopRestaurant = async (uid) => {
     return restaurantsArr[indexOfMaxSum];
 }
 
-const getSimilarRestaurants = async (restaurant) => {
+const getSimilarRestaurants = async (restaurant, latitude, longitude, radius) => {
     console.log(restaurant.categories)
     var categories = '';
     for(let i = 0; i < restaurant.categories.length; i++) {
         if(i != restaurant.categories.length - 1) {
-            categories += restaurant.categories.alias + ','
+            categories += restaurant.categories[i].alias + ','
         } else {
-            categories += restaurant.categories.alias
+            categories += restaurant.categories[i].alias
         }
     }
     console.log(categories)
-    var data = await fetch(`https://api.yelp.com/v3/businesses/search?latitude=${latitude}&longitude=${longitude}&radius=${radius}&categories=${categories}&price=${topRestaurant.price}&sort_by=best_match&limit=10`, {
+    var data = await fetch(`https://api.yelp.com/v3/businesses/search?latitude=${latitude}&longitude=${longitude}&radius=${radius}&categories=${categories}&price=${restaurant.price.length}&sort_by=best_match&limit=10`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -67,6 +67,7 @@ const getSimilarRestaurants = async (restaurant) => {
         },
     })
     data = await data.json();
+    //data.slice(data.indexOf(restaurant.name)) REMOVE ENTRY OF TOP RESTAURANT HERE
     console.log(data)
     return data;
 }

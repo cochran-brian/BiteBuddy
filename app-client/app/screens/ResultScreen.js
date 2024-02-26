@@ -7,7 +7,7 @@ import SimplePlaceView from '../components/SimplePlaceView';
 
 export default function ResultScreen({route, navigation}) {
 
-  const { uid } = route.params
+  const { uid, latitude, longitude, radius } = route.params;
 
   useEffect(() => {
     getRecommendation();
@@ -25,7 +25,10 @@ export default function ResultScreen({route, navigation}) {
           // Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({
-          uid: uid
+          uid: uid,
+          latitude: latitude,
+          longitude: longitude,
+          radius: radius
         })
       }); 
       const result = await response.json();
