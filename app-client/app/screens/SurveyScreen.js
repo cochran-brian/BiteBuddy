@@ -92,7 +92,24 @@ const getIdToken = async (latitude, longitude, radius) => {
       try {
         const data = await fetchData(latitude, longitude, radius, idToken);
         const response = await storeData(data, latitude, longitude, radius, idToken);
-        setData(data.sort())
+        setData(data.sort((a, b) => {
+          if(a.name < b.name) {
+            return -1;
+          } else if(a.name > b.name) {
+            return 1;
+          } else {
+            return 0;
+          }
+        }))
+        // console.log(data.sort((a, b) => {
+        //   if(a.name < b.name) {
+        //     return -1;
+        //   } else if(a.name > b.name) {
+        //     return 1;
+        //   } else {
+        //     return 0;
+        //   }
+        // }))
         console.log(response.uid)
         setUid(response.uid);
       } catch (error) {
@@ -139,7 +156,10 @@ const rating = async (rating) => {
     // NEED TO CHANGE THIS WHEN WE MAKE THE WEBSITE
 
     navigation.navigate('Waiting', {
-      uid: uid
+      uid: uid,
+      latitude: latitude,
+      longitude: longitude,
+      radius: radius
     })
   }
 }
