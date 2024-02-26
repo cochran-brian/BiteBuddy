@@ -18,6 +18,9 @@ export default function CreateScreen({ navigation }) {
   const [plPicked, setPlPicked] = useState(0) // 0-None Selected, 1-$, 2-$$, 3-$$$,
   const [rating, setRating] = useState(0) //Rating selected on stars (/5)
 
+  const [showAutofillModal, setAutofillModal] = useState(false);
+  const [autofillDropdownPicked, setAutofillDropdownPicked] = useState('none');
+
 
   const dropDownData =  [
     {label: 'American 🇺🇸', value: 'AMR'},
@@ -30,14 +33,24 @@ export default function CreateScreen({ navigation }) {
     {label: 'French 🇫🇷', value: 'FRN'},
   ]
 
+  const autoFillData = [
+    {label: 'American 🇺🇸', value: 'AMR'},
+    {label: 'Italian 🇮🇹', value: 'ITA'},
+    {label: 'Mexican 🇲🇽', value: 'MEX'},
+  ]
+
   const onPlPress = (num) => {
     setPlPicked(num);
   }
 
   const autoFill = async (input) => {
-    const response = await fetch('https://api.locationiq.com/v1/autocomplete?key='+LOCATION_IQ_KEY+'&q='+input+'&limit=3')
-    const result = await response.json()
-    console.log(input, result);
+    setAutofillModal(true);
+    // const response = await fetch('https://api.locationiq.com/v1/autocomplete?key='+LOCATION_IQ_KEY+'&q='+input+'&limit=3')
+    // const result = await response.json()
+
+    // result.forEach(location => {
+    //   console.log(location.display_place);
+    // });
   }
 
   const changeScreens = (latitude, longitude, radius) => {
@@ -63,7 +76,7 @@ export default function CreateScreen({ navigation }) {
                   CREATE A BITE</Text>
               
               <View 
-                style={styles.contentContainer}>
+                style={styles.contentContainer}> 
                <View>
                 <Text style={styles.promptText}>
                     Location</Text>
@@ -75,11 +88,24 @@ export default function CreateScreen({ navigation }) {
                       setSearchedLocation(text);
                     }} 
                     style={styles.inputContent}/>
-                  <TouchableHighlight style={styles.locationSearch} onPress={console.log('Pressed')//autoFill(searchedLocation) 
-                  }>
-                    <Text style={{color: 'white'}}>Search</Text>
+                  <TouchableHighlight style={styles.locationSearch} onPress={() => autoFill(searchedLocation)}>
+                    <Text style={styles.searchText}>Search</Text>
                   </TouchableHighlight>
                 </View>
+               
+                <DropdownSelect 
+                  dropdownStyle={{width: 0, height: 0}}
+                  disabled={true}
+                  isMultiple={false}
+                  options={autoFillData}
+                  selectedValue={autofillDropdownPicked}
+                  onValueChange={(itemValue) => {
+                    setAutofillDropdownPicked(itemValue)
+                    setAutofillModal(false)
+                  }}
+                  modalProps={{visible: showAutofillModal}}
+                />
+               
                </View>
 
                <View>
@@ -215,11 +241,19 @@ const styles = StyleSheet.create({
       width: 60, 
       height: 20,
       backgroundColor: colors.primary,
-      borderRadius: 20
+      borderRadius: 20,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginRight: 4
+    },
+    searchText:{
+      fontFamily: 'Open Sans SemiBold',
+      color: 'white',
+      fontSize: 12,
     },
     inputContent:{
       fontFamily: 'Open Sans',
-      width: Dimensions.get('screen').width * 0.75,
+      width: Dimensions.get('screen').width * 0.6,
       height: 52,
       fontSize: 18,
       marginLeft: 8
