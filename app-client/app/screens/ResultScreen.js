@@ -8,8 +8,9 @@ import SimplePlaceView from '../components/SimplePlaceView';
 export default function ResultScreen({route, navigation}) {
 
   const { uid, latitude, longitude, radius } = route.params;
+  const [recommendations, setRecommendations] = useState({});
 
-  useEffect(() => {
+  useEffect(async () => {
     getRecommendation();
   }, [])
 
@@ -32,7 +33,8 @@ export default function ResultScreen({route, navigation}) {
         })
       }); 
       const result = await response.json();
-      return result;
+      console.log(result);
+      setRecommendations(result);
     } catch (error) {
       console.error('Error fetching data:', error); // error handling here
     }
@@ -42,7 +44,7 @@ export default function ResultScreen({route, navigation}) {
     try {
       const result = await Share.share({
         message: "Check out our group's favorite restaurant!",
-        url: top.website
+        url: recommendations?.topRestaurant?.website
       })
     } catch(error) {
       console.error(error);
@@ -51,6 +53,13 @@ export default function ResultScreen({route, navigation}) {
   }
 
     return(
+      <>
+      {!recommendations ? (
+        <View style={[styles.container, {justifyContent: 'center'}]}>
+          <Text 
+            style={[styles.header, {marginTop: 0}]}>BITE BUDDY</Text>
+        </View>
+      ) : (
         <View 
           style={styles.container}>
             <SafeAreaView 
@@ -60,11 +69,11 @@ export default function ResultScreen({route, navigation}) {
                 {/* Image courtesy of zky.icon via flaticon.com */}
               <Text 
                 style={styles.sectionTitle}>GROUP FAVORITE</Text>
-              {/* <SimplePlaceView
-                name={top.name}
-                address={top.address}
-                rating={top.rating}
-                imageUri={top.image_url}/> */}
+              <SimplePlaceView
+                name={recommendations.topRestaurant.name}
+                address={recommendations.topRestaurant.address}
+                rating={recommendations.topRestaurant.rating}
+                imageUri={recommendations.topRestaurant.image_url}/>
             </SafeAreaView>
 
             <View 
@@ -74,11 +83,11 @@ export default function ResultScreen({route, navigation}) {
               style={{margin: '10%', marginTop: 16, marginBottom: '7%', alignItems: 'center'}}>
             <Text 
               style={[styles.sectionTitle, {fontSize: 22}]}>SOMEWHERE SIMILAR</Text>
-              {/* <SimplePlaceView
-                name={similar.name}
-                address={similar.address}
-                rating={similar.rating}
-                imageUri={similar.image_url}/> */}
+              <SimplePlaceView
+                name={recommendations.similarRestaurants[0].name}
+                address={recommendations.similarRestaurants[0].address}
+                rating={recommendations.similarRestaurants[0].rating}
+                imageUri={recommendations.similarRestaurants[0].image_url}/>
             </View>
 
             <View 
@@ -117,8 +126,10 @@ export default function ResultScreen({route, navigation}) {
               </TouchableHighlight>
           </View>
         </View>
-      )
+      )}</>
+    )
 }
+
 
 const styles = StyleSheet.create({
     container: {
@@ -148,3 +159,4 @@ const styles = StyleSheet.create({
       fontFamily: 'Open Sans',
     },
 });
+

@@ -9,9 +9,9 @@ router.post("/", async (req, res) => {
         console.log(topRestaurant)
         const similarRestaurants = await getSimilarRestaurants(topRestaurant, req.body.latitude, req.body.longitude, req.body.radius)
         console.log(similarRestaurants)
-        res.send({ topRestaurant: topRestaurant, getSimilarRestaurants: similarRestaurants });
+        return res.send({ topRestaurant: topRestaurant, similarRestaurants: similarRestaurants });
     } catch (error) {
-        res.status(500).send({ error: error });
+        return res.status(500).send({ error: "Error getting results " + error });
     }
 })
 
@@ -67,9 +67,7 @@ const getSimilarRestaurants = async (restaurant, latitude, longitude, radius) =>
         },
     })
     data = await data.json();
-    //data.slice(data.indexOf(restaurant.name)) REMOVE ENTRY OF TOP RESTAURANT HERE
-    console.log(data)
-    return data;
+    return data.businesses.shift(); // removes first element in array (aka the top restaurant)
 }
 
 module.exports = router;

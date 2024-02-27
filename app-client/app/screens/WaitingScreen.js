@@ -33,6 +33,7 @@ export default function WaitingScreen({route, navigation}){
   
       // Cleanup: Close the EventSource when the component unmounts
       return () => {
+        console.log("Closed event source")
         eventSource.close();
       };
     }, []);
