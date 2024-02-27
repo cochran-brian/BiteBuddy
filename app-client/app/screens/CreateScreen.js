@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, Text, TouchableHighlight, View, Pressable, Dimensions, Touchable, TouchableWithoutFeedback, Keyboard, TextInput } from 'react-native';
+import { StyleSheet, Text, TouchableHighlight, View, Pressable, Dimensions, Touchable, TouchableWithoutFeedback, Keyboard, TextInput, ScrollView } from 'react-native';
 import colors from '../config/colors';
 import { db, auth } from '../firebase/config';
 import { setDoc, doc, collection } from "firebase/firestore"
@@ -33,24 +33,35 @@ export default function CreateScreen({ navigation }) {
     {label: 'French 🇫🇷', value: 'FRN'},
   ]
 
-  const autoFillData = [
+  const [autoFillData, setAutoFillData] = useState([
     {label: 'American 🇺🇸', value: 'AMR'},
     {label: 'Italian 🇮🇹', value: 'ITA'},
     {label: 'Mexican 🇲🇽', value: 'MEX'},
-  ]
+  ]);
 
   const onPlPress = (num) => {
     setPlPicked(num);
   }
 
   const autoFill = async (input) => {
-    setAutofillModal(true);
-    // const response = await fetch('https://api.locationiq.com/v1/autocomplete?key='+LOCATION_IQ_KEY+'&q='+input+'&limit=3')
-    // const result = await response.json()
+    setAutoFillData([]);
+    const response = await fetch('https://api.locationiq.com/v1/autocomplete?key='+LOCATION_IQ_KEY+'&q='+input+'&limit=3')
+    const result = await response.json()
 
-    // result.forEach(location => {
-    //   console.log(location.display_place);
-    // });
+    var options = [];
+
+    result.forEach(location => {
+      options.push({label: location.display_name, value: (location.lat + ' ' + location.lon)})
+    });
+
+    setAutoFillData(options);
+    setAutofillModal(true);
+  }
+
+  const onAutofillPicked = () => {
+    console.log(autofillDropdownPicked);
+    setSearchedLocation(autofillDropdownPicked.label);
+    //TODO Get the name (label) of the selected location instead of the cords (value)
   }
 
   const changeScreens = (latitude, longitude, radius) => {
@@ -74,6 +85,7 @@ export default function CreateScreen({ navigation }) {
               <Text 
                 style={styles.header}>
                   CREATE A BITE</Text>
+
               
               <View 
                 style={styles.contentContainer}> 
@@ -85,16 +97,18 @@ export default function CreateScreen({ navigation }) {
                   <FontAwesome5 name="search-location" size={32} color="black" style={{marginLeft: 10}} />
                   <TextInput
                     onChangeText={(text) => {
-                      setSearchedLocation(text);
+                      setSearchedLocation(text)
                     }} 
+                    value={searchedLocation}
                     style={styles.inputContent}/>
                   <TouchableHighlight style={styles.locationSearch} onPress={() => autoFill(searchedLocation)}>
                     <Text style={styles.searchText}>Search</Text>
                   </TouchableHighlight>
                 </View>
                
+               <View style={{height: 0}}>
                 <DropdownSelect 
-                  dropdownStyle={{width: 0, height: 0}}
+                  dropdownStyle={{width: 0, height: 0, opacity: 0}}
                   disabled={true}
                   isMultiple={false}
                   options={autoFillData}
@@ -102,9 +116,11 @@ export default function CreateScreen({ navigation }) {
                   onValueChange={(itemValue) => {
                     setAutofillDropdownPicked(itemValue)
                     setAutofillModal(false)
+                    onAutofillPicked()
                   }}
                   modalProps={{visible: showAutofillModal}}
                 />
+                </View>
                
                </View>
 
