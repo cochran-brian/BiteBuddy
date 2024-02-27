@@ -21,6 +21,7 @@ export default function CreateScreen({ navigation }) {
   const [showAutofillModal, setAutofillModal] = useState(false);
   const [autofillDropdownPicked, setAutofillDropdownPicked] = useState('none');
 
+  //TODO make it so the inputText is not editable/ greyed out after location is picked
 
   const dropDownData =  [
     {label: 'American 🇺🇸', value: 'AMR'},
@@ -51,17 +52,16 @@ export default function CreateScreen({ navigation }) {
     var options = [];
 
     result.forEach(location => {
-      options.push({label: location.display_name, value: (location.lat + ' ' + location.lon)})
+      options.push({label: location.display_name, value: (location.display_name + '~' + location.lat + ' ' + location.lon)})
     });
 
     setAutoFillData(options);
     setAutofillModal(true);
   }
 
-  const onAutofillPicked = () => {
-    console.log(autofillDropdownPicked);
-    setSearchedLocation(autofillDropdownPicked.label);
-    //TODO Get the name (label) of the selected location instead of the cords (value)
+  const onAutofillPicked = (name) => {
+    console.log(name);
+    setSearchedLocation(name);
   }
 
   const changeScreens = (latitude, longitude, radius) => {
@@ -114,9 +114,9 @@ export default function CreateScreen({ navigation }) {
                   options={autoFillData}
                   selectedValue={autofillDropdownPicked}
                   onValueChange={(itemValue) => {
-                    setAutofillDropdownPicked(itemValue)
+                    setAutofillDropdownPicked(itemValue.substring(itemValue.indexOf('~') + 1, itemValue.length))
                     setAutofillModal(false)
-                    onAutofillPicked()
+                    onAutofillPicked(itemValue.substring(0, itemValue.indexOf('~')))
                   }}
                   modalProps={{visible: showAutofillModal}}
                 />
