@@ -7,8 +7,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Slider } from '@miblanchard/react-native-slider';
 import { Rating } from '@kolking/react-native-rating';
 import DropdownSelect from 'react-native-input-select';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import {IP_ADDRESS, PORT, LOCATION_IQ_KEY} from "@env"
+import LocationTextCard from '../components/LocationTextCard';
 
 export default function CreateScreen({ navigation }) {
 
@@ -20,6 +21,7 @@ export default function CreateScreen({ navigation }) {
 
   const [showAutofillModal, setAutofillModal] = useState(false);
   const [autofillDropdownPicked, setAutofillDropdownPicked] = useState('none');
+  const [locationLocked, setLocationLocked] = useState(false);
 
   //TODO make it so the inputText is not editable/ greyed out after location is picked
 
@@ -46,7 +48,7 @@ export default function CreateScreen({ navigation }) {
 
   const autoFill = async (input) => {
     setAutoFillData([]);
-    const response = await fetch('https://api.locationiq.com/v1/autocomplete?key='+LOCATION_IQ_KEY+'&q='+input+'&limit=3')
+    const response = await fetch('https://api.locationiq.com/v1/autocomplete?key='+LOCATION_IQ_KEY+'&q='+input+'&limit=5')
     const result = await response.json()
 
     var options = [];
@@ -61,7 +63,9 @@ export default function CreateScreen({ navigation }) {
 
   const onAutofillPicked = (name) => {
     console.log(name);
+    console.log(autofillDropdownPicked);
     setSearchedLocation(name);
+    setLocationLocked(true);
   }
 
   const changeScreens = (latitude, longitude, radius) => {
@@ -94,16 +98,33 @@ export default function CreateScreen({ navigation }) {
                     Location</Text>
 
                 <View style={styles.textInput}>
-                  <FontAwesome5 name="search-location" size={32} color="black" style={{marginLeft: 10}} />
+                  {/* <FontAwesome5 name="search-location" size={32} color="black" style={{marginLeft: 10}} /> */}
+                  {locationLocked? 
+                  <>
+                  <LocationTextCard name={searchedLocation}/>
+                  <Pressable style={{marginRight: 4, marginLeft: 0}} onPress={() => {
+                    setLocationLocked(false)
+                    setSearchedLocation('')}}>
+                      <MaterialIcons name="clear" size={24} color="black" />
+                  </Pressable>
+                  </> 
+                  : 
+                  <>
                   <TextInput
+                    inputMode='search'
+                    onSubmitEditing={() => autoFill(searchedLocation)}
+                    placeholder='Search'
                     onChangeText={(text) => {
                       setSearchedLocation(text)
                     }} 
                     value={searchedLocation}
                     style={styles.inputContent}/>
                   <TouchableHighlight style={styles.locationSearch} onPress={() => autoFill(searchedLocation)}>
-                    <Text style={styles.searchText}>Search</Text>
+                    <FontAwesome5 name="search-location" size={32} color="white"/>
                   </TouchableHighlight>
+                  </>
+                  }
+                  
                 </View>
                
                <View style={{height: 0}}>
@@ -254,25 +275,20 @@ const styles = StyleSheet.create({
       marginTop: 6
     },
     locationSearch:{
-      width: 60, 
-      height: 20,
+      width: 70, 
+      height: 52,
       backgroundColor: colors.primary,
-      borderRadius: 20,
+      borderTopRightRadius: 20, 
+      borderBottomRightRadius: 20,
       justifyContent: 'center',
       alignItems: 'center',
-      marginRight: 4
-    },
-    searchText:{
-      fontFamily: 'Open Sans SemiBold',
-      color: 'white',
-      fontSize: 12,
     },
     inputContent:{
       fontFamily: 'Open Sans',
       width: Dimensions.get('screen').width * 0.6,
       height: 52,
       fontSize: 18,
-      marginLeft: 8
+      marginLeft: 18
     },
     promptText:{
       fontFamily: 'Open Sans SemiBold',
