@@ -8,9 +8,9 @@ import SimplePlaceView from '../components/SimplePlaceView';
 export default function ResultScreen({route, navigation}) {
 
   const { uid, latitude, longitude, radius } = route.params;
-  const [recommendations, setRecommendations] = useState({});
+  const [recommendations, setRecommendations] = useState(null);
 
-  useEffect(async () => {
+  useEffect(() => {
     getRecommendation();
   }, [])
 
@@ -74,6 +74,7 @@ export default function ResultScreen({route, navigation}) {
                 address={recommendations.topRestaurant.address}
                 rating={recommendations.topRestaurant.rating}
                 imageUri={recommendations.topRestaurant.image_url}/>
+                {/* <Text>{recommendations.topRestaurant}</Text> */}
             </SafeAreaView>
 
             <View 
@@ -136,6 +137,13 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: '#fff',
       alignItems: 'center',
+    },
+    header:{
+      color: colors.primary,
+      fontFamily: 'Open Sans',
+      fontSize: 45,
+      marginTop: 80,
+      alignSelf: 'center'
     },
     sectionTitle:{
         color: 'black',

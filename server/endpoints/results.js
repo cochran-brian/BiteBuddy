@@ -49,6 +49,7 @@ const getTopRestaurant = async (uid) => {
 }
 
 const getSimilarRestaurants = async (restaurant, latitude, longitude, radius) => {
+    console.log("Getting similar restaurants...")
     console.log(restaurant.categories)
     var categories = '';
     for(let i = 0; i < restaurant.categories.length; i++) {
@@ -67,7 +68,10 @@ const getSimilarRestaurants = async (restaurant, latitude, longitude, radius) =>
         },
     })
     data = await data.json();
-    return data.businesses.shift(); // removes first element in array (aka the top restaurant)
+    const filteredData = data.businesses.filter((business) => {
+        return business.name !== restaurant.name;
+    })
+    return filteredData; // removes first element in array (aka the top restaurant)
 }
 
 module.exports = router;
