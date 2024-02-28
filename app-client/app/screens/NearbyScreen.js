@@ -1,12 +1,46 @@
 import { StyleSheet, Text, View, SafeAreaView, Dimensions, FlatList } from 'react-native';
 import colors from '../config/colors';
 import SimplePlaceView from '../components/SimplePlaceView';
+import { useEffect, useState } from 'react';
 
 
 export default function NearbyScreen({ navigation }) {
 
+  const [data, setData] = useState([]);
+  const [radius, setRadius] = useState(1500);
+  const [locationLat, setLocationLat] = useState('42.095271881586406'); 
+  const [locationLong, setLocationLong] = useState('-88.06476939999999'); 
+
+  useEffect(() => {
+    // fetchData(locationLat, locationLong, radius);
+  })
+
   const onFilterPress = () => {
     console.log('Filter Pressed')
+  }
+
+  const fetchData = async (latitude, longitude, radius) => {
+    try {
+      console.log("fetching data...")
+      const response = await fetch(`http://localhost:3000/restaurants`, { // apparently "localhost" makes the server host the phone instead of the computer
+        method: "POST",
+        mode: "cors",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
+          // Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          latitude: latitude,
+          longitude: longitude,
+          radius: radius,
+        })
+      }); 
+      const result = await response.json();
+      setData(result.data.businesses)
+    } catch (error) {
+      console.error('Error fetching data:', error); // error handling here
+    }
   }
     
   return (
@@ -21,14 +55,22 @@ export default function NearbyScreen({ navigation }) {
         <Text style={[styles.lightText, {color: colors.primaryLight}]} onPress={onFilterPress}>Filter</Text>
      </View>
 
+     {!data ? <Text style={styles.flatList}>None</Text> :
      <FlatList
-      data={[1, 2, 3, 4, 5, 6, 7, 8]}
-      renderItem={(name, rating, address, uri) => <SimplePlaceView name={'Chappies'} rating={Math.round(Math.random() * 7 + 3) * 0.5} address={'123 Testing St, Palatine'} imageUri={'https://s3-media0.fl.yelpcdn.com/bphoto/rfEpgx_TydswsZCxN4KcBA/348s.jpg'}/>}
+      data={data}
+      renderItem={(name, rating, address, uri) => {
+        <SimplePlaceView 
+          name={name} 
+          rating={rating} 
+          address={address} 
+          imageUri={uri}/>
+      }}
       ItemSeparatorComponent={<View style={{height: 14}}/>}
       showsVerticalScrollIndicator={false}
       style={styles.flatList}
       contentContainerStyle={{paddingBottom: 28}}
      />
+    }
 
     </View>
   );
