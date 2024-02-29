@@ -21,6 +21,7 @@ export default function CreateScreen({ navigation }) {
 
   const [showAutofillModal, setAutofillModal] = useState(false);
   const [autofillDropdownPicked, setAutofillDropdownPicked] = useState('none');
+  const [addressPicked, setAddressPicked] = useState('none');
   const [locationLocked, setLocationLocked] = useState(false);
 
   //TODO make it so the inputText is not editable/ greyed out after location is picked
@@ -57,13 +58,13 @@ export default function CreateScreen({ navigation }) {
       options.push({label: location.display_name, value: (location.display_name + '~' + location.lat + ' ' + location.lon)})
     });
 
+    
     setAutoFillData(options);
     setAutofillModal(true);
   }
 
   const onAutofillPicked = (name) => {
     console.log(name);
-    console.log(autofillDropdownPicked);
     setSearchedLocation(name);
     setLocationLocked(true);
   }
@@ -134,6 +135,8 @@ export default function CreateScreen({ navigation }) {
                   isMultiple={false}
                   options={autoFillData}
                   selectedValue={autofillDropdownPicked}
+                  checkboxLabelStyle={{fontFamily: 'Open Sans Medium', marginVertical: 8, marginRight: 18}}
+                  checkboxStyle={{borderRadius: 20, height: 10, width: 10}}
                   onValueChange={(itemValue) => {
                     setAutofillDropdownPicked(itemValue.substring(itemValue.indexOf('~') + 1, itemValue.length))
                     setAutofillModal(false)
@@ -184,12 +187,12 @@ export default function CreateScreen({ navigation }) {
                   <Text style={styles.promptText}>
                         Price Level</Text>
                   <View style={styles.plButtonContainer}>
-                    <TouchableHighlight style={plPicked == 1? styles.curPLButton : styles.plButton} onPress={() => onPlPress(1)}>
-                      <Text style={plPicked == 1? styles.curPlText : styles.plText}>$</Text></TouchableHighlight>
-                    <TouchableHighlight style={plPicked == 2? styles.curPLButton : styles.plButton} onPress={() => onPlPress(2)}>
-                      <Text style={plPicked == 2? styles.curPlText : styles.plText}>$$</Text></TouchableHighlight>
-                    <TouchableHighlight style={plPicked == 3? styles.curPLButton : styles.plButton} onPress={() => onPlPress(3)}>
-                      <Text style={plPicked == 3? styles.curPlText : styles.plText}>$$$</Text></TouchableHighlight>
+                    <Pressable style={plPicked == 1? styles.curPLButton : styles.plButton} onPressIn={() => onPlPress(1)}>
+                      <Text style={plPicked == 1? styles.curPlText : styles.plText}>$</Text></Pressable>
+                    <Pressable style={plPicked == 2? styles.curPLButton : styles.plButton} onPressIn={() => onPlPress(2)}>
+                      <Text style={plPicked == 2? styles.curPlText : styles.plText}>$$</Text></Pressable>
+                    <Pressable style={plPicked == 3? styles.curPLButton : styles.plButton} onPressIn={() => onPlPress(3)}>
+                      <Text style={plPicked == 3? styles.curPlText : styles.plText}>$$$</Text></Pressable>
                   </View>
                 </View>
 
@@ -266,7 +269,7 @@ const styles = StyleSheet.create({
       fontSize: 20
     },
     textInput:{
-      borderWidth: 4,
+      borderWidth: 2,
       borderRadius: 60,
       flexDirection: 'row',
       alignItems: 'center',
@@ -275,7 +278,7 @@ const styles = StyleSheet.create({
       marginTop: 6
     },
     locationSearch:{
-      width: 70, 
+      width: Dimensions.get('screen').width * 0.15,
       height: 52,
       backgroundColor: colors.primary,
       borderTopRightRadius: 20, 
@@ -285,7 +288,7 @@ const styles = StyleSheet.create({
     },
     inputContent:{
       fontFamily: 'Open Sans',
-      width: Dimensions.get('screen').width * 0.6,
+      width: Dimensions.get('screen').width * 0.65,
       height: 52,
       fontSize: 18,
       marginLeft: 18
@@ -313,7 +316,6 @@ const styles = StyleSheet.create({
       height: 74,
       marginTop: 6,
       borderRadius: 28,
-     
     },
     dropDownText:{
       fontFamily: 'Open Sans',
