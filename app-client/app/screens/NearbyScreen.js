@@ -3,7 +3,6 @@ import colors from '../config/colors';
 import SimplePlaceView from '../components/SimplePlaceView';
 import { useEffect, useState } from 'react';
 
-
 export default function NearbyScreen({ navigation }) {
 
   const [data, setData] = useState([]);
@@ -12,8 +11,8 @@ export default function NearbyScreen({ navigation }) {
   const [locationLong, setLocationLong] = useState('-88.06476939999999'); 
 
   useEffect(() => {
-    // fetchData(locationLat, locationLong, radius);
-  })
+    fetchData(locationLat, locationLong, radius);
+  }, [])
 
   const onFilterPress = () => {
     console.log('Filter Pressed')
@@ -33,10 +32,11 @@ export default function NearbyScreen({ navigation }) {
         body: JSON.stringify({
           latitude: latitude,
           longitude: longitude,
-          radius: radius,
+          radius: 10000,
         })
       }); 
       const result = await response.json();
+      console.log(result.data.businesses)
       setData(result.data.businesses)
     } catch (error) {
       console.error('Error fetching data:', error); // error handling here
@@ -55,22 +55,24 @@ export default function NearbyScreen({ navigation }) {
         <Text style={[styles.lightText, {color: colors.primaryLight}]} onPress={onFilterPress}>Filter</Text>
      </View>
 
-     {!data ? <Text style={styles.flatList}>None</Text> :
+     {/* {!data ? <Text style={styles.flatList}>None</Text> : */}
      <FlatList
       data={data}
-      renderItem={(name, rating, address, uri) => {
+      renderItem={({item}) => (
         <SimplePlaceView 
-          name={name} 
-          rating={rating} 
-          address={address} 
-          imageUri={uri}/>
-      }}
+          name={item.name} 
+          rating={item.rating} 
+          address={item.location.address1} 
+          image_url={item.image_url}
+          numReviews={item.review_count}
+          yelp_url={item.url}/>
+      )}
       ItemSeparatorComponent={<View style={{height: 14}}/>}
       showsVerticalScrollIndicator={false}
       style={styles.flatList}
       contentContainerStyle={{paddingBottom: 28}}
      />
-    }
+    {/* } */}
 
     </View>
   );

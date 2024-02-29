@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { Text, StyleSheet, View, Image, TouchableHighlight } from 'react-native';
+import { Text, StyleSheet, View, Image, TouchableHighlight, Linking } from 'react-native';
 import { Rating } from '@kolking/react-native-rating';
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import colors from '../config/colors';
 import RatingStars from './RatingStars';
 
-function SimplePlaceView({ imageUri, name, address, rating}){
+function SimplePlaceView({ image_url, name, address, rating, numReviews, yelp_url }){
 
     const onSharePressed = () => {
         console.log('Share Pressed')
@@ -13,13 +13,14 @@ function SimplePlaceView({ imageUri, name, address, rating}){
 
     const onYelpPress = () => {
         console.log("Yelp Pressed")
+        Linking.openURL(yelp_url)
     }
 
     return(
         <View style={styles.container}>
           
             <Image
-                source={{uri: imageUri}}
+                source={{uri: image_url}}
                 style={styles.image}>
             </Image>
             <View 
@@ -61,7 +62,7 @@ function SimplePlaceView({ imageUri, name, address, rating}){
                     </TouchableHighlight>
                 </View>
                 <Text style={styles.reviewCountText}>
-                    Based on 523 reviews</Text>
+                    Based on {numReviews} reviews</Text>
             </View>
             
         </View>

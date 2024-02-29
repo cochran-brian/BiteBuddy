@@ -40,7 +40,7 @@ export default function ResultScreen({route, navigation}) {
     }
   }
 
-  async function shareResults() {
+  const shareResults = async () => {
     try {
       const result = await Share.share({
         message: "Check out our group's favorite restaurant!",
@@ -48,6 +48,15 @@ export default function ResultScreen({route, navigation}) {
       })
     } catch(error) {
       console.error(error);
+    }
+
+    const handleExit = async () => {
+      // store the results with the user profile
+
+      // authenticated host only deletes bite?
+      // delete storage endpoint and include in more unique endpoints?
+      // delete the bite
+      navigation.navigate('Home')
     }
     
   }
@@ -109,9 +118,7 @@ export default function ResultScreen({route, navigation}) {
               <TouchableHighlight 
                 style={[styles.biteButtons, {width: '60%'}]} 
                 underlayColor={colors.primaryDark} 
-                onPress={() => {
-                  navigation.navigate('Home')
-                }}>
+                onPress={() => handleExit()}>
                 <Text 
                   style={styles.buttonText}>BACK</Text>
               </TouchableHighlight>

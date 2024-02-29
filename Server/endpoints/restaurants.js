@@ -16,7 +16,7 @@ router.post("/", async (req, res) => {
 })
 
 async function fetchData(latitude, longitude, radius){ // MAX RADIUS IS 25 MILES
-    var data = await fetch(`https://api.yelp.com/v3/businesses/search?latitude=${latitude}&longitude=${longitude}&radius=${radius}&sort_by=best_match&limit=10`, {
+    var data = await fetch(`https://api.yelp.com/v3/businesses/search?latitude=${latitude}&longitude=${longitude}&radius=${radius}&sort_by=best_match&limit=10&term=restaurants`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
