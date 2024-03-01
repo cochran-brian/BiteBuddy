@@ -1,13 +1,14 @@
 import * as React from 'react';
-import { Text, StyleSheet, View, Image, TouchableHighlight } from 'react-native';
+import { Text, StyleSheet, View, Image, TouchableHighlight, Linking } from 'react-native';
 import { Rating } from '@kolking/react-native-rating';
 import colors from '../config/colors';
 import RatingStars from './RatingStars';
 
-function SurveyCard({ imageUri, name, address, rating, date }){
+function SurveyCard({ imageUri, name, address, rating, date, yelp_url }){
 
     const onYelpPress = () => {
         console.log("Yelp Pressed");
+        Linking.openURL(yelp_url)
     }
     return(
     <View>
@@ -46,7 +47,7 @@ function SurveyCard({ imageUri, name, address, rating, date }){
              <TouchableHighlight 
                 onPress={onYelpPress} 
                 underlayColor={'lightgrey'}
-                style={{marginLeft: 20}}>
+                style={styles.yelpButton}>
               <Image
                 resizeMode='contain'
                 style={styles.yelpLogo}
@@ -114,10 +115,14 @@ const styles = StyleSheet.create({
         marginTop: 2,
         color: 'grey'
     },
+    yelpButton:{
+        marginLeft: 20, 
+        height: 36, 
+        marginBottom: 18,
+    },
     yelpLogo:{
         width: 80, 
         height: 30,
-        marginBottom: 22,
         alignSelf: 'center'
     }
 });
