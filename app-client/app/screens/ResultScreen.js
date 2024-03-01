@@ -49,8 +49,35 @@ export default function ResultScreen({route, navigation}) {
     } catch(error) {
       console.error(error);
     }
+  }
 
     const handleExit = async () => {
+      const idToken = await AsyncStorage.getItem('idToken');
+      console.log("ID token found", idToken);
+      if (idToken) {
+      try {
+        console.log("exiting...")
+        const response = await fetch(`http://localhost:3000/exit`, { // apparently "localhost" makes the server host the phone instead of the computer
+          method: "POST",
+          mode: "cors",
+          credentials: "same-origin",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            uid: uid,
+            topRestaurant: recommendations.topRestaurant,
+            similarRestaurants: recommendations.similarRestaurants,
+          })
+        }); 
+        const result = await response.json();
+        console.log(result);
+    } catch (error) {
+      console.error('Error fetching data:', error); // error handling here
+    }
+  }
+
       // store the results with the user profile
 
       // authenticated host only deletes bite?
@@ -59,7 +86,6 @@ export default function ResultScreen({route, navigation}) {
       navigation.navigate('Home')
     }
     
-  }
 
     return(
       <>

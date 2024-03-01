@@ -9,6 +9,8 @@ const auth = require("./endpoints/auth")
 const survey = require("./endpoints/survey")
 const waiting = require("./endpoints/waiting")
 const results = require("./endpoints/results")
+const recents = require("./endpoints/recents")
+const exit = require("./endpoints/exit")
 
 app.use(cors());
 app.use(express.json());
@@ -19,6 +21,8 @@ app.use("/auth", auth);
 app.use("/survey", survey);
 app.use("/waiting", waiting);
 app.use("/results", results);
+app.use("/recents", recents);
+app.use("/exit", exit);
 
 app.listen(process.env.PORT || 3000, () => {
     console.log("Listening")
