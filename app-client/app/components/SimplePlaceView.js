@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, StyleSheet, View, Image, TouchableHighlight, Linking } from 'react-native';
+import { Text, StyleSheet, View, Image, TouchableHighlight, Linking, Share } from 'react-native';
 import { Rating } from '@kolking/react-native-rating';
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import colors from '../config/colors';
@@ -7,8 +7,11 @@ import RatingStars from './RatingStars';
 
 function SimplePlaceView({ image_url, name, address, rating, numReviews, yelp_url }){
 
-    const onSharePressed = () => {
+    const onSharePressed = async() => {
         console.log('Share Pressed')
+        const result = await Share.share({
+            url: yelp_url
+          });
     }
 
     const onYelpPress = () => {
@@ -27,7 +30,7 @@ function SimplePlaceView({ image_url, name, address, rating, numReviews, yelp_ur
                 style={styles.textContainer}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <View 
-                    style={{marginLeft: 5}}>
+                    style={{marginLeft: 5, width: 170}}>
                     <Text 
                         numberOfLines={1}
                         style={styles.textTitle}>
@@ -135,7 +138,7 @@ const styles = StyleSheet.create({
         borderColor: colors.primary,
         backgroundColor: '#fafafa',
         alignSelf: 'center',
-        marginLeft: 42
+        marginLeft: 6
     }
 });
 

@@ -18,6 +18,7 @@ export default function RecentScreen({ navigation }) {
                 address={'754 W Euclid Ave, Palatine'}
                 rating={Math.round(Math.random() * 7 + 3) * 0.5}
                 date={'Fri, January ' + Math.round(Math.random() * 31 + 1)}
+                yelp_url={'https://www.yelp.com/biz/chappies-cafe-palatine'}
             />
         );
     }

@@ -9,6 +9,13 @@ export default function ProfileScreen({ navigation }) {
 
   const user = auth.currentUser;
 
+  var username = '';
+  if(user){
+    username = user.email.substring(0, user.email.indexOf('@'));
+  }else{
+    username = 'Guest';
+  }
+
     const logOut = async () => {
         try {
             await signOut(auth);
@@ -32,7 +39,7 @@ export default function ProfileScreen({ navigation }) {
             source={{url: 'https://www.asiamediajournal.com/wp-content/uploads/2022/11/Default-PFP.jpg'}}/>
             <View style={styles.profileTextContainer}>
               <Text style={styles.subheader}>
-                {user? user.email.substring(0, user.email.indexOf('@')) : 'Guest'}
+                {username}
               </Text>
               <Text style={styles.thirdHeader}>Palatine, IL</Text>
             </View>
@@ -49,7 +56,7 @@ export default function ProfileScreen({ navigation }) {
           <TouchableHighlight 
               style= {styles.bottomButton} 
               onPress={() => logOut()} 
-              underlayColor={'darkred'}>
+              underlayColor={'darkred'}> 
               <Text 
                 style={styles.bottomButtonText}>
                   LOG OUT</Text>
@@ -57,7 +64,12 @@ export default function ProfileScreen({ navigation }) {
         </View>
         
         <View style={styles.footerContainer}>
-          <Text style={styles.footerText}>Joined on {Date(user.createdAt).toString().substring(0, 15)}</Text>
+          {user?
+           <Text style={styles.footerText}>Joined on {Date(user.createdAt).toString().substring(0, 15)}</Text>
+          :
+            <View/>
+          }
+         
         </View>
         </View>
     );
