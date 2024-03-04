@@ -4,7 +4,7 @@ import { Rating } from '@kolking/react-native-rating';
 import { TextInput } from 'react-native-paper'
 import colors from '../config/colors';
 
-function MainTextInput({ width, label, stateSetter, keyboardType, password }){
+function MainTextInput({ width, label, stateSetter, keyboardType, password, bgColor }){
     return(
         <TextInput 
         mode='outlined'
@@ -12,7 +12,7 @@ function MainTextInput({ width, label, stateSetter, keyboardType, password }){
         outlineStyle={{borderRadius: 15, borderWidth: 1}}
         activeOutlineColor={colors.primary}
         onChangeText={(text) => stateSetter(text)} 
-        label={<Text style={{ fontFamily: 'Open Sans SemiBold', color: colors.primary, backgroundColor: 'white'}}>{label}</Text>}
+        label={<Text style={{ fontFamily: 'Open Sans SemiBold', color: colors.primary, backgroundColor: {bgColor}}}>{label}</Text>}
         outlineColor='grey'
         secureTextEntry={password}
         autoCapitalize='none' 
