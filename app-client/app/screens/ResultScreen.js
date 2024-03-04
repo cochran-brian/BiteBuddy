@@ -3,6 +3,7 @@ import { Dimensions, StyleSheet, Text, TouchableHighlight, View, Pressable, Safe
 import colors from '../config/colors';
 import { Feather } from '@expo/vector-icons';
 import SimplePlaceView from '../components/SimplePlaceView';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function ResultScreen({route, navigation}) {
@@ -63,7 +64,7 @@ export default function ResultScreen({route, navigation}) {
           credentials: "same-origin",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${idToken}`
           },
           body: JSON.stringify({
             uid: uid,

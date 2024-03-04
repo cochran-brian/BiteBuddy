@@ -3,24 +3,24 @@ const router = express.Router();
 const admin = require('firebase-admin');
 const { db, auth } = require("../firebase/config");
 
-router.post("/", async (req, res) => {
+router.get("/", async (req, res) => {
     try {      
-        var name = "Guest"
         const { authorization } = req.headers;
         if (authorization.startsWith('Bearer ')) {
             const idToken = authorization.split('Bearer ')[1];
             try {
               const decodedToken = await admin.auth().verifyIdToken(idToken);
-              const doc = await db.collection('users').doc(decodedToken.email).get();
-              
+              const recents = await db.collection('users').doc(decodedToken.email).collection("bites").get();
+              console.log(recents);
+              return res.send({ recents: recents });
             } catch (error) {
-              console.error(error)
+              throw new Error(error);
             }   
         }
-        const userUid = await storeData(req.body.ratings, name, req.body.uid);
-        return res.send({ userUid: userUid });
+
+        
     } catch (error) {
-        return res.status(500).send({ error: "Error storing data " + error });
+        return res.status(500).send({ error: "Error fetching recents data " + error });
     }
 })
 

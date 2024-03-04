@@ -1,24 +1,56 @@
 import { StyleSheet, Text, View, SafeAreaView, Dimensions, FlatList } from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import colors from '../config/colors';
 import Carousel from 'react-native-snap-carousel';
 import { Pagination } from 'react-native-snap-carousel';
 import SurveyCard from '../components/SurveyCard';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function RecentScreen({ navigation }) {
 
-    const[carouselIndex, setCarouselIndex] = useState(0);
+    const [carouselIndex, setCarouselIndex] = useState(0);
+    const [data, setData] = useState([]);
+
+
+  useEffect(() => {
+    fetchData();
+  }, [])
+
+  const fetchData = async () => {
+    const idToken = await AsyncStorage.getItem('idToken');
+    console.log("ID token found", idToken);
+    if (idToken) {
+      try {
+        console.log("fetching data...")
+        const response = await fetch(`http://localhost:3000/recents`, { // apparently "localhost" makes the server host the phone instead of the computer
+          method: "GET",
+          mode: "cors",
+          credentials: "same-origin",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${idToken}`
+          }
+        }); 
+        const result = await response.json();
+        console.log(result)
+        setData(result)
+      } catch (error) {
+        console.error('Error fetching data:', error); // error handling here
+      }
+    }
+
+  }
 
     renderItem = ({item, index}) => {
         return (
             <SurveyCard
-                name = {'Chappski'}
-                imageUri={'https://lh3.googleusercontent.com/p/AF1QipP4XlKpdvnDQkFQGzxvw02lSqoFaWH64OZbnsV5=s1360-w1360-h1020'}
-                address={'754 W Euclid Ave, Palatine'}
-                rating={Math.round(Math.random() * 7 + 3) * 0.5}
+                name = {item.name}
+                imageUri={item.image_url}
+                address={item.address}
+                rating={item.rating}
                 date={'Fri, January ' + Math.round(Math.random() * 31 + 1)}
-                yelp_url={'https://www.yelp.com/biz/chappies-cafe-palatine'}
+                yelp_url={item.yelp_url}
             />
         );
     }
@@ -33,7 +65,7 @@ export default function RecentScreen({ navigation }) {
 
      <Carousel
               ref={(c) => { this._carousel = c; }}
-              data={[1, 2, 3, 4, 5]}
+              data={data}
               renderItem={this.renderItem}
               sliderWidth={400}
               itemWidth={320}
