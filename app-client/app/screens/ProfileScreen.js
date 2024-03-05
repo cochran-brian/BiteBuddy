@@ -4,13 +4,14 @@ import { signOut, getAuth } from 'firebase/auth';
 import { auth } from '../firebase/config';
 import { Feather, Entypo } from '@expo/vector-icons';
 import colors from '../config/colors';
-import MainTextInput from '../components/MainTextInput';
+import ProfileModal from '../components/ProfileModal';
 
 export default function ProfileScreen({ navigation }) {
 
   const user = auth.currentUser;
   const [modalVisible, setmodalVisible] = useState(false)
   const [location, setlocation] = useState('')
+  const [pendingLocation, setpendingLocation] = useState('')
 
   var username = '';
   if(user){
@@ -36,18 +37,15 @@ export default function ProfileScreen({ navigation }) {
                 BITE BUDDY</Text>
          </SafeAreaView>
 
-        
-
          <View style={styles.profileContainer}>
 
-         <Modal visible={modalVisible} transparent={true} animationType='slide'>
-          <View style={styles.modal}>
-            <Pressable onPress={() => setmodalVisible(false)} style={styles.exitModal}>
-              <Entypo name="cross" size={32} color="black"/>
-            </Pressable>
-            <MainTextInput label={'Location'} stateSetter={setlocation} bgColor={'#a9a9a9'}/>
-          </View>
-         </Modal>
+        <ProfileModal
+        locSetter={setlocation}
+        pendingSetter={setpendingLocation}
+        modalSetter={setmodalVisible}
+        location={location}
+        modalVisible={modalVisible}
+        pendingLocation={pendingLocation}/>
 
             <Image 
             style={styles.image}
@@ -69,7 +67,7 @@ export default function ProfileScreen({ navigation }) {
          </View>
          <View style={styles.settingsSubContainer}>
           <TouchableHighlight 
-              style= {styles.bottomButton} 
+              style= {styles.signOutButton} 
               onPress={() => logOut()} 
               underlayColor={'darkred'}> 
               <Text 
@@ -120,19 +118,6 @@ export default function ProfileScreen({ navigation }) {
       fontSize: 28,
       marginBottom: 16
     },
-    modal:{
-      height: Dimensions.get('screen').height * 0.7,
-      width: Dimensions.get('screen').width * 0.9,
-      backgroundColor: '#a9a9a9',
-      borderRadius: 20,
-      alignSelf: 'center',
-      marginTop: Dimensions.get('screen').height * 0.15,
-    },
-    exitModal:{
-      alignSelf: 'flex-end',
-      marginRight: 12,
-      marginTop: 12,
-    },
     profileContainer:{
       width: '100%',
       flex: 1.5,
@@ -163,7 +148,7 @@ export default function ProfileScreen({ navigation }) {
       borderRadius: 14,
       alignItems: 'center'
     },
-    bottomButton:{
+    signOutButton:{
       width: 292,
       height: 50,
       borderRadius: 50,
