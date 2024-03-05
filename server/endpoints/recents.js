@@ -9,9 +9,12 @@ router.get("/", async (req, res) => {
         if (authorization.startsWith('Bearer ')) {
             const idToken = authorization.split('Bearer ')[1];
             try {
+              var recents = [];
               const decodedToken = await admin.auth().verifyIdToken(idToken);
-              const recents = await db.collection('users').doc(decodedToken.email).collection("bites").get();
-              console.log(recents);
+              const recentsQuerySnapshot = await db.collection('users').doc(decodedToken.email).collection("bites").get();
+              recentsQuerySnapshot.forEach((doc) => {
+                recents.push(doc.data());
+              }) 
               return res.send({ recents: recents });
             } catch (error) {
               throw new Error(error);

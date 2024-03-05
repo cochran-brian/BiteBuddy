@@ -33,8 +33,10 @@ export default function RecentScreen({ navigation }) {
           }
         }); 
         const result = await response.json();
-        console.log(result)
-        setData(result)
+        const sortedResult = result.recents.sort((a, b) => {
+          return b.timestamp - a.timestamp;
+        })
+        setData(sortedResult)
       } catch (error) {
         console.error('Error fetching data:', error); // error handling here
       }
@@ -45,12 +47,12 @@ export default function RecentScreen({ navigation }) {
     renderItem = ({item, index}) => {
         return (
             <SurveyCard
-                name = {item.name}
-                imageUri={item.image_url}
-                address={item.address}
-                rating={item.rating}
-                date={'Fri, January ' + Math.round(Math.random() * 31 + 1)}
-                yelp_url={item.yelp_url}
+                name = {item.topRestaurant.name}
+                imageUri={item.topRestaurant.image_url}
+                address={item.topRestaurant.address}
+                rating={item.topRestaurant.rating}
+                date={new Date(item.timestamp).toDateString()}
+                yelp_url={item.topRestaurant.yelp_url}
             />
         );
     }
@@ -63,20 +65,26 @@ export default function RecentScreen({ navigation }) {
         </SafeAreaView>
      <View style={styles.subContainer}>
 
-     <Carousel
-              ref={(c) => { this._carousel = c; }}
-              data={data}
-              renderItem={this.renderItem}
-              sliderWidth={400}
-              itemWidth={320}
-              containerCustomStyle={{flexGrow: 0, marginTop: 8}}
-              onSnapToItem={(index) => setCarouselIndex(index)}
-      />
-      <Pagination
-        containerStyle={{paddingVertical: 14}}
-        activeDotIndex={carouselIndex}
-        dotsLength={5}
-      />
+     {data.length > 0 ? (
+      <>
+        <Carousel
+                ref={(c) => { this._carousel = c; }}
+                data={data}
+                renderItem={this.renderItem}
+                sliderWidth={400}
+                itemWidth={320}
+                containerCustomStyle={{flexGrow: 0, marginTop: 8}}
+                onSnapToItem={(index) => setCarouselIndex(index)}
+        />
+        <Pagination
+          containerStyle={{paddingVertical: 14}}
+          activeDotIndex={carouselIndex}
+          dotsLength={data.length}
+        />
+      </>
+     ) : (
+      <Text>No recent Bites</Text> // INSERT LOADER HERE
+     )}
 
      </View>
     </View>
