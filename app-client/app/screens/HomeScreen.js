@@ -8,12 +8,15 @@ import { Pagination } from 'react-native-snap-carousel';
 //import { ThreeDots, TailSpin } from 'react-loader-spinner';
 import {IP_ADDRESS, PORT} from "@env"
 import VerticalPlaceView from '../components/VerticalPlaceView';
+import * as Location from 'expo-location';
 
 export default function HomeScreen({ navigation }) {
 
   const [radius, setRadius] = useState(1500);
-  const [locationLat, setLocationLat] = useState('42.095271881586406'); 
-  const [locationLong, setLocationLong] = useState('-88.06476939999999'); 
+  // const [locationLat, setLocationLat] = useState('42.095271881586406'); 
+  // const [locationLong, setLocationLong] = useState('-88.06476939999999'); 
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
   const [data, setData] = useState([]);
 
   const[carouselIndex, setCarouselIndex] = useState(0);
@@ -29,12 +32,28 @@ export default function HomeScreen({ navigation }) {
   // }
 
   useEffect(() => {
-    setData([0]) // TEMPORARILY HERE SO THAT THE HOME SCREEN LOADS WITHOUT GETTING THE ACTUAL API DATA
-    //fetchData("42.11673643618475", "-88.03444504789003", "10000");
-    // setTimeout(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+      console.log(location)
+
+      fetchData(location.coords.latitude, location.coords.longitude, "10000");
+    })();
+  }, []);
+
+  // useEffect(() => {
+  //   // setData([0]) // TEMPORARILY HERE SO THAT THE HOME SCREEN LOADS WITHOUT GETTING THE ACTUAL API DATA
+  //   fetchData(location.coords.latitude, location.coords.longitude, "10000");
+  //   // setTimeout(() => {
       
-    // }, 500);
-  }, []); 
+  //   // }, 500);
+  // }, []); 
 
 
   renderCarouselItem = ({item, index}) => {
@@ -125,14 +144,14 @@ const fetchData = async (latitude, longitude, radius) => {
           showsHorizontalScrollIndicator={false}
           style={{width: Dimensions.get('screen').width, paddingLeft: 40}}
           contentContainerStyle={{paddingRight: 42}}
-          data={[1, 2, 3, 4, 5]}
-          renderItem={(name, address, imageUri, rating) => {
+          data={data}
+          renderItem={({item}) => {
             return(
             <VerticalPlaceView
-              name={'Chappskido'}
-              address={'754 W Euclid Ave Palatine IL'}
-              imageUri={'https://lh3.googleusercontent.com/p/AF1QipP4XlKpdvnDQkFQGzxvw02lSqoFaWH64OZbnsV5=s1360-w1360-h1020'}
-              rating={4.5}/>
+              name={item.name}
+              address={item.address}
+              imageUri={item.image_url}
+              rating={item.rating}/>
             )}}
         />
       </View>

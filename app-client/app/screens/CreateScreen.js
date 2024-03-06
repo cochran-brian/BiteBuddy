@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { StyleSheet, Text, TouchableHighlight, View, Pressable, Dimensions, Touchable, TouchableWithoutFeedback, Keyboard, TextInput, ScrollView } from 'react-native';
 import colors from '../config/colors';
 import { db, auth } from '../firebase/config';
@@ -10,6 +10,7 @@ import DropdownSelect from 'react-native-input-select';
 import { FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import {IP_ADDRESS, PORT, LOCATION_IQ_KEY} from "@env"
 import LocationTextCard from '../components/LocationTextCard';
+import * as Location from 'expo-location';
 
 export default function CreateScreen({ navigation }) {
 
@@ -23,6 +24,8 @@ export default function CreateScreen({ navigation }) {
   const [autofillDropdownPicked, setAutofillDropdownPicked] = useState('none');
   const [addressPicked, setAddressPicked] = useState('none');
   const [locationLocked, setLocationLocked] = useState(false);
+
+  const [location, setLocation] = useState(null);
 
   //TODO make it so the inputText is not editable/ greyed out after location is picked
 
@@ -42,6 +45,13 @@ export default function CreateScreen({ navigation }) {
     {label: 'Italian 🇮🇹', value: 'ITA'},
     {label: 'Mexican 🇲🇽', value: 'MEX'},
   ]);
+
+  useEffect(() => {
+    (async () => {
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+    })();
+  }, []);
 
   const onPlPress = (num) => {
     setPlPicked(num);
@@ -69,18 +79,14 @@ export default function CreateScreen({ navigation }) {
     setLocationLocked(true);
   }
 
-  const changeScreens = (latitude, longitude, radius) => {
+  const changeScreens = () => {
     navigation.navigate('Survey', {
-      latitude: latitude,
-      longitude: longitude,
-      radius: radius
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+      radius: slideValue * 1609.34, // conversion to meters
+      categories: dropDownPicked,
+      priceLevel: plPicked
     })
-  }
-
-  const handlePress = async (latitude, longitude, radius) => {
-    console.log("button pressed")
-    // const result = await getIdToken(latitude, longitude, radius);
-    changeScreens(latitude, longitude, radius)
   }
     
     return(
@@ -215,7 +221,7 @@ export default function CreateScreen({ navigation }) {
               <TouchableHighlight 
               style= {styles.bottomButton} 
               onPress={() => {
-                handlePress("42.11673643618475", "-88.03444504789003", "10000");
+                changeScreens();
               }} 
               underlayColor={colors.primaryDark}>
               <Text 

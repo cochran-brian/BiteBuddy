@@ -11,7 +11,7 @@ import {IP_ADDRESS, PORT} from "@env"
 
 export default function SurveySceen({ route, navigation }) {
 
-  const { latitude, longitude, radius } = route.params;
+  const { latitude, longitude, radius, categories, priceLevel } = route.params;
   const [data, setData] = useState([])
   const [uid, setUid] = useState(null)
   var ratings = [];
@@ -48,7 +48,8 @@ const fetchData = async (latitude, longitude, radius, token) => {
         latitude: latitude,
         longitude: longitude,
         radius: radius,
-        //categories: dropDownPicked ? [...dropDownPicked] : []
+        categories: categories,
+        priceLevel: priceLevel
       })
     }); 
     const result = await response.json();
