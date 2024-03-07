@@ -10,8 +10,8 @@ export default function ProfileScreen({ navigation }) {
 
   const user = auth.currentUser;
   const [modalVisible, setmodalVisible] = useState(false)
-  const [location, setlocation] = useState('')
-  const [location_enabled, setlocation_enabled] = useState(false) //Switch value
+  const [location, setlocation] = useState('Location Not Enabled')
+  const [location_enabled, setlocation_enabled] = useState(false) //Switch value (bool)
   const [pfp, setpfp] = useState(null); //uri of the user's selected profile image
   
 
@@ -63,32 +63,27 @@ export default function ProfileScreen({ navigation }) {
             <Pressable onPress={launchImagePick} style={{marginLeft: 12}}>
               <Feather name="edit" size={32} color="black" />
             </Pressable>
-          </View>
-          
-            
+          </View>  
               <Text style={styles.subheader}>
                 {username}
               </Text>
-              <Text style={styles.thirdHeader}>{location}</Text>
-           
-
-            
+              <Text style={[styles.thirdHeader, {marginBottom: 32}]}>{location}</Text>
          </View>
 
-         <View style={styles.settingsContainer}>
-          <Text style={styles.settingsHeader}>Settings</Text>
-         </View>
          <View style={styles.settingsSubContainer}> 
+         <View style={{flex: 1, justifyContent: 'center'}}>
            <View 
              style={styles.locationToggle}>
-            <View style={{flexDirection: 'row'}}>
              <Text 
                style={styles.toggleText}>
-                 SAVE</Text>
-             <Switch value={location_enabled} onValueChange={() => setlocation_enabled(!location_enabled)}/>
-            </View>
+                 LOCATION</Text>
+             <Switch 
+              value={location_enabled} 
+              trackColor={{true: colors.primary}}
+              onValueChange={(val) => setlocation_enabled(val)}
+            />
            </View>
-
+          </View>
           <TouchableHighlight 
               style= {styles.signOutButton} 
               onPress={() => logOut()} 
@@ -144,10 +139,9 @@ export default function ProfileScreen({ navigation }) {
     },
     profileContainer:{
       width: '100%',
-      flex: 2,
+      flex: 3,
       alignItems: 'center',
       justifyContent: 'center',
-      paddingTop: 12
     },
     image:{
       width: 150,
@@ -163,28 +157,32 @@ export default function ProfileScreen({ navigation }) {
     settingsSubContainer:{
       backgroundColor: '#d9d9d9',
       width: '100%',
-      flex: 2,
+      flex: 1.5,
       borderRadius: 14,
       alignItems: 'center',
-      justifyContent: 'space-around',
     },
     locationToggle:{
       width: Dimensions.get('screen').width * 0.7,
       height: 54,
       borderRadius: 50,
-      backgroundColor: colors.primary,
+      backgroundColor: 'white',
+      borderColor: colors.primary,
+      borderWidth: 3,
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'space-around',
+      flexDirection: 'row'
     },
     toggleText: {
-      color: 'white', 
+      color: colors.primary, 
       fontFamily: 'Open Sans', 
-      fontSize: 18
+      fontSize: 20,
+      marginLeft: 8,
     },
     signOutButton:{
-      width: 292,
-      height: 50,
+      width: 210,
+      height: 44,
       borderRadius: 50,
+      marginBottom: 18,
       backgroundColor: '#e3242b',
       alignItems: 'center',
       justifyContent: 'center'
@@ -192,7 +190,7 @@ export default function ProfileScreen({ navigation }) {
     bottomButtonText: {
       color: 'white', 
       fontFamily: 'Open Sans', 
-      fontSize: 24
+      fontSize: 20
     },
     footerContainer:{
       width: '100%',
@@ -201,7 +199,7 @@ export default function ProfileScreen({ navigation }) {
       flex: 1,
     },
     footerText:{
-      fontSize: 20,
+      fontSize: 18,
       color: 'grey',
       fontFamily: 'Open Sans',
       marginBottom: 18,
