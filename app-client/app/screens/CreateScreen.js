@@ -1,9 +1,6 @@
 import { useState, useEffect } from 'react';
 import { StyleSheet, Text, TouchableHighlight, View, Pressable, Dimensions, Touchable, TouchableWithoutFeedback, Keyboard, TextInput, ScrollView } from 'react-native';
 import colors from '../config/colors';
-import { db, auth } from '../firebase/config';
-import { setDoc, doc, collection } from "firebase/firestore"
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Slider } from '@miblanchard/react-native-slider';
 import { Rating } from '@kolking/react-native-rating';
 import DropdownSelect from 'react-native-input-select';

@@ -4,7 +4,8 @@ import { signOut, getAuth } from 'firebase/auth';
 import { auth } from '../firebase/config';
 import { Feather, Entypo } from '@expo/vector-icons';
 import colors from '../config/colors';
-import * as ImagePicker from 'expo-image-picker'
+import * as ImagePicker from 'expo-image-picker';
+import * as Location from 'expo-location';
 
 export default function ProfileScreen({ navigation }) {
 
@@ -21,6 +22,24 @@ export default function ProfileScreen({ navigation }) {
   }else{
     username = 'Guest';
   }
+
+  
+   const tryLocation = async () => {
+    var { status } = await Location.requestForegroundPermissionsAsync();
+    console.log('Location service -> access', status);
+    if (status !== 'granted'){
+      setlocation_enabled(false);
+      setlocation('Location Error Occured')
+      return;
+    }
+
+    var location = await Location.getCurrentPositionAsync({});
+    const response = location.json();
+    console.log()
+    //setlocation(Location.reverseGeocodeAsync({latitude: response.coords.latitude, longitude: response.coords.longitude}));
+   }
+  
+  
 
     const logOut = async () => {
         try {
@@ -80,7 +99,11 @@ export default function ProfileScreen({ navigation }) {
              <Switch 
               value={location_enabled} 
               trackColor={{true: colors.primary}}
-              onValueChange={(val) => setlocation_enabled(val)}
+              onValueChange={(val) => {
+                setlocation_enabled(val)
+                if(val){
+                  tryLocation();
+                }}}
             />
            </View>
           </View>
