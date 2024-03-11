@@ -17,6 +17,7 @@ export default function ProfileScreen({ navigation }) {
   
 
   var username = '';
+
   if(user){
     username = user.email.substring(0, user.email.indexOf('@'));
   }else{
@@ -34,9 +35,8 @@ export default function ProfileScreen({ navigation }) {
     }
 
     var location = await Location.getCurrentPositionAsync({});
-    const response = location.json();
-    console.log()
-    //setlocation(Location.reverseGeocodeAsync({latitude: response.coords.latitude, longitude: response.coords.longitude}));
+    const latitude = Number(JSON.stringify(location.coords.latitude));
+    const longitude = Number(JSON.stringify(location.coords.longitude));
    }
   
   
