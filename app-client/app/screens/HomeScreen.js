@@ -66,7 +66,6 @@ export default function HomeScreen({ navigation }) {
   
 const fetchData = async (latitude, longitude, radius) => {
   try {
-    console.log(process.env.PORT, process.env.IP_ADDRESS)
     console.log("fetching data...")
     const response = await fetch(`http://localhost:3000/restaurants`, { // apparently "localhost" makes the server host the phone instead of the computer
       method: "POST",
