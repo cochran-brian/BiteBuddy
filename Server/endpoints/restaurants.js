@@ -29,6 +29,19 @@ router.post("/", async (req, res) => {
     }
 })
 
+router.get("/:id", async (req, res) => {
+    var restaurants = [];
+    try {
+        const biteQuerySnapshot = await db.collection('bites').doc(req.params.id).collection('restaurants').get();
+        biteQuerySnapshot.forEach((doc) => {
+            restaurants.push(doc.data());
+        }) 
+        res.send({ restaurants })
+    } catch (error) {
+        res.status(500).send({ error })
+    }
+})
+
 const fetchData = async (latitude, longitude, radius, categories, priceLevel) => { // MAX RADIUS IS 25 MILES
     console.log("in fetch")
     try {
