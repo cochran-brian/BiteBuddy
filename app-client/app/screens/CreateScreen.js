@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { StyleSheet, Text, TouchableHighlight, View, Pressable, Dimensions, Touchable, TouchableWithoutFeedback, Keyboard, TextInput, ScrollView } from 'react-native';
+import { StyleSheet, Text, TouchableHighlight, View, Pressable, Dimensions, Touchable, TouchableWithoutFeedback, Keyboard, TextInput, Button } from 'react-native';
 import colors from '../config/colors';
 import { Slider } from '@miblanchard/react-native-slider';
 import { Rating } from '@kolking/react-native-rating';
@@ -134,6 +134,7 @@ export default function CreateScreen({ navigation }) {
                <View style={{height: 0}}>
                 <DropdownSelect 
                   dropdownStyle={{width: 0, height: 0, opacity: 0}}
+                  listFooterComponent={<Button style={styles.cancelButton} title="Cancel" onPress={() => setAutofillModal(false)}/>}
                   disabled={true}
                   isMultiple={false}
                   options={autoFillData}
@@ -141,9 +142,9 @@ export default function CreateScreen({ navigation }) {
                   checkboxLabelStyle={{fontFamily: 'Open Sans Medium', marginVertical: 8, marginRight: 18}}
                   checkboxStyle={{borderRadius: 20, height: 10, width: 10}}
                   onValueChange={(itemValue) => {
-                    setAutofillDropdownPicked(itemValue.substring(itemValue.indexOf('~') + 1, itemValue.length))
-                    setAutofillModal(false)
-                    onAutofillPicked(itemValue.substring(0, itemValue.indexOf('~')))
+                    setAutofillDropdownPicked(itemValue.substring(itemValue.indexOf('~') + 1, itemValue.length));
+                    setAutofillModal(false);
+                    onAutofillPicked(itemValue.substring(0, itemValue.indexOf('~')));
                   }}
                   modalProps={{visible: showAutofillModal}}
                 />

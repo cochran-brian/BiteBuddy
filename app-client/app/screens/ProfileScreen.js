@@ -37,6 +37,10 @@ export default function ProfileScreen({ navigation }) {
     var location = await Location.getCurrentPositionAsync({});
     const latitude = Number(JSON.stringify(location.coords.latitude));
     const longitude = Number(JSON.stringify(location.coords.longitude));
+    const geocodeRequest = await Location.reverseGeocodeAsync({latitude: latitude, longitude: longitude})
+
+    console.log('Geocode request -> ', JSON.stringify(geocodeRequest));
+    setlocation(geocodeRequest[0].city + ', ' + geocodeRequest[0].region);
    }
   
   
@@ -217,14 +221,14 @@ export default function ProfileScreen({ navigation }) {
     },
     footerContainer:{
       width: '100%',
-      justifyContent: 'center',
+      justifyContent: 'flex-start',
       alignItems: 'center',
-      flex: 1,
+      flex: 0.75
     },
     footerText:{
       fontSize: 18,
       color: 'grey',
       fontFamily: 'Open Sans',
-      marginBottom: 18,
+      marginTop: 12,
     }
   });
