@@ -15,6 +15,12 @@ export default function WaitingScreen({route, navigation}){
     const [eventData, setEventData] = useState(null);
     const { uid, latitude, longitude, radius } = route.params;
 
+    const onInvitePress = async() => {
+      const result = await Share.share({
+        url: 'https://www.imdb.com/title/tt1823672/'
+      });
+    }
+
     useEffect(() => {
       const eventSource = new RNEventSource(`http://localhost:4000/waiting?uid=${uid}`);
   
@@ -119,6 +125,15 @@ export default function WaitingScreen({route, navigation}){
         renderItem={({item}) => <UserCard name={'Brian'} imageUri={'https://x.dpstatic.com/d/avatars/l/987/987650.jpg?1643200221'}/>}
         scrollEnabled={false}
         style={styles.flatList}
+        ListFooterComponent={() => {
+          <TouchableHighlight 
+              style= {styles.bottomButton} 
+              onPress={onInvitePress} 
+              underlayColor={colors.primaryDark}>
+              <Text style={styles.buttonText}>
+                INVITE</Text>
+      </TouchableHighlight>
+        }}  
         // onRefresh={() => getNames()}
         // refreshing={refreshing}
      />
