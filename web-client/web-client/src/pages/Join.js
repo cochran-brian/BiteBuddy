@@ -1,10 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import NoPage from "./NoPage";
 
-function Join() {
+export default function Join() {
 
   const { id } = useParams();
-  console.log(id)
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     fetchData(id)
@@ -22,13 +23,20 @@ function Join() {
         }
       }); 
       const result = await response.json();
-      console.log("result", result)
+      setData(result);
     } catch (error) {
       console.error('Error fetching data:', error); // error handling here
     }
   }
 
-  return <h1>Join</h1>;
+  return (
+    <>
+    {data.length > 0 ? 
+      <div>
+        <h1>Join</h1>
+        {data}
+      </div>
+    : <NoPage /> }
+    </>
+  )
 };
-  
-  export default Join;

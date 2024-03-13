@@ -38,7 +38,7 @@ router.get("/:id", async (req, res) => {
         biteQuerySnapshot.forEach((doc) => {
             restaurants.push(doc.data());
         }) 
-        console.log(restaurants)
+        
         res.send({ restaurants })
     } catch (error) {
         res.status(500).send({ error })
