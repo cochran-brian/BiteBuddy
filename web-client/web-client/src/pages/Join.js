@@ -1,6 +1,10 @@
 import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 
-function Join({ id }) {
+function Join() {
+
+  const { id } = useParams();
+  console.log(id)
 
   useEffect(() => {
     fetchData(id)
@@ -8,8 +12,7 @@ function Join({ id }) {
 
   const fetchData = async (id) => {
     try {
-      console.log(id)
-      const response = await fetch(`http://localhost:3000/restaurants${id}`, { // apparently "localhost" makes the server host the phone instead of the computer
+      const response = await fetch(`http://localhost:4000/restaurants/${id}`, { // apparently "localhost" makes the server host the phone instead of the computer
         method: "GET",
         mode: "cors",
         credentials: "same-origin",

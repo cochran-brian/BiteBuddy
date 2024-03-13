@@ -29,14 +29,14 @@ export default function SurveySceen({ route, navigation }) {
 }
 
 useEffect(() => {
-  getIdToken(latitude, longitude, radius);
+  getIdToken(latitude, longitude, radius, categories, priceLevel);
 }, [])
 
-const fetchData = async (latitude, longitude, radius, token) => {
+const fetchData = async (latitude, longitude, radius, categories, priceLevel, token) => {
   try {
     console.log(PORT, IP_ADDRESS)
     console.log("fetching data...")
-    const response = await fetch(`http://localhost:3000/restaurants`, { // apparently "localhost" makes the server host the phone instead of the computer
+    const response = await fetch(`http://localhost:4000/restaurants`, { // apparently "localhost" makes the server host the phone instead of the computer
       method: "POST",
       mode: "cors",
       credentials: "same-origin",
@@ -62,7 +62,7 @@ const fetchData = async (latitude, longitude, radius, token) => {
 const storeData = async (data, latitude, longitude, radius, token) => {
   try {
     console.log("Storing data...")
-    const response = await fetch(`http://localhost:3000/storage`, { // apparently "localhost" makes the server host the phone instead of the computer
+    const response = await fetch(`http://localhost:4000/storage`, { // apparently "localhost" makes the server host the phone instead of the computer
       method: "POST",
       mode: "cors",
       credentials: "same-origin",
@@ -84,14 +84,15 @@ const storeData = async (data, latitude, longitude, radius, token) => {
   }
 }
 
-const getIdToken = async (latitude, longitude, radius) => {
+const getIdToken = async (latitude, longitude, radius, categories, priceLevel) => {
   try {
     console.log("getting ID token...")
     const idToken = await AsyncStorage.getItem('idToken');
     console.log("ID token found", idToken);
     if (idToken) {
       try {
-        const data = await fetchData(latitude, longitude, radius, idToken);
+        const data = await fetchData(latitude, longitude, radius, categories, priceLevel, idToken);
+        console.log(data)
         const response = await storeData(data, latitude, longitude, radius, idToken);
         setData(data.sort((a, b) => {
           if(a.name < b.name) {
@@ -126,7 +127,7 @@ const getIdToken = async (latitude, longitude, radius) => {
 const storeRatings = async (ratings, uid, token) => {
   try {
     console.log(uid)
-    const response = await fetch(`http://localhost:3000/survey`, { // apparently "localhost" makes the server host the phone instead of the computer
+    const response = await fetch(`http://localhost:4000/survey`, { // apparently "localhost" makes the server host the phone instead of the computer
       method: "POST",
       mode: "cors",
       credentials: "same-origin",

@@ -23,7 +23,7 @@ export default function RecentScreen({ navigation }) {
     if (idToken) {
       try {
         console.log("fetching data...")
-        const response = await fetch(`http://localhost:3000/recents`, { // apparently "localhost" makes the server host the phone instead of the computer
+        const response = await fetch(`http://localhost:4000/recents`, { // apparently "localhost" makes the server host the phone instead of the computer
           method: "GET",
           mode: "cors",
           credentials: "same-origin",

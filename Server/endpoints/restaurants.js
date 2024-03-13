@@ -12,6 +12,7 @@ router.post("/", async (req, res) => {
         console.log(req.body.priceLevel)
         var categories = '';
         if(req.body.categories){
+            console.log("categories exist")
             for(let i = 0; i < req.body.categories.length; i++) {
                 if(i != req.body.categories.length - 1) {
                     categories += req.body.categories[i] + ','
@@ -21,10 +22,11 @@ router.post("/", async (req, res) => {
             }
         }
         console.log("entering fetch")
-        const data = await fetchData(req.body.latitude, req.body.longitude, req.body.radius, categories, req.body.priceLevel);
+        const data = await fetchData(req.body.latitude, req.body.longitude, Math.floor(req.body.radius), categories, req.body.priceLevel);
         console.log(data)
         res.send({ data: data });
     } catch (error) {
+        console.error(error)
         res.status(500).send({ error });
     }
 })
@@ -36,6 +38,7 @@ router.get("/:id", async (req, res) => {
         biteQuerySnapshot.forEach((doc) => {
             restaurants.push(doc.data());
         }) 
+        console.log(restaurants)
         res.send({ restaurants })
     } catch (error) {
         res.status(500).send({ error })

@@ -21,7 +21,7 @@ export default function NearbyScreen({ navigation }) {
   const fetchData = async (latitude, longitude, radius) => {
     try {
       console.log("fetching data...")
-      const response = await fetch(`http://localhost:3000/restaurants`, { // apparently "localhost" makes the server host the phone instead of the computer
+      const response = await fetch(`http://localhost:4000/restaurants`, { // apparently "localhost" makes the server host the phone instead of the computer
         method: "POST",
         mode: "cors",
         credentials: "same-origin",

@@ -24,6 +24,6 @@ app.use("/results", results);
 app.use("/recents", recents);
 app.use("/exit", exit);
 
-app.listen(process.env.PORT || 3000, () => {
-    console.log("Listening")
+app.listen(process.env.PORT || 4000, () => {
+    console.log(`Listening on port ${process.env.PORT}`)
 })

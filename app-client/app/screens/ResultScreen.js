@@ -18,7 +18,7 @@ export default function ResultScreen({route, navigation}) {
   const getRecommendation = async () => {
     try {
       console.log("fetching recommendation...")
-      const response = await fetch(`http://localhost:3000/results`, { // apparently "localhost" makes the server host the phone instead of the computer
+      const response = await fetch(`http://localhost:4000/results`, { // apparently "localhost" makes the server host the phone instead of the computer
         method: "POST",
         mode: "cors",
         credentials: "same-origin",
@@ -58,7 +58,7 @@ export default function ResultScreen({route, navigation}) {
       if (idToken) {
       try {
         console.log("exiting...")
-        const response = await fetch(`http://localhost:3000/exit`, { // apparently "localhost" makes the server host the phone instead of the computer
+        const response = await fetch(`http://localhost:4000/exit`, { // apparently "localhost" makes the server host the phone instead of the computer
           method: "POST",
           mode: "cors",
           credentials: "same-origin",

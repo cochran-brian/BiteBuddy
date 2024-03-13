@@ -16,7 +16,7 @@ export default function WaitingScreen({route, navigation}){
     const { uid, latitude, longitude, radius } = route.params;
 
     useEffect(() => {
-      const eventSource = new RNEventSource(`http://localhost:3000/waiting?uid=${uid}`);
+      const eventSource = new RNEventSource(`http://localhost:4000/waiting?uid=${uid}`);
   
       // Event listener for receiving SSE messages
       eventSource.addEventListener('message', (event) => {
