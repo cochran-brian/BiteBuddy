@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { db } = require("../firebase/config");
+const { db, auth } = require("../firebase/config");
 const authenticateMiddleware = require("../middleware/authenticateMiddleware");
 
 router.use(authenticateMiddleware)
@@ -10,23 +10,24 @@ router.post("/", async (req, res) => {
         console.log(req.body.data)
         const { authorization } = req.headers;
         const idToken = authorization.split('Bearer ')[1];
-        const uid = await storeData(req.body.data, req.body.latitude, req.body.longitude, req.body.radius, idToken);
+        const decodedToken = await auth.verifyIdToken(idToken);
+        const uid = await storeData(req.body.data, req.body.latitude, req.body.longitude, req.body.radius, decodedToken.uid);
         return res.send({ uid: uid });
     } catch (error) {
         return res.status(500).send({ error: "Error storing data " + error });
     }
 })
 
-async function storeData(data, latitude, longitude, radius, token) {
+async function storeData(data, latitude, longitude, radius, uid) {
 
     console.log(data)
     try {
       const docRef = await db.collection('bites').add({
         timestamp: Date.now(),
         search_radius: radius,
-        host_latitude: latitude,
-        host_longitude: longitude,
-        host_id_token: token
+        latitude: latitude,
+        longitude: longitude,
+        host_uid: uid
       });
   
       await Promise.all(data.map(async (place) => {

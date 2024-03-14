@@ -39,10 +39,11 @@ const validateFirebaseToken = async (firebaseToken) => {
 const storeData = async (uid, email, firstName) => {
     try {
         console.log("storing data...")
-        db.collection("users").doc(email).set({
+        db.collection("users").doc(uid).set({
             userId: uid,
             firstName: firstName,
-            userEmail: email
+            userEmail: email,
+            profile_image: null
         })
         console.log("User stored successfully")
     } catch (error) {

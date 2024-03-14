@@ -34,12 +34,19 @@ router.post("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
     var restaurants = [];
     try {
-        const biteQuerySnapshot = await db.collection('bites').doc(req.params.id).collection('restaurants').get();
-        biteQuerySnapshot.forEach((doc) => {
+        const restaurantsQuerySnapshot = await db.collection('bites').doc(req.params.id).collection('restaurants').get();
+        restaurantsQuerySnapshot.forEach((doc) => {
             restaurants.push(doc.data());
         }) 
+
+        const biteQuerySnapshot = await db.collection('bites').doc(req.params.id).get();
+        const biteData = await biteQuerySnapshot.data();
+        console.log(biteData)
+
+        const profileQuerySnapshot = await db.collection('users').doc(biteData.host_uid).get();
+        const profileData = await profileQuerySnapshot.data();
         
-        res.send({ restaurants })
+        res.send({ restaurants: restaurants, profile: profileData })
     } catch (error) {
         res.status(500).send({ error })
     }
@@ -49,7 +56,6 @@ const fetchData = async (latitude, longitude, radius, categories, priceLevel) =>
     console.log("in fetch")
     try {
         if(categories && priceLevel) {
-            console.log("fetching 1")
             var data = await fetch(`https://api.yelp.com/v3/businesses/search?latitude=${latitude}&longitude=${longitude}&radius=${radius}&categories=${categories}&price=${priceLevel}&sort_by=best_match&limit=10&term=restaurants`, {
                 method: "GET",
                 headers: {
@@ -58,7 +64,6 @@ const fetchData = async (latitude, longitude, radius, categories, priceLevel) =>
                 },
             })
         } else {
-            console.log("fetching 2")
             var data = await fetch(`https://api.yelp.com/v3/businesses/search?latitude=${latitude}&longitude=${longitude}&radius=${radius}&sort_by=best_match&limit=10&term=restaurants`, {
                 method: "GET",
                 headers: {
