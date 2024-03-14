@@ -6,6 +6,7 @@ export default function Join() {
 
   const { id } = useParams();
   const [data, setData] = useState([]);
+  const [profile, setProfile] = useState({})
 
   useEffect(() => {
     fetchData(id)
@@ -23,20 +24,20 @@ export default function Join() {
         }
       }); 
       const result = await response.json();
-      setData(result);
+      console.log(result.profile)
+      setData(result.restaurants);
+      setProfile(result.profile);
     } catch (error) {
       console.error('Error fetching data:', error); // error handling here
     }
   }
 
   return (
-    <>
-    {data.length > 0 ? 
-      <div>
-        <h1>Join</h1>
-        {data}
-      </div>
-    : <NoPage /> }
-    </>
+    <div>
+      <h1>Join</h1>
+      {data.map(r => {
+        return <div>{r.name}</div>
+      })}
+    </div>
   )
 };
