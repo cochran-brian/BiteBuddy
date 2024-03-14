@@ -8,7 +8,7 @@ import { auth } from '../firebase/config';
 import { signInWithEmailAndPassword, signInWithCustomToken, createUserWithEmailAndPassword } from 'firebase/auth';
 import {IP_ADDRESS, PORT} from "@env"
 
-export default function RegisterScreen({ navigation }) {
+export default function RegisterScreen({ route, navigation }) {
 
   const [signingIn, setSigningIn] = useState(true);
 
@@ -16,6 +16,8 @@ export default function RegisterScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confPassword, setConfPassword] = useState("");
+
+  const authRequired = route.params;
 
   async function onSubmitPressed(){
     try {
@@ -65,9 +67,10 @@ export default function RegisterScreen({ navigation }) {
         <Pressable 
           onPress={() => Keyboard.dismiss()} style={styles.pressableContainer}>
 
+        {authRequired? <View style={{height: 42}}/> : 
           <Pressable style={styles.backButton} onPress={() => navigation.navigate('Home')}>
             <Ionicons name="arrow-back-circle-outline" size={42} color="black" />
-          </Pressable>
+          </Pressable>}
 
         <View style={styles.contentContainer}>
           <Text 
@@ -126,7 +129,7 @@ export default function RegisterScreen({ navigation }) {
 
         <View style={styles.bottomPromptContainer}>
          <Text style={[styles.lightText, {fontSize: 16}]}>Already have an account? </Text>
-         <Text style={styles.pressableText} onPress={() => navigation.navigate("Sign In")}>Login here</Text>
+         <Text style={styles.pressableText} onPress={() => navigation.navigate("Sign In", {authRequired: authRequired})}>Login here</Text>
         </View>
          
 

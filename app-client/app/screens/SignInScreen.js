@@ -1,4 +1,4 @@
-import { Keyboard, StyleSheet, Text, View, Pressable, TextInput, KeyboardAvoidingView, TouchableHighlight, ScrollView, Dimensions } from 'react-native';
+import { Keyboard, StyleSheet, Text, View, Pressable, Button, KeyboardAvoidingView, TouchableHighlight, ScrollView, Dimensions } from 'react-native';
 import colors from '../config/colors';
 import { useState } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -64,12 +64,14 @@ export default function SignInScreen({ navigation, route }) {
           onPress={() => Keyboard.dismiss()} style={styles.pressableContainer}>
 
         {authRequired? <></> :
-          <Pressable style={styles.backButton} onPress={() => navigation.navigate('Home', {authRequired: authRequired})}>
+          <Pressable style={styles.backButton} onPress={() => navigation.navigate('Home')}>
             <Ionicons name="arrow-back-circle-outline" size={42} color="black" />
           </Pressable>
         }
-
         <View style={styles.contentContainer}>
+
+        <Button onPress={() => navigation.navigate("Home")} title="Bypass"/>
+
           <Text 
             style={styles.header}>
               BITE BUDDY</Text>
@@ -114,7 +116,7 @@ export default function SignInScreen({ navigation, route }) {
 
         <View style={styles.bottomPromptContainer}>
          <Text style={[styles.lightText, {fontSize: 16}]}>Don't have an account? </Text>
-         <Text style={styles.pressableText} onPress={() => navigation.navigate('Register')}>Sign up here</Text>
+         <Text style={styles.pressableText} onPress={() => navigation.navigate('Register', {authRequired: authRequired})}>Sign up here</Text>
         </View>
          
 

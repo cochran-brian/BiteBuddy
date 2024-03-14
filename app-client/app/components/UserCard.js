@@ -5,15 +5,14 @@ import { Rating } from '@kolking/react-native-rating';
 import colors from '../config/colors';
 import RatingStars from './RatingStars';
 
-function UserCard({ imageUri, name, status}){
-
+function UserCard({ imageUri, name, status, backgroundColor}){
     return(
-    <View style={[styles.container, styles.shadowProps]}>
+    <View style={[styles.container, styles.shadowProps, {backgroundColor: backgroundColor}]}>
         <Image style={styles.image}
          source={{uri: imageUri}}/>
         <Text style={styles.nameText}>{name}</Text>
         <View style={styles.iconContainer}>
-            <Ionicons name="checkmark-circle" size={40} color="green"/>
+            {status? <Ionicons name="checkmark-circle" size={40} color="green"/> : <></>}
         </View>
     </View>
 )}
@@ -24,7 +23,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         width: '100%',
         height: 90,
-        marginBottom: 8,
+        marginBottom: 12,
         borderRadius: 14,
         borderWidth: 1,
         borderColor: 'grey',

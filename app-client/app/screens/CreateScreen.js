@@ -184,7 +184,7 @@ export default function CreateScreen({ navigation }) {
                     primaryColor={colors.primary}
                     checkboxComponentStyles={{checkboxLabelStyle: styles.dropDownText}}
                     multipleSelectedItemStyle={{fontFamily: 'Open Sans', height: 34, borderRadius: 18}}
-                    dropdownIconStyle={{top: 30, right: 12}}
+                    dropdownIconStyle={{top: 34, right: 12}}
                   />
                 </View>
                 <View>

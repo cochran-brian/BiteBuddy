@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, TouchableHighlight, FlatList, Pressable, ScrollView, RefreshControl, Dimensions } from "react-native";
+import { StyleSheet, View, Text, TouchableHighlight, FlatList, Pressable, ScrollView, RefreshControl, Dimensions, Share } from "react-native";
 import { doc, collection, getDocs, getDoc } from "firebase/firestore"
 import { db, auth } from '../firebase/config';
 import { Foundation } from '@expo/vector-icons';
@@ -17,7 +17,7 @@ export default function WaitingScreen({route, navigation}){
 
     const onInvitePress = async() => {
       const result = await Share.share({
-        url: 'https://www.imdb.com/title/tt1823672/'
+        url: 'https://www.imdb.com/title/tt1823672/' //Put the link to join the survey here
       });
     }
 
@@ -121,19 +121,14 @@ export default function WaitingScreen({route, navigation}){
       <View style={{marginTop: '10%'}}/>
 
       <FlatList
-        data={eventData} 
-        renderItem={({item}) => <UserCard name={'Brian'} imageUri={'https://x.dpstatic.com/d/avatars/l/987/987650.jpg?1643200221'}/>}
+        data={[1, 2, 3]}//data={eventData} 
+        renderItem={({item}) => <UserCard name={'Brian'} backgroundColor={"white"} imageUri={'https://x.dpstatic.com/d/avatars/l/987/987650.jpg?1643200221'} status={true}/>}
         scrollEnabled={false}
         style={styles.flatList}
-        ListFooterComponent={() => {
-          <TouchableHighlight 
-              style= {styles.bottomButton} 
-              onPress={onInvitePress} 
-              underlayColor={colors.primaryDark}>
-              <Text style={styles.buttonText}>
-                INVITE</Text>
-      </TouchableHighlight>
-        }}  
+        ListFooterComponent={
+          <UserCard name={"Invite"} status={false} backgroundColor={colors.neutral} imageUri={'https://cdn-icons-png.flaticon.com/512/9632/9632767.png'}/>
+          
+        }  
         // onRefresh={() => getNames()}
         // refreshing={refreshing}
      />
@@ -196,7 +191,17 @@ const styles = StyleSheet.create({
     marginBottom: 38,
     backgroundColor: colors.primary,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+  },
+  inviteButton:{
+    width: 150,
+    height: 34,
+    borderRadius: 50,
+    marginTop: 12,
+    backgroundColor: colors.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center'
   },
   buttonText: {
     color: 'white', 
