@@ -121,13 +121,12 @@ export default function WaitingScreen({route, navigation}){
       <View style={{marginTop: '10%'}}/>
 
       <FlatList
-        data={[1, 2, 3]}//data={eventData} 
-        renderItem={({item}) => <UserCard name={'Brian'} backgroundColor={"white"} imageUri={'https://x.dpstatic.com/d/avatars/l/987/987650.jpg?1643200221'} status={true}/>}
+        data={eventData} 
+        renderItem={({item}) => <UserCard name={item} backgroundColor={"white"} imageUri={'https://x.dpstatic.com/d/avatars/l/987/987650.jpg?1643200221'} status={true}/>}
         scrollEnabled={false}
         style={styles.flatList}
         ListFooterComponent={
-          <UserCard name={"Invite"} status={false} backgroundColor={colors.neutral} imageUri={'https://cdn-icons-png.flaticon.com/512/9632/9632767.png'}/>
-          
+            <UserCard name={"INVITE"} onPress={onInvitePress} status={false} backgroundColor={colors.neutral} imageUri={'https://cdn-icons-png.flaticon.com/512/9632/9632767.png'}/>
         }  
         // onRefresh={() => getNames()}
         // refreshing={refreshing}

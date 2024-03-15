@@ -1,25 +1,24 @@
 import * as React from 'react';
 import { Text, StyleSheet, View, Image, TouchableHighlight } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { Rating } from '@kolking/react-native-rating';
 import colors from '../config/colors';
-import RatingStars from './RatingStars';
 
-function UserCard({ imageUri, name, status, backgroundColor}){
+function UserCard({ imageUri, name, status, backgroundColor, onPress}){
     return(
-    <View style={[styles.container, styles.shadowProps, {backgroundColor: backgroundColor}]}>
-        <Image style={styles.image}
-         source={{uri: imageUri}}/>
-        <Text style={styles.nameText}>{name}</Text>
-        <View style={styles.iconContainer}>
-            {status? <Ionicons name="checkmark-circle" size={40} color="green"/> : <></>}
+    <TouchableHighlight onPress={onPress} underlayColor={"#B9B9B9"} style={[styles.container, styles.shadowProps, {backgroundColor: backgroundColor}]}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Image style={styles.image}
+            source={{uri: imageUri}}/>
+            <Text style={styles.nameText}>{name}</Text>
+            <View style={styles.iconContainer}>
+                {status? <Ionicons name="checkmark-circle" size={40} color="green"/> : <></>}
+            </View>
         </View>
-    </View>
+    </TouchableHighlight>
 )}
 
 const styles = StyleSheet.create({
     container:{
-        flexDirection: 'row',
         backgroundColor: 'white',
         width: '100%',
         height: 90,
@@ -28,6 +27,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: 'grey',
         alignItems: 'center',
+        justifyContent: 'center'
     },
     shadowProps:{
         shadowOffset: {width: 0, height: 4},

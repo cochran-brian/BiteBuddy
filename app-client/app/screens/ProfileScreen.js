@@ -107,6 +107,8 @@ export default function ProfileScreen({ navigation }) {
                 setlocation_enabled(val)
                 if(val){
                   tryLocation();
+                }else{
+                  setlocation('Location Not Enabled')
                 }}}
             />
            </View>
@@ -151,11 +153,11 @@ export default function ProfileScreen({ navigation }) {
     },
     subheader:{
       fontFamily: 'Open Sans',
-      fontSize: 34,
+      fontSize: 38,
     },
     thirdHeader:{
       fontFamily: 'Open Sans',
-      fontSize: 20,
+      fontSize: 22,
       color: colors.primaryLight
     },
     settingsHeader:{
@@ -171,22 +173,18 @@ export default function ProfileScreen({ navigation }) {
       justifyContent: 'center',
     },
     image:{
-      width: 150,
-      height: 150,
-      borderRadius: 75,
+      width: 180,
+      height: 180,
+      borderRadius: 90,
       marginLeft: 44
-    },
-    settingsContainer:{
-      width: '100%',
-      flex: 0.6,
-      justifyContent: 'flex-end',
     },
     settingsSubContainer:{
       backgroundColor: '#d9d9d9',
       width: '100%',
-      flex: 1.5,
+      flex: 1.25,
       borderRadius: 14,
       alignItems: 'center',
+      justifyContent: 'center'
     },
     locationToggle:{
       width: Dimensions.get('screen').width * 0.7,
