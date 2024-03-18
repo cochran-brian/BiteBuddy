@@ -6,6 +6,7 @@ import { Ionicons, AntDesign } from '@expo/vector-icons';
 import MainTextInput from '../components/MainTextInput';
 import { auth } from '../firebase/config';
 import { signInWithEmailAndPassword, signInWithCustomToken, createUserWithEmailAndPassword } from 'firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {IP_ADDRESS, PORT} from "@env"
 
 export default function RegisterScreen({ route, navigation }) {
