@@ -17,6 +17,7 @@ export default function App() {
           <Route path="survey/:id" element={<Survey />} />
           <Route path="join/:id" element={<Join />} />
           <Route path="*" element={<NoPage />} />
+          {/* <Route path="*" element={<Navigate to="/" />} /> */}
         </Route>
       </Routes>
     </BrowserRouter>

@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import NoPage from "./NoPage";
 
 export default function Join() {
 
   const { id } = useParams();
   const [data, setData] = useState([]);
-  const [profile, setProfile] = useState({})
+  const [profile, setProfile] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchData(id)
@@ -34,11 +36,11 @@ export default function Join() {
 
   return (
     <div>
-      <h1>Join</h1>
-      <Text>{profile.name}</Text>
-      {data.map(r => {
-        return <div>{r.name}</div>
-      })}
+      <img src={profile.profile_image}></img>
+      <p>Join {profile.firstName}'s Bite</p>
+      <button onClick={() => navigate(`/survey/${id}`, {
+        data: data
+      })}>Join</button>
     </div>
   )
 };
