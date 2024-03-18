@@ -35,6 +35,7 @@ export default function Join() {
   return (
     <div>
       <h1>Join</h1>
+      <Text>{profile.name}</Text>
       {data.map(r => {
         return <div>{r.name}</div>
       })}
