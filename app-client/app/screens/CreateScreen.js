@@ -11,7 +11,7 @@ import * as Location from 'expo-location';
 
 export default function CreateScreen({ navigation }) {
 
-  const [slideValue, setSlideValue] = useState(5); // Value displayed on slider
+  const [slideValue, setSlideValue] = useState(10); // Value displayed on slider
   const [searchedLocation, setSearchedLocation] = useState(''); // String entered by user
   const [dropDownPicked, setDropDownPicked] = useState([]) // Array of the values from dropdown selections
   const [plPicked, setPlPicked] = useState(0) // 0-None Selected, 1-$, 2-$$, 3-$$$,
@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
       color: colors.primary,
       fontFamily: 'Open Sans',
       fontSize: 45,
-      marginTop: 80,
+      marginTop: 60,
       alignSelf: 'center'
     },
     buttonContainer: {
@@ -299,13 +299,13 @@ const styles = StyleSheet.create({
     },
     promptText:{
       fontFamily: 'Open Sans SemiBold',
-      fontSize: 22,
+      fontSize: 20,
       width: 375,
       textAlign: 'left'
     },
     sliderText: {
       alignSelf: 'center',
-      marginLeft: -36,
+      marginLeft: -Dimensions.get("screen").width * 0.05,
       fontFamily: 'Open Sans', 
       fontSize: 18
     },

@@ -99,18 +99,21 @@ export default function ResultScreen({route, navigation}) {
         <View 
           style={styles.container}>
             <SafeAreaView 
-              style={{margin: '10%', marginTop: 10, marginBottom: '7%', alignItems: 'center'}}>
-              <Image 
-                source={require('../assets/crown.png')}/> 
-                {/* Image courtesy of zky.icon via flaticon.com */}
-              <Text 
-                style={styles.sectionTitle}>GROUP FAVORITE</Text>
-              <SimplePlaceView
+              style={{margin: '10%', marginTop: 10, marginBottom: '7%'}}>
+              <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
+                <Image 
+                  source={require('../assets/crown.png')}
+                  style={{height: 54, width: 54, marginBottom: 6, marginRight: 6}}/> 
+                  {/* Image courtesy of zky.icon via flaticon.com */}
+                <Text 
+                  style={styles.sectionTitle}>GROUP FAVORITE</Text>
+              </View>
+              {/* <SimplePlaceView
                 name={recommendations.topRestaurant.name}
                 address={recommendations.topRestaurant.address}
                 rating={recommendations.topRestaurant.rating}
                 imageUri={recommendations.topRestaurant.image_url}/>
-                {/* <Text>{recommendations.topRestaurant}</Text> */}
+                <Text>{recommendations.topRestaurant}</Text> */}
             </SafeAreaView>
 
             <View 
@@ -120,11 +123,11 @@ export default function ResultScreen({route, navigation}) {
               style={{margin: '10%', marginTop: 16, marginBottom: '7%', alignItems: 'center'}}>
             <Text 
               style={[styles.sectionTitle, {fontSize: 22}]}>SOMEWHERE SIMILAR</Text>
-              <SimplePlaceView
+              {/* <SimplePlaceView
                 name={recommendations.similarRestaurants[0].name}
                 address={recommendations.similarRestaurants[0].address}
                 rating={recommendations.similarRestaurants[0].rating}
-                imageUri={recommendations.similarRestaurants[0].image_url}/>
+                imageUri={recommendations.similarRestaurants[0].image_url}/> */}
             </View>
 
             <View 
