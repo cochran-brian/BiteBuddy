@@ -126,7 +126,7 @@ export default function WaitingScreen({route, navigation}){
         scrollEnabled={false}
         style={styles.flatList}
         ListFooterComponent={
-            <UserCard name={"INVITE"} onPress={onInvitePress} status={false} backgroundColor={colors.neutral} imageUri={'https://cdn-icons-png.flaticon.com/512/9632/9632767.png'}/>
+            <UserCard name={"Invite"} onPress={onInvitePress} status={false} backgroundColor={colors.neutral} imageUri={'https://cdn-icons-png.flaticon.com/512/9632/9632767.png'}/>
         }  
         // onRefresh={() => getNames()}
         // refreshing={refreshing}
