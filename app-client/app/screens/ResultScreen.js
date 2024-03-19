@@ -144,9 +144,9 @@ export default function ResultScreen({route, navigation}) {
           <View 
             style={{flex: 1}}/>
           <View 
-            style={{flexDirection: 'row', marginLeft: 15, marginBottom: 25}}>
+            style={{flexDirection: 'row'}}>
               <TouchableHighlight 
-                style={[styles.biteButtons, {width: '60%'}]} 
+                style={[styles.biteButtons, {width: '60%', marginRight: 12}]} 
                 underlayColor={colors.primaryDark} 
                 onPress={() => handleExit()}>
                 <Text 
@@ -158,7 +158,7 @@ export default function ResultScreen({route, navigation}) {
                 onPress={() => shareResults()}>
               <Feather 
                 name="share" 
-                size={38} 
+                size={32} 
                 color="white"
                 />
               </TouchableHighlight>
@@ -189,18 +189,16 @@ const styles = StyleSheet.create({
         marginBottom: 12
       },
     biteButtons:{
-      width: Dimensions.get('screen').width - 10,
-      marginRight: 15,
-      marginTop: 15,
-      height: 80,
+      height: 54,
+      borderRadius: 50,
+      marginBottom: 32,
       backgroundColor: colors.primary,
-      justifyContent: 'center',
       alignItems: 'center',
-      borderRadius: 10,
+      justifyContent: 'center'
     },
     buttonText:{
       color: 'white',
-      fontSize: 20,
+      fontSize: 22,
       fontFamily: 'Open Sans',
     },
 });
