@@ -6,6 +6,7 @@ import NoPage from "./NoPage";
 export default function Survey() {
 
   const { data } = useLocation();
+  console.log(data)
 
   return (
     <div>{data}</div>

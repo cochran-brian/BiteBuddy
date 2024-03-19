@@ -60,14 +60,16 @@ const getSimilarRestaurants = async (restaurant, latitude, longitude, radius) =>
         }
     }
     console.log(categories)
-    var data = await fetch(`https://api.yelp.com/v3/businesses/search?latitude=${latitude}&longitude=${longitude}&radius=${radius}&categories=${categories}&price=${restaurant.price.length}&sort_by=best_match&limit=10`, {
+        var data = await fetch(`https://api.yelp.com/v3/businesses/search?latitude=${latitude}&longitude=${longitude}&radius=${Math.floor(radius)}&categories=${categories}&price=${restaurant.price ? restaurant.price.length : 1,2,3,4}&sort_by=best_match&limit=10`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${process.env.YELP_API_KEY}`
         },
     })
+    
     data = await data.json();
+    console.log(data)
     const filteredData = data.businesses.filter((business) => {
         return business.name !== restaurant.name;
     })

@@ -27,21 +27,17 @@ export default function CreateScreen({ navigation }) {
   //TODO make it so the inputText is not editable/ greyed out after location is picked
 
   const dropDownData =  [
-    {label: 'American 🇺🇸', value: 'AMR'},
-    {label: 'Italian 🇮🇹', value: 'ITA'},
-    {label: 'Mexican 🇲🇽', value: 'MEX'},
-    {label: 'Japanese 🇯🇵', value: 'JAP'},
-    {label: 'Chinese 🇨🇳', value: 'CHI'},
-    {label: 'Indian 🇮🇳', value: 'IND'},
-    {label: 'German 🇩🇪', value: 'GER'},
-    {label: 'French 🇫🇷', value: 'FRN'},
+    {label: 'American 🇺🇸', value: 'American'},
+    {label: 'Italian 🇮🇹', value: 'Italian'},
+    {label: 'Mexican 🇲🇽', value: 'Mexican'},
+    {label: 'Japanese 🇯🇵', value: 'Japanese'},
+    {label: 'Chinese 🇨🇳', value: 'Chinese'},
+    {label: 'Indian 🇮🇳', value: 'Indian'},
+    {label: 'German 🇩🇪', value: 'German'},
+    {label: 'French 🇫🇷', value: 'French'},
   ]
 
-  const [autoFillData, setAutoFillData] = useState([
-    {label: 'American 🇺🇸', value: 'AMR'},
-    {label: 'Italian 🇮🇹', value: 'ITA'},
-    {label: 'Mexican 🇲🇽', value: 'MEX'},
-  ]);
+  const [autoFillData, setAutoFillData] = useState([]);
 
   useEffect(() => {
     (async () => {

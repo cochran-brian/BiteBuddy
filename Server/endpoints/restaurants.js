@@ -58,24 +58,15 @@ router.get("/:id", async (req, res) => {
 
 const fetchData = async (latitude, longitude, radius, categories, priceLevel) => { // MAX RADIUS IS 25 MILES
     console.log("in fetch")
+    console.log(categories)
     try {
-        if(categories && priceLevel) {
-            var data = await fetch(`https://api.yelp.com/v3/businesses/search?latitude=${latitude}&longitude=${longitude}&radius=${radius}&categories=${categories}&price=${priceLevel}&sort_by=best_match&limit=10&term=restaurants`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${process.env.YELP_API_KEY}`
-                },
-            })
-        } else {
-            var data = await fetch(`https://api.yelp.com/v3/businesses/search?latitude=${latitude}&longitude=${longitude}&radius=${radius}&sort_by=best_match&limit=10&term=restaurants`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${process.env.YELP_API_KEY}`
-                },
-            })
-        }
+        var data = await fetch(`https://api.yelp.com/v3/businesses/search?latitude=${latitude}&longitude=${longitude}&radius=${radius}&sort_by=best_match&limit=10&term=restaurants${categories ? `&categories=${categories}` : ""}${priceLevel ? `&price=${priceLevel}` : ""}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${process.env.YELP_API_KEY}`
+            },
+        })
         data = await data.json();
         console.log(data)
         return data;
