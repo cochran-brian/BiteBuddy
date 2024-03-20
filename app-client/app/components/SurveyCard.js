@@ -4,7 +4,7 @@ import { Rating } from '@kolking/react-native-rating';
 import colors from '../config/colors';
 import RatingStars from './RatingStars';
 
-function SurveyCard({ imageUri, name, address, rating, cuisine, date, yelp_url }){
+function SurveyCard({ imageUri, name, address, rating, category, date, yelp_url }){
 
     const onYelpPress = () => {
         console.log("Yelp Pressed");
@@ -27,12 +27,11 @@ function SurveyCard({ imageUri, name, address, rating, cuisine, date, yelp_url }
                     {name}
                     {/* {(name.length > 25) ? name.substring(0, 25).toUpperCase() + "..." : name.toUpperCase()} */}
                 </Text>
-                <Text style={[styles.textSubheader, {fontFamily: 'Open Sans Medium'}]} numberOfLines={1}>$ • Breakfast & Brunch</Text>
+                <Text style={[styles.textSubheader, {fontFamily: 'Open Sans Medium'}]} numberOfLines={1}>$ • {category}</Text>
                 <Text 
                     numberOfLines={1}
                     style={styles.textSubheader}>
                         {address}</Text>
-                <Text style={styles.textSubheader} numberOfLines={1}>{cuisine} Cuisine</Text>
             </View>
         
             <View style={styles.ratingsStyle}>
@@ -96,8 +95,8 @@ const styles = StyleSheet.create({
     },
     textSubheader: {
         fontFamily: 'Open Sans Light', 
-        fontSize: 18,
-        lineHeight: 23,
+        fontSize: 20,
+        lineHeight: 26,
         marginLeft: 2
     },
     ratingsStyle:{

@@ -32,12 +32,6 @@ export default function HomeScreen({ navigation }) {
   // }
 
   useEffect(() => {
-    if(!auth.currentUser){
-      navigation.navigate('Sign In', {
-        authRequired: true
-      })
-    }
-
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {

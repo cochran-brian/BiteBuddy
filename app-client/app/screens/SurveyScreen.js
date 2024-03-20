@@ -22,8 +22,9 @@ export default function SurveySceen({ route, navigation }) {
         <SurveyCard
             name = {item.name}
             imageUri={item.image_url}
-            address={item.address}
+            address={item.location.city + ', ' + item.location.state}
             rating={item.rating}
+            category={item.categories[0].title}
         />
     );
 }

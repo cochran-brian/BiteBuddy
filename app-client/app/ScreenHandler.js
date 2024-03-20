@@ -24,16 +24,18 @@ const ScreenHandler = () => {
     return(
     <NavigationContainer>
      <Stack.Navigator>
+        {auth.currentUser? 
         <Stack.Screen
             name="MainTabs"
             component={MainNavContainer}
             options={{headerShown: false}}
-        />
+        /> :
         <Stack.Screen
             name="Sign In"
             component={SignInScreen}
             options={{headerShown: false}}
         />
+        }
         <Stack.Screen
             name="Register"
             component={RegisterScreen}
