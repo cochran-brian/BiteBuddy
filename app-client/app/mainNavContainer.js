@@ -58,13 +58,7 @@ function MainNavContainer(){
             <Tab.Screen name="Home" component={HomeScreen}/>
             <Tab.Screen name="Nearby" component={NearbyScreen}/>
             <Tab.Screen name="Create" component={CreateScreen} options={({ navigation }) =>({
-                tabBarButton: () => (<TabNavButton onPress={() => {
-                    if(auth.currentUser){
-                        navigation.navigate("Create")
-                      } else {
-                        navigation.navigate("Sign In");
-                      }
-            }}/>),
+                    tabBarButton: () => (<TabNavButton onPress={() => {navigation.navigate("Create")}}/>),
                 })}/>
             <Tab.Screen name="Recents" component={RecentScreen}/>
             <Tab.Screen name="Profile" component={ProfileScreen}/>

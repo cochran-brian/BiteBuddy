@@ -3,7 +3,6 @@ import { StyleSheet, View, Text, TouchableHighlight, FlatList, Pressable, Scroll
 import { doc, collection, getDocs, getDoc } from "firebase/firestore"
 import { db, auth } from '../firebase/config';
 import { Foundation } from '@expo/vector-icons';
-import model from '../model';
 import RNEventSource from 'react-native-sse';
 
 import UserView from "../components/UserView";

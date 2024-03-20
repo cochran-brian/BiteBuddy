@@ -60,7 +60,8 @@ const fetchData = async (latitude, longitude, radius, categories, priceLevel) =>
     console.log("in fetch")
     console.log(categories)
     try {
-        var data = await fetch(`https://api.yelp.com/v3/businesses/search?latitude=${latitude}&longitude=${longitude}&radius=${radius}&sort_by=best_match&limit=10&term=restaurants${categories ? `&categories=${categories}` : ""}${priceLevel ? `&price=${priceLevel}` : ""}`, {
+        // var data = await fetch(`https://api.yelp.com/v3/businesses/search?latitude=${latitude}&longitude=${longitude}&radius=${radius}&sort_by=best_match&limit=10&term=restaurants${categories ? `&categories=${categories}` : ""}${priceLevel ? `&price=${priceLevel}` : ""}`, {
+        var data = await fetch(`https://api.yelp.com/v3/businesses/search?latitude=${latitude}&longitude=${longitude}&radius=${radius}&sort_by=best_match&limit=10&term=${categories}${priceLevel ? `&price=${priceLevel}` : ""}`, {    
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

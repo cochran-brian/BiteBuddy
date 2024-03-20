@@ -51,16 +51,16 @@ const getTopRestaurant = async (uid) => {
 const getSimilarRestaurants = async (restaurant, latitude, longitude, radius) => {
     console.log("Getting similar restaurants...")
     console.log(restaurant.categories)
-    var categories = '';
-    for(let i = 0; i < restaurant.categories.length; i++) {
-        if(i != restaurant.categories.length - 1) {
-            categories += restaurant.categories[i].alias + ','
-        } else {
-            categories += restaurant.categories[i].alias
-        }
-    }
-    console.log(categories)
-        var data = await fetch(`https://api.yelp.com/v3/businesses/search?latitude=${latitude}&longitude=${longitude}&radius=${Math.floor(radius)}&categories=${categories}&price=${restaurant.price ? restaurant.price.length : 1,2,3,4}&sort_by=best_match&limit=10`, {
+    // var categories = '';
+    // for(let i = 0; i < restaurant.categories.length; i++) {
+    //     if(i != restaurant.categories.length - 1) {
+    //         categories += restaurant.categories[i].alias + ','
+    //     } else {
+    //         categories += restaurant.categories[i].alias
+    //     }
+    // }
+    // console.log(categories)
+        var data = await fetch(`https://api.yelp.com/v3/businesses/search?latitude=${latitude}&longitude=${longitude}&radius=${Math.floor(radius)}&term=${restaurant.categories[0].alias}&sort_by=best_match&limit=10${restaurant.price ? `&price=${restaurant.price.length}` : ""}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
