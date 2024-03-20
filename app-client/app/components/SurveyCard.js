@@ -4,7 +4,7 @@ import { Rating } from '@kolking/react-native-rating';
 import colors from '../config/colors';
 import RatingStars from './RatingStars';
 
-function SurveyCard({ imageUri, name, address, rating, date, yelp_url }){
+function SurveyCard({ imageUri, name, address, rating, cuisine, date, yelp_url }){
 
     const onYelpPress = () => {
         console.log("Yelp Pressed");
@@ -32,7 +32,7 @@ function SurveyCard({ imageUri, name, address, rating, date, yelp_url }){
                     numberOfLines={1}
                     style={styles.textSubheader}>
                         {address}</Text>
-                <Text style={styles.textSubheader} numberOfLines={1}>American Cuisine</Text>
+                <Text style={styles.textSubheader} numberOfLines={1}>{cuisine} Cuisine</Text>
             </View>
         
             <View style={styles.ratingsStyle}>
