@@ -25,22 +25,12 @@ const ScreenHandler = () => {
     <NavigationContainer>
      <Stack.Navigator>
         {auth.currentUser? 
+        <>
         <Stack.Screen
             name="MainTabs"
             component={MainNavContainer}
             options={{headerShown: false}}
-        /> :
-        <Stack.Screen
-            name="Sign In"
-            component={SignInScreen}
-            options={{headerShown: false}}
-        />
-        }
-        <Stack.Screen
-            name="Register"
-            component={RegisterScreen}
-            options={{headerShown: false}}
-        />
+        /> 
         <Stack.Screen
             name="Join"
             component={JoinBiteScreen}
@@ -61,6 +51,21 @@ const ScreenHandler = () => {
             component={WaitingScreen}
             options={{headerShown: false}}
         />
+        </>:
+        <>
+        <Stack.Screen
+            name="Sign In"
+            component={SignInScreen}
+            options={{headerShown: false}}
+        />
+        <Stack.Screen
+            name="Register"
+            component={RegisterScreen}
+            options={{headerShown: false}}
+        />
+        </>
+        }
+        
      </Stack.Navigator>
     </NavigationContainer>
     )

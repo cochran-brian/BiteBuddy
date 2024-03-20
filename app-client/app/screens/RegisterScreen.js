@@ -40,7 +40,7 @@ export default function RegisterScreen({ route, navigation }) {
         })
       }); 
       storeIdToken(user._tokenResponse.idToken);         
-      navigation.navigate('Home');
+      //navigation.navigate('MainTabs');
     } catch (error) {
       console.error('Error creating user:', error); // error handling here
     }
