@@ -9,14 +9,12 @@ import { signInWithEmailAndPassword, signInWithCustomToken, getAuth } from 'fire
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {IP_ADDRESS, PORT} from "@env"
 
-export default function SignInScreen({ navigation, route }) {
+export default function SignInScreen({ navigation }) {
 
   const [signingIn, setSigningIn] = useState(true);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const authRequired = route.params;
 
   const handleSubmit = async () => {
     try {
@@ -63,14 +61,7 @@ export default function SignInScreen({ navigation, route }) {
         <Pressable 
           onPress={() => Keyboard.dismiss()} style={styles.pressableContainer}>
 
-        {authRequired? <></> :
-          <Pressable style={styles.backButton} onPress={() => navigation.navigate('Home')}>
-            <Ionicons name="arrow-back-circle-outline" size={42} color="black" />
-          </Pressable>
-        }
         <View style={styles.contentContainer}>
-
-        <Button onPress={() => navigation.navigate("Home")} title="Bypass"/>
 
           <Text 
             style={styles.header}>

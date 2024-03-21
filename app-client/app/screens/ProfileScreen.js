@@ -48,7 +48,6 @@ export default function ProfileScreen({ navigation }) {
     const logOut = async () => {
         try {
             await signOut(auth);
-            alert('Successfully Logged Out')
             console.log("user signed out")
         } catch (error) {
             console.error(error);
