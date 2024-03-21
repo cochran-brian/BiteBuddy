@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MainNavContainer from './mainNavContainer';
@@ -12,14 +12,17 @@ import WaitingScreen from './screens/WaitingScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import { useFonts } from 'expo-font';
 import { auth } from './firebase/config';
-
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const Stack = createNativeStackNavigator();
 
 const ScreenHandler = () => {
 
-    const [loading, setLoading] = useState(true);
-   // const [user, setUser] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+    onAuthStateChanged(auth, async (user) => {
+        setIsAuthenticated(!!user);
+    });
 
     return(
     <NavigationContainer>

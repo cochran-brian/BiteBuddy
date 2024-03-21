@@ -7,16 +7,19 @@ import MainTextInput from '../components/MainTextInput';
 import { auth } from '../firebase/config';
 import { signInWithEmailAndPassword, signInWithCustomToken, getAuth } from 'firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
+
+
 import {IP_ADDRESS, PORT} from "@env"
 
 export default function SignInScreen({ navigation }) {
 
   const [signingIn, setSigningIn] = useState(true);
-
+  const provider = new GoogleAuthProvider();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = async () => {
+  const handleEmailPassword = async () => {
     try {
       console.log(IP_ADDRESS,PORT)
       var user = await signInWithEmailAndPassword(auth, email, password)
@@ -37,6 +40,21 @@ export default function SignInScreen({ navigation }) {
     } catch (error) {
       console.error('Error authenticating user:', error); // error handling here
     }
+  }
+
+  const handleGoogleAuth = async () => {
+    await signInWithRedirect(auth, provider);
+    getRedirectResult(auth)
+      .then((result) => {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        const user = result.user;
+      }).catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        const email = error.customData.email;
+        const credential = GoogleAuthProvider.credentialFromError(error);
+    });
   }
 
   const storeIdToken = async (token) => {
@@ -86,7 +104,7 @@ export default function SignInScreen({ navigation }) {
 
           <TouchableHighlight 
             style= {styles.bottomButton} 
-            onPress={() => handleSubmit()} 
+            onPress={() => handleEmailPassword()} 
             underlayColor={colors.primaryDark}>
             <Text 
               style={styles.bottomButtonText}>
@@ -102,7 +120,7 @@ export default function SignInScreen({ navigation }) {
           <View style={styles.socialIconContainer}>
             <AntDesign name="instagram" size={64} color="black" onPress={() => console.log('instagram')} />
             <AntDesign name="apple1" size={56} color="black" onPress={() => console.log('apple')}/>
-            <AntDesign name="google" size={62} color="black" onPress={() => console.log('google')}/>
+            <AntDesign name="google" size={62} color="black" onPress={() => handleGoogleAuth()}/>
           </View>
 
         <View style={styles.bottomPromptContainer}>
