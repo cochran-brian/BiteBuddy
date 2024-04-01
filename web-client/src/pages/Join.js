@@ -26,7 +26,8 @@ export default function Join() {
         }
       }); 
       const result = await response.json();
-      console.log(result.profile)
+      console.log(result.profile);
+      console.log(result.restaurants);
       setData(result.restaurants);
       setProfile(result.profile);
     } catch (error) {
@@ -36,7 +37,7 @@ export default function Join() {
 
   return (
     <div>
-      <img src={profile.profile_image}></img>
+      <img src={profile.profile_image? profile.profile_image : "https://www.asiamediajournal.com/wp-content/uploads/2022/11/Default-PFP.jpg"}></img>
       <p>Join {profile.firstName}'s Bite</p>
       <button onClick={() => navigate(`/survey/${id}`, {
         data: data
