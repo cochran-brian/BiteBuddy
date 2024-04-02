@@ -6,6 +6,7 @@ import { Feather, Entypo } from '@expo/vector-icons';
 import colors from '../config/colors';
 import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
+import { getStorage, ref, uploadBytes } from "firebase/storage";
 
 export default function ProfileScreen({ navigation }) {
 
@@ -14,6 +15,24 @@ export default function ProfileScreen({ navigation }) {
   const [location, setlocation] = useState('Location Not Enabled')
   const [location_enabled, setlocation_enabled] = useState(false) //Switch value (bool)
   const [pfp, setpfp] = useState(null); //uri of the user's selected profile image
+
+  const storage = getStorage();
+  const storageRef = ref(storage, 'some-child'); // change to unique id?
+
+  useEffect(() => {
+    // 'file' comes from the Blob or File API
+    const uploadImg = async () => {
+      console.log(pfp)
+      const response = await fetch(pfp)
+      const img = await response.blob();
+      console.log(img)
+      uploadBytes(storageRef, img).then((snapshot) => {
+        console.log('Uploaded a blob or file!');
+      });
+    } 
+
+    uploadImg();
+  }, [pfp])
   
 
   var username = '';
