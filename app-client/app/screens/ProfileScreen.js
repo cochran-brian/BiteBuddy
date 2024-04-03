@@ -6,7 +6,7 @@ import { Feather, Entypo } from '@expo/vector-icons';
 import colors from '../config/colors';
 import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
-import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { getStorage, ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
 
 export default function ProfileScreen({ navigation }) {
 
@@ -15,25 +15,30 @@ export default function ProfileScreen({ navigation }) {
   const [location, setlocation] = useState('Location Not Enabled')
   const [location_enabled, setlocation_enabled] = useState(false) //Switch value (bool)
   const [pfp, setpfp] = useState(null); //uri of the user's selected profile image
-
   const storage = getStorage();
-  const storageRef = ref(storage, 'some-child'); // change to unique id?
 
   useEffect(() => {
-    // 'file' comes from the Blob or File API
-    const uploadImg = async () => {
-      console.log(pfp)
-      const response = await fetch(pfp)
-      const img = await response.blob();
-      console.log(img)
-      uploadBytes(storageRef, img).then((snapshot) => {
-        console.log('Uploaded a blob or file!');
-      });
-    } 
+    const listRef = ref(storage, user.uid + '/profilePicture/');
 
-    uploadImg();
-  }, [pfp])
-  
+    listAll(listRef)
+      .then((res) => {
+        const itemRefArr = [];
+        res.items.forEach((itemRef) => {
+          console.log(itemRef)
+          itemRefArr.push(itemRef)
+        });
+        getDownloadURL(itemRefArr[0])
+            .then((url) => {
+              console.log(url)
+              setpfp(url)
+            })
+            .catch((error) => {
+              console.error(error)
+            })
+      }).catch((error) => {
+        console.error(error)
+      });
+  }, [])
 
   var username = '';
 
@@ -73,7 +78,7 @@ export default function ProfileScreen({ navigation }) {
         }
     }
 
-    const launchImagePick = async() => {
+    const launchImagePick = async () => {
       const result = await ImagePicker.launchImageLibraryAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.Images,
           allowsEditing: true,
@@ -83,6 +88,14 @@ export default function ProfileScreen({ navigation }) {
 
       if(!result.canceled){
           setpfp(result.assets[0].uri);
+          console.log(pfp)
+          const response = await fetch(pfp)
+          const img = await response.blob()
+          
+          const storageRef = ref(storage, user.uid + "/profilePicture/" + img.data.name); // change to unique id?
+          uploadBytes(storageRef, img).then((snapshot) => {
+            console.log('Uploaded a blob or file!');
+          });
       }
   }
 
