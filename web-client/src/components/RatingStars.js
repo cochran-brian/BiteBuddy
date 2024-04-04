@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-function RatingStars({rating, width, height}) {
+export class RatingStars extends Component {
+    render(rating){
     var imgPath = "";
 
     if(rating == 0){
@@ -24,14 +25,15 @@ function RatingStars({rating, width, height}) {
     }else{
         imgPath = require('../assets/yelpStars/five.png')
     }
-
+    
     return(
         <img
         //style={[styles.image, {width: width}, {height: height}]}
-        src={imgPath.default}
+        src={imgPath}
         alt="RatingStars"
         />
     )
+    }
 }
 
 export default RatingStars;

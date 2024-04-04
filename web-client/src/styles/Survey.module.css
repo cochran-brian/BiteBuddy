@@ -1,0 +1,61 @@
+
+.container {
+    width: 100;
+    height: 100;
+    background-color: '#CCCCCC';
+    border-radius: 30;
+    border-width: 4;
+    border-color: '#111e30';
+  }
+
+  .dateText {
+    font-family: 'Open Sans';
+    font-size: 20;
+    align-self: 'center'
+  }
+  
+  .image {
+    width: '100%';
+    height: '56%';
+    border-top-left-radius: 26;
+    border-top-right-radius: 26;
+  }
+
+  .textContainer {
+    height: 90;
+  }
+
+  .textTitle {
+    font-family: 'Open Sans';
+    font-size: 26;
+    line-height: 28;
+  }
+
+  .textSubheader {
+    font-family: 'Open Sans Light';
+    font-size: 20;
+    line-height: 26;
+  }
+
+  .ratingsStyle {
+    flex-direction: 'row';
+    align-items: 'center';
+    height: 40;
+  }
+
+  .baseText {
+    font-family: 'Open Sans Light';
+    font-size: 12;
+    width: 130;
+    color: 'grey';
+  }
+
+  .yelpButton {
+    height: 36;
+  }
+
+  .yelpLogo {
+    width: 80;
+    height: 30;
+    align-self: 'center';
+  }
