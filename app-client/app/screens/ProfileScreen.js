@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Dimensions, Image, Pressable, SafeAreaView, Modal, StyleSheet, Text, TouchableHighlight, View, TouchableWithoutFeedback, Keyboard, Switch } from 'react-native';
+import { Dimensions, Image, Pressable, SafeAreaView, Modal, StyleSheet, Text, TouchableHighlight, View, TouchableWithoutFeedback, Keyboard, Switch, ActivityIndicator } from 'react-native';
 import { signOut, getAuth } from 'firebase/auth';
 import { auth } from '../firebase/config';
 import { Feather, Entypo } from '@expo/vector-icons';
@@ -30,7 +30,8 @@ export default function ProfileScreen({ navigation }) {
         getDownloadURL(itemRefArr[0])
             .then((url) => {
               console.log(url)
-              setpfp(url)
+              setpfp(url);
+              // setIsLoading(false);
             })
             .catch((error) => {
               console.error(error)
@@ -111,10 +112,10 @@ export default function ProfileScreen({ navigation }) {
          <View style={styles.profileContainer}>
 
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Image 
+            <Image 
             style={styles.image}
-            source={{uri: pfp? pfp : 'https://www.asiamediajournal.com/wp-content/uploads/2022/11/Default-PFP.jpg'}}/>
-            <Pressable onPress={launchImagePick} style={{marginLeft: 12}}>
+            source={{uri: pfp ? pfp : 'https://www.asiamediajournal.com/wp-content/uploads/2022/11/Default-PFP.jpg'}}/>
+          <Pressable onPress={launchImagePick} style={{marginLeft: 12}}>
               <Feather name="edit" size={32} color="black" />
             </Pressable>
           </View>  
