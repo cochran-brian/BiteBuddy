@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Dimensions, Image, Pressable, SafeAreaView, Modal, StyleSheet, Text, TouchableHighlight, View, TouchableWithoutFeedback, Keyboard, Switch, ActivityIndicator } from 'react-native';
-import { signOut, getAuth } from 'firebase/auth';
+import { signOut, getAuth, setPersistence } from 'firebase/auth';
 import { auth } from '../firebase/config';
 import { Feather, Entypo } from '@expo/vector-icons';
 import colors from '../config/colors';
@@ -18,27 +18,43 @@ export default function ProfileScreen({ navigation }) {
   const storage = getStorage();
 
   useEffect(() => {
-    const listRef = ref(storage, user.uid + '/profilePicture/');
+    const getProfileImage = async () => {
+      const response = await fetch(`http://localhost:4000/profile/${user.uid}`, { // apparently "localhost" makes the server host the phone instead of the computer
+        method: "GET",
+        mode: "cors",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
+          //Authorization: `Bearer ${token}`
+        },
+      }); 
+      const result = await response.json();
+      setpfp(result.profile_image)
+    }
 
-    listAll(listRef)
-      .then((res) => {
-        const itemRefArr = [];
-        res.items.forEach((itemRef) => {
-          console.log(itemRef)
-          itemRefArr.push(itemRef)
-        });
-        getDownloadURL(itemRefArr[0])
-            .then((url) => {
-              console.log(url)
-              setpfp(url);
-              // setIsLoading(false);
-            })
-            .catch((error) => {
-              console.error(error)
-            })
-      }).catch((error) => {
-        console.error(error)
-      });
+    getProfileImage();
+    
+    // const listRef = ref(storage, user.uid + '/profilePicture/');
+
+    // listAll(listRef)
+    //   .then((res) => {
+    //     const itemRefArr = [];
+    //     res.items.forEach((itemRef) => {
+    //       console.log(itemRef)
+    //       itemRefArr.push(itemRef)
+    //     });
+    //     getDownloadURL(itemRefArr[0])
+    //         .then((url) => {
+    //           console.log(url)
+    //           setpfp(url);
+    //           // setIsLoading(false);
+    //         })
+    //         .catch((error) => {
+    //           console.error(error)
+    //         })
+    //   }).catch((error) => {
+    //     console.error(error)
+    //   });
   }, [])
 
   var username = '';
@@ -89,13 +105,28 @@ export default function ProfileScreen({ navigation }) {
 
       if(!result.canceled){
           setpfp(result.assets[0].uri);
+
           console.log(pfp)
           const response = await fetch(pfp)
           const img = await response.blob()
           
           const storageRef = ref(storage, user.uid + "/profilePicture/" + img.data.name); // change to unique id?
-          uploadBytes(storageRef, img).then((snapshot) => {
+          uploadBytes(storageRef, img).then(async (snapshot) => {
             console.log('Uploaded a blob or file!');
+            const response = await fetch(`http://localhost:4000/profile`, { // apparently "localhost" makes the server host the phone instead of the computer
+              method: "POST",
+              mode: "cors",
+              credentials: "same-origin",
+              headers: {
+                "Content-Type": "application/json",
+                //Authorization: `Bearer ${token}`
+              },
+              body: JSON.stringify({
+                filePath: user.uid + "/profilePicture/" + img.data.name,
+                uid: user.uid
+              })
+            }); 
+            const result = await response.json();
           });
       }
   }
