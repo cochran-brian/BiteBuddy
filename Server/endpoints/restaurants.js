@@ -2,7 +2,6 @@ const express = require("express");
 const authenticateMiddleware = require("../middleware/authenticateMiddleware");
 const router = express.Router();
 const { db } = require('../firebase/config');
-
 //router.use(authenticateMiddleware)
 
 router.post("/", async (req, res) => {
@@ -47,12 +46,37 @@ router.get("/:id", async (req, res) => {
 
         const profileQuerySnapshot = await db.collection('users').doc(biteData.host_uid).get();
         console.log(profileQuerySnapshot)
-        const profileData = await profileQuerySnapshot.data();
+        var profileData = await profileQuerySnapshot.data();
         console.log(profileData)
-        
-        res.send({ restaurants: restaurants, profile: profileData })
+
+
+        // var storage = firebase.storage();
+        // var storageRef = storage.ref();
+        // var listRef = storageRef.child(biteData.host_uid + "/profilePicture")
+        // listRef.listAll()
+        //     .then((res) => {
+        //         const itemRefArr = [];
+        //         res.items.forEach((itemRef) => {
+        //         console.log(itemRef)
+        //         itemRefArr.push(itemRef)
+        //         });
+        //         itemRefArr[0].getDownloadURL()
+        //             .then((url) => {
+        //                 console.log(url)
+        //                 profileData = {
+        //                     ...profileData,
+        //                     pfp: url
+        //                 }
+        //             })
+        //             .catch((error) => {
+        //                 console.error(error)
+        //             })
+        //     }).catch((error) => {
+        //         console.error(error)
+        //     });
     } catch (error) {
         res.status(500).send({ error })
+        console.error(error)
     }
 })
 
