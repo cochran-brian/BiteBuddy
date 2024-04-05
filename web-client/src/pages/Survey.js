@@ -49,7 +49,7 @@ export default function Survey() {
  
 
   return (
-    <div>
+    <div className={styles.screenContainer}>
       <Carousel width={600} selectedItem={curSlide} swipeable={false} showArrows={false} showIndicators={false} showStatus={false} showThumbs={false}>
         {comps}
       </Carousel>

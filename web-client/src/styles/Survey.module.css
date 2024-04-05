@@ -1,11 +1,31 @@
+@font-face {
+  font-family: 'Open Sans';
+  src: url('../assets/fonts/OpenSans-ExtraBold.ttf');
+}
+
+@font-face {
+  font-family: 'Open Sans Semi';
+  src: url('../assets/fonts/OpenSans-SemiBold.ttf');
+}
+
+@font-face {
+  font-family: 'Open Sans Medium';
+  src: url('../assets/fonts/OpenSans-Medium.ttf');
+}
+
+@font-face {
+  font-family: 'Open Sans Reg';
+  src: url('../assets/fonts/OpenSans-Regular.ttf');
+}
+
 
 .container {
-    width: 100;
-    height: 100;
-    background-color: '#CCCCCC';
-    border-radius: 30;
-    border-width: 4;
-    border-color: '#111e30';
+    height: 600px;
+    width: 374px;
+    border-color: black;
+    border-width: 1px;
+    border-radius: 27px;
+    border-style: solid;
   }
 
   .dateText {
@@ -15,47 +35,50 @@
   }
   
   .image {
-    width: '100%';
-    height: '56%';
-    border-top-left-radius: 26;
-    border-top-right-radius: 26;
+    max-height: 280px;
+    width: 100%;
+    border-top-left-radius: 26px;
+    border-top-right-radius: 26px;
   }
 
   .textContainer {
-    height: 90;
+    height: 140px;
   }
 
   .textTitle {
     font-family: 'Open Sans';
-    font-size: 26;
-    line-height: 28;
+    font-size: 26px;
+    line-height: 28px;
+    margin-right: 12px;
   }
 
   .textSubheader {
-    font-family: 'Open Sans Light';
-    font-size: 20;
-    line-height: 26;
+    font-family: 'Open Sans Medium';
+    font-size: 20px;
+    line-height: 26px;
+    margin-bottom: 14px;
+    color: rgb(108, 108, 108);
   }
 
   .ratingsStyle {
     flex-direction: 'row';
     align-items: 'center';
-    height: 40;
+    height: 40px;
   }
 
   .baseText {
-    font-family: 'Open Sans Light';
-    font-size: 12;
-    width: 130;
+    font-family: 'Open Sans Medium';
+    font-size: 12px;
+    width: 130px;
     color: 'grey';
   }
 
   .yelpButton {
-    height: 36;
+    height: 36px;
   }
 
   .yelpLogo {
-    width: 80;
-    height: 30;
+    width: 80px;
+    height: 30px;
     align-self: 'center';
   }
