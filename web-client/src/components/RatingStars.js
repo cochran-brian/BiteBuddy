@@ -31,7 +31,7 @@ export class RatingStars extends Component {
         //style={[styles.image, {width: width}, {height: height}]}
         src={imgPath}
         alt="RatingStars"
-        style={{width: 250}}
+        style={{width: 200}}
         />
     )
     }

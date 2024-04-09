@@ -23,24 +23,23 @@ export default function Survey() {
   var comps = [];
   data.forEach(place => {
     comps.push(
-      <div>
-        <div className={styles.container}>
-          <img src={place.image_url} className={styles.image} alt="Image" />
-          <div className={styles.textContainer}>
-            <p className={styles.textTitle}>{place.name}</p>
-            <p className={styles.textSubheader}>{'$ • ' + place.categories[0].title}</p>
-            <p className={styles.textSubheader}>{place.location.address1 + ' ' + place.location.city + ', ' + place.location.state}</p>
-          </div>
-          <div className={styles.ratingsStyle}>
-            <div>
-              <RatingStars rating={place.rating}/>
-              <p className={styles.baseText}>Based on 235 reviews</p>
-            </div>
+      <div className={styles.container}>
+        <img src={place.image_url} className={styles.image} alt="Image" />
+        <div className={styles.textContainer}>
+          <div className={styles.textTitle}>{place.name}</div>
+          <div className={styles.textSubheader}>{'$ • ' + place.categories[0].title}</div>
+          <div className={styles.textSubheader}>{place.location.address1 + ' ' + place.location.city + ', ' + place.location.state}</div>
+        </div>
+        <div className={styles.ratingsStyle}>
+          <div style={{flexDirection: 'row'}}>
+            <RatingStars rating={place.rating}/>
             <button //onClick={onYelpPress(place)} 
               className={styles.yelpButton}>
               <img src={require('../assets/yelp_logo.png')} className={styles.yelpLogo} alt="Yelp Logo" />
             </button>
           </div>
+            <div className={styles.baseText}>Based on 235 reviews</div>
+          
         </div>
       </div>
 

@@ -20,7 +20,7 @@
 
 
 .container {
-    height: 600px;
+    height: 500px;
     width: 374px;
     border-color: black;
     border-width: 1px;
@@ -30,7 +30,7 @@
 
   .dateText {
     font-family: 'Open Sans';
-    font-size: 20;
+    font-size: 18px;
     align-self: 'center'
   }
   
@@ -42,39 +42,40 @@
   }
 
   .textContainer {
-    height: 140px;
+    height: 120px;
   }
 
   .textTitle {
     font-family: 'Open Sans';
     font-size: 26px;
-    line-height: 28px;
-    margin-right: 12px;
+    margin-top: 10px;
   }
 
   .textSubheader {
     font-family: 'Open Sans Medium';
-    font-size: 20px;
-    line-height: 26px;
-    margin-bottom: 14px;
+    font-size: 18px;
     color: rgb(108, 108, 108);
+    margin-top: 6px;
   }
 
   .ratingsStyle {
-    flex-direction: 'row';
-    align-items: 'center';
-    height: 40px;
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    
   }
 
   .baseText {
     font-family: 'Open Sans Medium';
     font-size: 12px;
-    width: 130px;
+    width: 210px;
     color: 'grey';
   }
 
   .yelpButton {
     height: 36px;
+    background-color: white;
+    border-width: 0px;
   }
 
   .yelpLogo {
