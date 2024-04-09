@@ -125,7 +125,7 @@ export default function SignInScreen({ navigation }) {
 
         <View style={styles.bottomPromptContainer}>
          <Text style={[styles.lightText, {fontSize: 16}]}>Don't have an account? </Text>
-         <Text style={styles.pressableText} onPress={() => navigation.navigate('Register', {authRequired: authRequired})}>Sign up here</Text>
+         <Text style={styles.pressableText} onPress={() => navigation.navigate('Register')}>Sign up here</Text>
         </View>
          
 

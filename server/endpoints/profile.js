@@ -13,6 +13,7 @@ router.post("/", async (req, res) => {
         db.collection("users").doc(req.body.uid).update({
             profile_image: downloadURL
         })
+        console.log("updated profile")
         res.send({ pfp: downloadURL })
     } catch (error) {
         console.error(error)
