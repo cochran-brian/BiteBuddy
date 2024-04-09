@@ -123,7 +123,7 @@ export default function RegisterScreen({ navigation }) {
 
         <View style={styles.bottomPromptContainer}>
          <Text style={[styles.lightText, {fontSize: 16}]}>Already have an account? </Text>
-         <Text style={styles.pressableText} onPress={() => navigation.navigate("Sign In", {authRequired: authRequired})}>Login here</Text>
+         <Text style={styles.pressableText} onPress={() => navigation.navigate("Sign In")}>Login here</Text>
         </View>
          
 

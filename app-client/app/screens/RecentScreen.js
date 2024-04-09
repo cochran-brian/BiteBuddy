@@ -33,9 +33,12 @@ export default function RecentScreen({ navigation }) {
           }
         }); 
         const result = await response.json();
-        const sortedResult = result.recents.sort((a, b) => {
-          return b.timestamp - a.timestamp;
-        })
+        var sortedResult = [];
+        if(result.recents) {
+          sortedResult = result.recents.sort((a, b) => {
+            return b.timestamp - a.timestamp;
+          })
+        }
         setData(sortedResult)
       } catch (error) {
         console.error('Error fetching data:', error); // error handling here

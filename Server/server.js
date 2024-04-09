@@ -11,6 +11,7 @@ const waiting = require("./endpoints/waiting")
 const results = require("./endpoints/results")
 const recents = require("./endpoints/recents")
 const exit = require("./endpoints/exit")
+const profile = require("./endpoints/profile")
 
 app.use(cors());
 app.use(express.json());
@@ -23,6 +24,7 @@ app.use("/waiting", waiting);
 app.use("/results", results);
 app.use("/recents", recents);
 app.use("/exit", exit);
+app.use("/profile", profile)
 
 app.listen(process.env.PORT || 4000, () => {
     console.log(`Listening on port ${process.env.PORT}`)
