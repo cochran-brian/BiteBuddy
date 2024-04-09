@@ -48,6 +48,7 @@ router.get("/:id", async (req, res) => {
         console.log(profileQuerySnapshot)
         var profileData = await profileQuerySnapshot.data();
         console.log(profileData)
+        res.send({restaurants: restaurants, profile: profileData});
 
 
         // var storage = firebase.storage();
