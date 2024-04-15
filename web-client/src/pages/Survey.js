@@ -11,8 +11,9 @@ import styles from "../styles/Survey.module.css";
 export default function Survey() {
   
   const [curSlide, setCurSlide] = useState(0);
-  const [uid, setUid] = useState(null)
-  var ratings = [];
+  const [ratings, setRatings] = useState([]);
+  const { id } = useParams();
+  
 
   const location = useLocation();
   const data = location.state.data;
@@ -24,24 +25,50 @@ export default function Survey() {
 
   }
 
-  // const rating = async (rating) => {
-  //   // localRatings[this._carousel.currentIndex] = rating
-  //   ratings.push(rating);
-  //   if(curSlide >= data.length - 1) { // LAST CARD
+  const rating = async (rating) => {
+    // localRatings[this._carousel.currentIndex] = rating
+    setRatings([...ratings, rating]);
+    console.log(ratings, curSlide, data.length - 1)
+    if(curSlide >= data.length - 1) { // LAST CARD
   
-  //     const idToken = await AsyncStorage.getItem('idToken');
-  //     console.log(uid)
-  //     await storeRatings(ratings, uid, idToken); // RIGHT NOW ONLY AUTHENTICATED USERS WILL HAVE NAME
-  //     // NEED TO CHANGE THIS WHEN WE MAKE THE WEBSITE
+     
+      await storeRatings(ratings, id); // RIGHT NOW ONLY AUTHENTICATED USERS WILL HAVE NAME
+      // NEED TO CHANGE THIS WHEN WE MAKE THE WEBSITE
   
-  //     navigation.navigate('Waiting', {
-  //       uid: uid,
-  //       latitude: latitude,
-  //       longitude: longitude,
-  //       radius: radius
-  //     })
-  //   }
-  // }
+      // navigation.navigate('Waiting', {
+      //   uid: uid,
+      //   latitude: latitude,
+      //   longitude: longitude,
+      //   radius: radius
+      // })
+    }
+  }
+
+  const storeRatings = async (ratings, docUID) => {
+    try {
+      console.log(docUID)
+      const response = await fetch(`http://localhost:4000/survey`, { // apparently "localhost" makes the server host the phone instead of the computer
+        method: "POST",
+        mode: "cors",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
+          // Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          ratings: ratings,
+          docUid: docUID,
+          profileUid: "Guest" + Math.random() * 1000000
+        })
+      }); 
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      console.error('Error storing data:', error); // error handling here
+    }
+  }
+
+  
 
   var comps = [];
   data.forEach(place => {
@@ -78,24 +105,24 @@ export default function Survey() {
       <Carousel width={600} selectedItem={curSlide} swipeable={false} showArrows={false} showIndicators={false} showStatus={false} showThumbs={false}>
         {comps}
       </Carousel>
-      <span>
+      <span style={{display: 'flex', marginLeft: 32, width: 374, justifyContent: 'center'}}>
         <button className={styles.emojiButton} onClick={() => {
+          rating(0);
           if(curSlide <= 8){
-            //rating(0);
             setCurSlide(curSlide + 1);
           }
           }}>😢</button>
 
         <button className={styles.emojiButton} onClick={() => {
+          rating(2);
           if(curSlide <= 8){
-            //rating(2);
             setCurSlide(curSlide + 1);
           }
           }}>😐</button>
 
         <button className={styles.emojiButton} onClick={() => {
+          rating(5);
           if(curSlide <= 8){
-            //rating(5);
             setCurSlide(curSlide + 1);
           }
           }}>😁</button>
