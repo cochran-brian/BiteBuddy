@@ -29,6 +29,7 @@ export default function ProfileScreen({ navigation }) {
         },
       }); 
       const result = await response.json();
+      console.log(result)
       setpfp(result.profile_image)
     }
 
@@ -123,7 +124,7 @@ export default function ProfileScreen({ navigation }) {
               },
               body: JSON.stringify({
                 filePath: user.uid + "/profilePicture/" + img.data.name,
-                uid: user.uid
+                user: user
               })
             }); 
             const result = await response.json();
