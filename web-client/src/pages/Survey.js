@@ -14,7 +14,7 @@ export default function Survey() {
   const [ratings, setRatings] = useState([]);
   const { id } = useParams();
   
-
+  const navigate = useNavigate();
   const location = useLocation();
   const data = location.state.data;
   console.log('Data:', data);
@@ -35,12 +35,7 @@ export default function Survey() {
       await storeRatings(ratings, id); // RIGHT NOW ONLY AUTHENTICATED USERS WILL HAVE NAME
       // NEED TO CHANGE THIS WHEN WE MAKE THE WEBSITE
   
-      // navigation.navigate('Waiting', {
-      //   uid: uid,
-      //   latitude: latitude,
-      //   longitude: longitude,
-      //   radius: radius
-      // })
+      navigate(`/result`);
     }
   }
 
@@ -73,7 +68,7 @@ export default function Survey() {
   var comps = [];
   data.forEach(place => {
     comps.push(
-      <div className={styles.container}>
+      <div className={[styles.container]}>
         <div style={{height: 280}}>
           <img src={place.image_url} className={styles.image} alt="Image" />
         </div>
@@ -101,7 +96,7 @@ export default function Survey() {
 
   return (
     <div className={styles.screenContainer}>
-      <div style={{alignSelf: 'flex-start', fontFamily: 'Open Sans', fontSize: 48, marginLeft: 12}}>BITE BUDDY</div>
+      <div style={{alignSelf: 'flex-start', fontFamily: 'Open Sans', fontSize: 48, marginLeft: 12, color:'#111E30'}}>BITE BUDDY</div>
       <Carousel width={600} selectedItem={curSlide} swipeable={false} showArrows={false} showIndicators={false} showStatus={false} showThumbs={false}>
         {comps}
       </Carousel>

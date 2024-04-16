@@ -6,6 +6,7 @@ import Survey from "./pages/Survey";
 import NoPage from "./pages/NoPage";
 import Join from "./pages/Join"
 import './App.css';
+import Result from "./pages/Result";
 
 export default function App() {
 
@@ -16,6 +17,7 @@ export default function App() {
           <Route index element={<Home />} />
           <Route path="survey/:id" element={<Survey />} />
           <Route path="join/:id" element={<Join />} />
+          <Route path="result" element={<Result />} />
           <Route path="*" element={<NoPage />} />
           {/* <Route path="*" element={<Navigate to="/" />} /> */}
         </Route>
