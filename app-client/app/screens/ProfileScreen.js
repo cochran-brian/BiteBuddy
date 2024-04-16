@@ -13,7 +13,7 @@ export default function ProfileScreen({ navigation }) {
   const user = auth.currentUser;
   const [modalVisible, setmodalVisible] = useState(false)
   const [location, setlocation] = useState('Location Not Enabled')
-  const [location_enabled, setlocation_enabled] = useState(false) //Switch value (bool)
+  const [location_enabled, setlocation_enabled] = useState(true) //Switch value (bool)
   const [pfp, setpfp] = useState(null); //uri of the user's selected profile image
   const storage = getStorage();
 
@@ -107,13 +107,14 @@ export default function ProfileScreen({ navigation }) {
       if(!result.canceled){
           setpfp(result.assets[0].uri);
 
-          console.log(pfp)
-          const response = await fetch(pfp)
+          console.log(result.assets[0].uri)
+          const response = await fetch(result.assets[0].uri)
           const img = await response.blob()
           
           const storageRef = ref(storage, user.uid + "/profilePicture/" + img.data.name); // change to unique id?
           uploadBytes(storageRef, img).then(async (snapshot) => {
             console.log('Uploaded a blob or file!');
+            console.log(snapshot)
             const response = await fetch(`http://localhost:4000/profile`, { // apparently "localhost" makes the server host the phone instead of the computer
               method: "POST",
               mode: "cors",
@@ -124,7 +125,7 @@ export default function ProfileScreen({ navigation }) {
               },
               body: JSON.stringify({
                 filePath: user.uid + "/profilePicture/" + img.data.name,
-                user: user
+                uid: user.uid
               })
             }); 
             const result = await response.json();

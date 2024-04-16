@@ -8,11 +8,11 @@ const { db, bucket } = require('../firebase/config');
 router.post("/", async (req, res) => {
     console.log(req.body);
     try {
+        console.log(req.body.filePath)
         const fileRef = bucket.file(req.body.filePath);
         const downloadURL = await getDownloadURL(fileRef);
         console.log(downloadURL)
-        console.log(req.body.user.uid)
-        db.collection("users").doc(req.body.user.uid).update({
+        db.collection("users").doc(req.body.uid).update({
             profile_image: downloadURL
         })
         console.log("updated profile")
@@ -24,10 +24,9 @@ router.post("/", async (req, res) => {
 })
 
 router.get("/:uid", async (req, res) => {
-    console.log(req.params.uid)
     try {
+        console.log(req.params.uid)
         const userSnapshot = await db.collection('users').doc(req.params.uid).get();
-        console.log(userSnapshot)
         const user = await userSnapshot.data();
         console.log(user)
         res.send({ profile_image: user.profile_image })
