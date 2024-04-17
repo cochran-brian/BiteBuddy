@@ -68,7 +68,7 @@ export default function Survey() {
   var comps = [];
   data.forEach(place => {
     comps.push(
-      <div className={[styles.container]}>
+      <div className={styles.container}>
         <div style={{height: 280}}>
           <img src={place.image_url} className={styles.image} alt="Image" />
         </div>
@@ -95,12 +95,11 @@ export default function Survey() {
  
 
   return (
-    <div className={styles.screenContainer}>
-      <div style={{alignSelf: 'flex-start', fontFamily: 'Open Sans', fontSize: 48, marginLeft: 12, color:'#111E30'}}>BITE BUDDY</div>
-      <Carousel width={600} selectedItem={curSlide} swipeable={false} showArrows={false} showIndicators={false} showStatus={false} showThumbs={false}>
+    <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
+      <Carousel width={374} selectedItem={curSlide} swipeable={false} showArrows={false} showIndicators={false} showStatus={false} showThumbs={false}>
         {comps}
       </Carousel>
-      <span style={{display: 'flex', marginLeft: 32, width: 374, justifyContent: 'center'}}>
+      <span style={{display: 'flex', width: 374, justifyContent: 'center'}}>
         <button className={styles.emojiButton} onClick={() => {
           rating(0);
           if(curSlide <= 8){
