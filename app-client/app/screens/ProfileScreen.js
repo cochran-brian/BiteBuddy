@@ -15,10 +15,12 @@ export default function ProfileScreen({ navigation }) {
   const [location, setlocation] = useState('Location Not Enabled')
   const [location_enabled, setlocation_enabled] = useState(true) //Switch value (bool)
   const [pfp, setpfp] = useState(null); //uri of the user's selected profile image
+  const [name, setName] = useState("");
   const storage = getStorage();
 
   useEffect(() => {
     const getProfileImage = async () => {
+      console.log(user)
       const response = await fetch(`http://localhost:4000/profile/${user.uid}`, { // apparently "localhost" makes the server host the phone instead of the computer
         method: "GET",
         mode: "cors",
@@ -30,43 +32,21 @@ export default function ProfileScreen({ navigation }) {
       }); 
       const result = await response.json();
       console.log(result)
-      setpfp(result.profile_image)
+      setpfp(result.profile_image);
+      setName(result.name)
     }
 
     getProfileImage();
-    
-    // const listRef = ref(storage, user.uid + '/profilePicture/');
-
-    // listAll(listRef)
-    //   .then((res) => {
-    //     const itemRefArr = [];
-    //     res.items.forEach((itemRef) => {
-    //       console.log(itemRef)
-    //       itemRefArr.push(itemRef)
-    //     });
-    //     getDownloadURL(itemRefArr[0])
-    //         .then((url) => {
-    //           console.log(url)
-    //           setpfp(url);
-    //           // setIsLoading(false);
-    //         })
-    //         .catch((error) => {
-    //           console.error(error)
-    //         })
-    //   }).catch((error) => {
-    //     console.error(error)
-    //   });
   }, [])
 
-  var username = '';
+  useEffect(() => {
+    if(location_enabled) {
+      tryLocation();
+    } else {
+      setlocation('Location Not Enabled')
+    }
+  }, [location_enabled])
 
-  if(user){
-    username = user.email.substring(0, user.email.indexOf('@'));
-  }else{
-    username = 'Guest';
-  }
-
-  
    const tryLocation = async () => {
     var { status } = await Location.requestForegroundPermissionsAsync();
     console.log('Location service -> access', status);
@@ -153,7 +133,7 @@ export default function ProfileScreen({ navigation }) {
             </Pressable>
           </View>  
               <Text style={styles.subheader}>
-                {username}
+                {name}
               </Text>
               <Text style={[styles.thirdHeader, {marginBottom: 32}]}>{location}</Text>
          </View>
@@ -170,11 +150,7 @@ export default function ProfileScreen({ navigation }) {
               trackColor={{true: colors.primary}}
               onValueChange={(val) => {
                 setlocation_enabled(val)
-                if(val){
-                  tryLocation();
-                }else{
-                  setlocation('Location Not Enabled')
-                }}}
+               }}
             />
            </View>
           </View>
