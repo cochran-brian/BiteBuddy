@@ -9,7 +9,7 @@ function Home() {
     return (
       <div>
         <div style={{justifyContent: 'center'}}>
-          <h2 style={{textAlign: 'center'}}>Download Bite Buddy Today😮‍💨</h2>
+          <h2 style={{textAlign: 'center'}}>Coming Soon...</h2>
         </div>
       </div>
     )

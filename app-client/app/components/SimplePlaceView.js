@@ -30,7 +30,7 @@ function SimplePlaceView({ image_url, name, address, rating, numReviews, yelp_ur
                 style={styles.textContainer}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <View 
-                    style={{marginLeft: 5, width: 170}}>
+                    style={{marginLeft: 5, width: 160}}>
                     <Text 
                         numberOfLines={1}
                         style={styles.textTitle}>
@@ -57,7 +57,7 @@ function SimplePlaceView({ image_url, name, address, rating, numReviews, yelp_ur
                      <TouchableHighlight 
                         onPress={onYelpPress} 
                         underlayColor={'lightgrey'}
-                        style={{marginLeft: 26}}>
+                        style={{marginLeft: 18}}>
                         <Image 
                             resizeMode='contain'
                             style={styles.yelpLogo}
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
         marginTop: 0,
     },
     image:{
-        width: 120,
+        width: 100,
         height: '100%',
         borderTopLeftRadius: 10,
         borderBottomLeftRadius: 10
@@ -101,7 +101,8 @@ const styles = StyleSheet.create({
     },
     textTitle: {
         fontFamily: 'Open Sans', 
-        fontSize: 16
+        fontSize: 14,
+        width: 160
     },
     textSubheader: {
         fontFamily: 'Open Sans Light', 
@@ -113,16 +114,15 @@ const styles = StyleSheet.create({
         color: 'grey',
         width: 130,
         lineHeight: 10, 
-        marginLeft: 6,  
+        marginLeft: 2,  
         fontSize: 10
     },
     ratingContainer: {
-        justifyContent: 'flex-end', 
         alignItems: 'center',
         flexDirection: 'row',
         flex: 1, 
         marginTop: 12,
-        marginLeft: 6
+        marginLeft: 0
     },
     yelpLogo:{
         height: 20,
@@ -138,7 +138,6 @@ const styles = StyleSheet.create({
         borderColor: colors.primary,
         backgroundColor: '#fafafa',
         alignSelf: 'center',
-        marginLeft: 6
     }
 });
 
