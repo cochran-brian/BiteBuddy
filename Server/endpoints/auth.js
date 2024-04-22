@@ -43,7 +43,8 @@ const storeData = async (uid, email, firstName) => {
             userId: uid,
             firstName: firstName,
             userEmail: email,
-            profile_image: null
+            profile_image: null,
+            timestamp: Date.now()
         })
         console.log("User stored successfully")
     } catch (error) {

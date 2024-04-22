@@ -29,7 +29,7 @@ router.get("/:uid", async (req, res) => {
         const userSnapshot = await db.collection('users').doc(req.params.uid).get();
         const user = await userSnapshot.data();
         console.log(user)
-        res.send({ profile_image: user.profile_image, name: user.firstName })
+        res.send({ profile_image: user.profile_image, name: user.firstName, joinTime: user.timestamp })
     } catch (error) {
         console.error(error)
         res.status(500).send({ error });

@@ -37,7 +37,7 @@ export default function ResultScreen({route, navigation}) {
       console.log(result);
       setRecommendations(result);
     } catch (error) {
-      console.error('Error fetching data:', error); // error handling here
+      console.error('Error fetching data: ' + error); // error handling here
     }
   }
 
@@ -108,12 +108,13 @@ export default function ResultScreen({route, navigation}) {
                 <Text 
                   style={styles.sectionTitle}>GROUP FAVORITE</Text>
               </View>
-              {/* <SimplePlaceView
+              <SimplePlaceView
                 name={recommendations.topRestaurant.name}
-                address={recommendations.topRestaurant.address}
+                address={recommendations.topRestaurant.location.address1}
                 rating={recommendations.topRestaurant.rating}
-                imageUri={recommendations.topRestaurant.image_url}/>
-                <Text>{recommendations.topRestaurant}</Text> */}
+                image_url={recommendations.topRestaurant.image_url}
+                yelp_url={recommendations.topRestaurant.url}
+                numReviews={recommendations.topRestaurant.review_count}/>
             </SafeAreaView>
 
             <View 
@@ -123,22 +124,13 @@ export default function ResultScreen({route, navigation}) {
               style={{margin: '10%', marginTop: 16, marginBottom: '7%', alignItems: 'center'}}>
             <Text 
               style={[styles.sectionTitle, {fontSize: 22}]}>SOMEWHERE SIMILAR</Text>
-              {/* <SimplePlaceView
+              <SimplePlaceView
                 name={recommendations.similarRestaurants[0].name}
-                address={recommendations.similarRestaurants[0].address}
+                address={recommendations.similarRestaurants[0].location.address1}
                 rating={recommendations.similarRestaurants[0].rating}
-                imageUri={recommendations.similarRestaurants[0].image_url}/> */}
-            </View>
-
-            <View 
-              style={{margin: '10%', marginTop: 0, marginBottom: '7%', alignItems: 'center'}}>
-            <Text 
-              style={[styles.sectionTitle, {fontSize: 22}]}>LEAST LIKED</Text>
-              {/* <SimplePlaceView
-                name={bottom.name}
-                address={bottom.address}
-                rating={bottom.rating}
-                imageUri={bottom.image_url}/> */}
+                image_url={recommendations.similarRestaurants[0].image_url}
+                yelp_url={recommendations.similarRestaurants[0].url}
+                numReviews={recommendations.similarRestaurants[0].review_count}/>
             </View>
 
           <View 

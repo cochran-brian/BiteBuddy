@@ -11,7 +11,7 @@ router.get("/", async (req, res) => {
             try {
               var recents = [];
               const decodedToken = await admin.auth().verifyIdToken(idToken);
-              const recentsQuerySnapshot = await db.collection('users').doc(decodedToken.email).collection("bites").get();
+              const recentsQuerySnapshot = await db.collection('users').doc(decodedToken.email).collection("bites").get(); // needs to be uid not email
               recentsQuerySnapshot.forEach((doc) => {
                 recents.push(doc.data());
               }) 

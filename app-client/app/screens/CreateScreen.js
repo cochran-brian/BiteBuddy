@@ -42,7 +42,7 @@ export default function CreateScreen({ navigation }) {
   useEffect(() => {
     (async () => {
       let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
+      setLocation(location.coords);
     })();
   }, []);
 
@@ -58,7 +58,7 @@ export default function CreateScreen({ navigation }) {
     var options = [];
 
     result.forEach(location => {
-      options.push({label: location.display_name, value: (location.display_name + '~' + location.lat + ' ' + location.lon)})
+      options.push({label: location.display_name, value: {coords: {latitude: location.lat, longitude: location.lon}, name: location.display_name}})
     });
 
     
@@ -66,16 +66,18 @@ export default function CreateScreen({ navigation }) {
     setAutofillModal(true);
   }
 
-  const onAutofillPicked = (name) => {
-    console.log(name);
-    setSearchedLocation(name);
-    setLocationLocked(true);
-  }
+  // const onAutofillPicked = (name) => {
+  //   console.log(name);
+  //   setSearchedLocation(name);
+  //   setLocation(autofillDropdownPicked)
+  //   setLocationLocked(true);
+  // }
 
   const changeScreens = () => {
+    console.log(location)
     navigation.navigate('Survey', {
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude,
+      latitude: location.latitude,
+      longitude: location.longitude,
       radius: slideValue * 1609.34, // conversion to meters
       categories: dropDownPicked,
       priceLevel: plPicked
@@ -138,9 +140,11 @@ export default function CreateScreen({ navigation }) {
                   checkboxLabelStyle={{fontFamily: 'Open Sans Medium', marginVertical: 8, marginRight: 18}}
                   checkboxStyle={{borderRadius: 20, height: 10, width: 10}}
                   onValueChange={(itemValue) => {
-                    setAutofillDropdownPicked(itemValue.substring(itemValue.indexOf('~') + 1, itemValue.length));
+                    setAutofillDropdownPicked(itemValue.coords);
                     setAutofillModal(false);
-                    onAutofillPicked(itemValue.substring(0, itemValue.indexOf('~')));
+                    setSearchedLocation(itemValue.name);
+                    setLocation(itemValue.coords)
+                    setLocationLocked(true);
                   }}
                   modalProps={{visible: showAutofillModal}}
                 />

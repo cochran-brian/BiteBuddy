@@ -16,6 +16,7 @@ export default function ProfileScreen({ navigation }) {
   const [location_enabled, setlocation_enabled] = useState(true) //Switch value (bool)
   const [pfp, setpfp] = useState(null); //uri of the user's selected profile image
   const [name, setName] = useState("");
+  const [joinTime, setJoinTime] = useState(null)
   const storage = getStorage();
 
   useEffect(() => {
@@ -34,6 +35,7 @@ export default function ProfileScreen({ navigation }) {
       console.log(result)
       setpfp(result.profile_image);
       setName(result.name)
+      setJoinTime(result.joinTime)
     }
 
     getProfileImage();
@@ -163,10 +165,11 @@ export default function ProfileScreen({ navigation }) {
                   LOG OUT</Text>
             </TouchableHighlight>
         </View>
-        
+        {/* {Date(user.createdAt).toString().substring(0, 15)}</Text> */}
         <View style={styles.footerContainer}>
           {user?
-           <Text style={styles.footerText}>Joined on {Date(user.createdAt).toString().substring(0, 15)}</Text>
+           <Text style={styles.footerText}>Joined on {(new Date(joinTime)).toString().substring(4,16)}</Text>
+           
           :
             <View/>
           }
