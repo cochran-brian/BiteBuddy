@@ -14,6 +14,8 @@ export default function WaitingScreen({route, navigation}){
     const [eventData, setEventData] = useState(null);
     const { uid, latitude, longitude, radius } = route.params;
 
+    console.log('localhost:3000/join/' + uid);
+
     const onInvitePress = async() => {
       const result = await Share.share({
         url: 'https://www.imdb.com/title/tt1823672/' //Put the link to join the survey here

@@ -113,7 +113,7 @@ const getIdToken = async (latitude, longitude, radius, categories, priceLevel) =
         //     return 0;
         //   }
         // }))
-        console.log(response.uid)
+        console.log(response);
         setUid(response.uid);
       } catch (error) {
         console.error("Error fetching or storing data: ", error);
