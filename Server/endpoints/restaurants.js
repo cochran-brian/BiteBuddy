@@ -45,8 +45,7 @@ router.get("/:id", async (req, res) => {
         console.log(biteData.host_uid)
 
         const profileQuerySnapshot = await db.collection('users').doc(biteData.host_uid).get();
-        console.log(profileQuerySnapshot)
-        var profileData = await profileQuerySnapshot.data();
+        const profileData = await profileQuerySnapshot.data();
         console.log(profileData)
         res.send({restaurants: restaurants, profile: profileData});
 

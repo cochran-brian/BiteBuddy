@@ -28,6 +28,7 @@ export default function Join() {
       const result = await response.json();
       console.log(result);
       console.log(result.restaurants);
+      console.log(result.profile)
       setData(result.restaurants);
       setProfile(result.profile);
     } catch (error) {
@@ -37,8 +38,8 @@ export default function Join() {
 
   return (
     <div>
-      <img src={"https://www.asiamediajournal.com/wp-content/uploads/2022/11/Default-PFP.jpg"}></img>
-      <p>Join TEST's Bite</p>
+      <img style={{maxHeight: 100, maxWidth: 100}} src={profile.profile_image ? profile.profile_image : "https://www.asiamediajournal.com/wp-content/uploads/2022/11/Default-PFP.jpg"}></img>
+      <p>Join {profile.firstName}'s Bite</p>
       <button onClick={() => navigate(`/survey/${id}`, {state:{
         data: data
       }})}>Join</button>

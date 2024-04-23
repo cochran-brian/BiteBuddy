@@ -5,6 +5,7 @@ import Carousel from 'react-native-snap-carousel';
 import { Pagination } from 'react-native-snap-carousel';
 import SurveyCard from '../components/SurveyCard';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { auth } from '../firebase/config'
 
 
 export default function RecentScreen({ navigation }) {
@@ -18,9 +19,9 @@ export default function RecentScreen({ navigation }) {
   }, [])
 
   const fetchData = async () => {
-    const idToken = await AsyncStorage.getItem('idToken');
-    console.log("ID token found", idToken);
-    if (idToken) {
+    // const idToken = await AsyncStorage.getItem('idToken');
+    // console.log("ID token found", idToken);
+    // if (idToken) {
       try {
         console.log("fetching data...")
         const response = await fetch(`http://localhost:4000/recents`, { // apparently "localhost" makes the server host the phone instead of the computer
@@ -29,7 +30,7 @@ export default function RecentScreen({ navigation }) {
           credentials: "same-origin",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${idToken}`
+            Authorization: `Bearer ${auth.currentUser.getIdToken()}`
           }
         }); 
         const result = await response.json();
@@ -43,7 +44,7 @@ export default function RecentScreen({ navigation }) {
       } catch (error) {
         console.error('Error fetching data:', error); // error handling here
       }
-    }
+    // }
 
   }
 

@@ -10,7 +10,7 @@ router.post("/", async (req, res) => {
             const idToken = authorization.split('Bearer ')[1];
             try {
               const decodedToken = await admin.auth().verifyIdToken(idToken);
-              const doc = await db.collection('users').doc(decodedToken.email).collection('bites').doc(Date.now().toString()).set({
+              const doc = await db.collection('users').doc(decodedToken.uid).collection('bites').doc(Date.now().toString()).set({
                 topRestaurant: req.body.topRestaurant,
                 similarRestaurants: req.body.similarRestaurants,
                 timestamp: Date.now()
