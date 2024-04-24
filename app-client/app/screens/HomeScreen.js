@@ -18,6 +18,7 @@ export default function HomeScreen({ navigation }) {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [data, setData] = useState([]);
+  const [catData, setCatData] = useState([]);
 
   const[carouselIndex, setCarouselIndex] = useState(0);
 
@@ -44,6 +45,11 @@ export default function HomeScreen({ navigation }) {
       console.log(location)
 
       fetchData(location.coords.latitude, location.coords.longitude, "10000");
+
+      const categories = ["Italian, Breakfast, Japaneese"];
+      categories.forEach(category => {
+        fetchCatData(location.coords.latitude, location.coords.longitude, "10000", category);
+      });
     })();
   }, []);
 
@@ -79,12 +85,39 @@ const fetchData = async (latitude, longitude, radius) => {
         latitude: latitude,
         longitude: longitude,
         radius: radius,
-        //categories: dropDownPicked ? [...dropDownPicked] : []
       })
     }); 
     const result = await response.json();
     console.log(result)
     setData(result.data.businesses);
+  } catch (error) {
+    console.error('Error fetching data:', error); // error handling here
+  }
+}
+
+const fetchCatData = async (latitude, longitude, radius, categories, priceLevel, token) => {
+  try {
+    console.log(PORT, IP_ADDRESS)
+    console.log("fetching data...")
+    const response = await fetch(`http://localhost:4000/restaurants`, { // apparently "localhost" makes the server host the phone instead of the computer
+      method: "POST",
+      mode: "cors",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+        //Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        latitude: latitude,
+        longitude: longitude,
+        radius: radius,
+        categories: categories,
+        //priceLevel: priceLevel
+      })
+    }); 
+    const result = await response.json();
+    console.log(result);
+    setCatData([...catData, {categories: result}]);
   } catch (error) {
     console.error('Error fetching data:', error); // error handling here
   }
@@ -160,7 +193,53 @@ const fetchData = async (latitude, longitude, radius) => {
       style={[styles.recBox, {marginTop: 58}]}>
       <Text 
         style={{fontFamily: 'Open Sans', fontSize: 28}}>
-          For you</Text>
+          Italian</Text>
+
+      <View style={styles.listContainer}>
+        <FlatList
+          horizontal= {true}
+          showsHorizontalScrollIndicator={false}
+          style={{width: Dimensions.get('screen').width, paddingLeft: 40}}
+          contentContainerStyle={{paddingRight: 42}}
+          data={[1, 2, 3, 4, 5]}
+          renderItem={() => {
+            return(
+            <View style={styles.restaurantCard}>
+              <Text>TEST Restaurant</Text>
+            </View>
+            )}}
+        />
+      </View>
+    </View>
+
+    <View 
+      style={[styles.recBox, {marginTop: 44}]}>
+      <Text 
+        style={{fontFamily: 'Open Sans', fontSize: 28}}>
+          Breakfast</Text>
+
+      <View style={styles.listContainer}>
+        <FlatList
+          horizontal= {true}
+          showsHorizontalScrollIndicator={false}
+          style={{width: Dimensions.get('screen').width, paddingLeft: 40}}
+          contentContainerStyle={{paddingRight: 42}}
+          data={[1, 2, 3, 4, 5]}
+          renderItem={() => {
+            return(
+            <View style={styles.restaurantCard}>
+              <Text>TEST Restaurant</Text>
+            </View>
+            )}}
+        />
+      </View>
+    </View>
+
+    <View 
+      style={[styles.recBox, {marginTop: 44, height: 290}]}>
+      <Text 
+        style={{fontFamily: 'Open Sans', fontSize: 28}}>
+          Japaneese</Text>
 
       <View style={styles.listContainer}>
         <FlatList
@@ -206,8 +285,8 @@ const styles = StyleSheet.create({
   },
   recBox: {
     width: Dimensions.get('screen').width - 80,
-    height: '30%',
-    marginTop: 44,
+    height: 240,
+    marginTop: 34,
     marginLeft: 40,
     marginRight: 40,
   },
