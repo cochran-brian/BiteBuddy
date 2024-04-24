@@ -8,7 +8,8 @@ router.get("/", async (req, res) => {
       console.log("in recents")
       const { authorization } = req.headers;
       console.log(authorization)
-      const user = await auth.verifyIdToken(authorization.split('Bearer ')[1])
+      const token = authorization.split('Bearer ')[1];
+      const user = await auth.verifyIdToken(token)
       console.log(user)
       const recentsQuerySnapshot = await db.collection('users').doc(user.uid).collection("bites").get(); // needs to be uid not email
       var recents = [];

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import NoPage from "./NoPage";
+import styles from "../styles/Survey.module.css";
 
 export default function Join() {
 
@@ -37,10 +37,10 @@ export default function Join() {
   }
 
   return (
-    <div>
-      <img style={{maxHeight: 100, maxWidth: 100}} src={profile.profile_image ? profile.profile_image : "https://www.asiamediajournal.com/wp-content/uploads/2022/11/Default-PFP.jpg"}></img>
-      <p>Join {profile.firstName}'s Bite</p>
-      <button onClick={() => navigate(`/survey/${id}`, {state:{
+    <div style={{display: "flex", flexDirection: "column", alignItems: 'center', justifyContent: 'center', width: '100%'}}>
+      <img style={{maxHeight: 200, maxWidth: 200, borderRadius: '50%'}} src={profile.profile_image ? profile.profile_image : "https://www.asiamediajournal.com/wp-content/uploads/2022/11/Default-PFP.jpg"}></img>
+      <p style={{fontSize: 32}}>{profile.firstName}'s Bite</p>
+      <button style={{width: 100, height: 40, borderRadius: 50, marginBottom: 38, backgroundColor: "#111e30", alignItems: 'center', justifyContent: 'center', color: "#FFFFFF", border: "none"}} onClick={() => navigate(`/survey/${id}`, {state:{
         data: data
       }})}>Join</button>
     </div>

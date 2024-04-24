@@ -6,7 +6,7 @@ const Layout = () => {
   const navigate = useNavigate();
   return (
     <>
-      <nav>
+      <nav style={{display: 'flex', justifyContent: 'center', marginTop: 30, marginBottom: 50}}>
         <button style={{border: 'none', background: 'none'}} onClick={() => navigate('/')}>
           <div style={{fontFamily: 'Open Sans', fontSize: 48, color:'#111E30'}}>BITE BUDDY</div>
         </button>

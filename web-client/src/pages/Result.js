@@ -4,8 +4,8 @@ export default function Result() {
 
     return (
         <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
-            <img src={require('../assets/biteLogo.png')} style={{maxWidth: 800, marginTop: -120, marginBottom: -75}}/>
-            <div style={{fontFamily: 'Open Sans', fontSize: 28, color: '#111E30'}}>
+            <img src={require('../assets/biteLogo.png')} style={{width: 800, height: 200, objectFit: 'cover'}}/>
+            <div style={{fontFamily: 'Open Sans', fontSize: 28, color: '#111E30', marginTop: 30}}>
                 You're All Set!
             </div>
             <div style={{fontFamily: 'Open Sans Medium', fontSize: 18, textAlign: 'center', width: 500}}>

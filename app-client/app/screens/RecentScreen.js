@@ -19,18 +19,16 @@ export default function RecentScreen({ navigation }) {
   }, [])
 
   const fetchData = async () => {
-    // const idToken = await AsyncStorage.getItem('idToken');
-    // console.log("ID token found", idToken);
-    // if (idToken) {
       try {
         console.log("fetching data...")
+        const token = await auth.currentUser.getIdToken();
         const response = await fetch(`http://localhost:4000/recents`, { // apparently "localhost" makes the server host the phone instead of the computer
           method: "GET",
           mode: "cors",
           credentials: "same-origin",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${auth.currentUser.getIdToken()}`
+            Authorization: `Bearer ${token}`
           }
         }); 
         const result = await response.json();
@@ -44,19 +42,18 @@ export default function RecentScreen({ navigation }) {
       } catch (error) {
         console.error('Error fetching data:', error); // error handling here
       }
-    // }
-
   }
 
     renderItem = ({item, index}) => {
         return (
             <SurveyCard
-                name = {item.topRestaurant.name}
+                name={item.topRestaurant.name}
                 imageUri={item.topRestaurant.image_url}
-                address={item.topRestaurant.address}
+                address={item.topRestaurant.location.address1}
                 rating={item.topRestaurant.rating}
+                category={item.topRestaurant.categories[0].title}
                 date={new Date(item.timestamp).toDateString()}
-                yelp_url={item.topRestaurant.yelp_url}
+                yelp_url={item.topRestaurant.url}
             />
         );
     }
