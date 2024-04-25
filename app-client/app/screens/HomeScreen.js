@@ -18,7 +18,7 @@ export default function HomeScreen({ navigation }) {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [data, setData] = useState([]);
-  const [catData, setCatData] = useState([]);
+  const [catData, setCatData] = useState({});
 
   const[carouselIndex, setCarouselIndex] = useState(0);
 
@@ -45,11 +45,9 @@ export default function HomeScreen({ navigation }) {
       console.log(location)
 
       fetchData(location.coords.latitude, location.coords.longitude, "10000");
-
+      
       const categories = ["Italian", "Breakfast", "Japaneese"];
-      categories.forEach(category => {
-        fetchCatData(location.coords.latitude, location.coords.longitude, "10000", category);
-      });
+      fetchCatData(location.coords.latitude, location.coords.longitude, "10000", categories);      
     })();
   }, []);
 
@@ -100,6 +98,9 @@ const fetchCatData = async (latitude, longitude, radius, categories, priceLevel,
     console.log(PORT, IP_ADDRESS)
     console.log("fetching data...")
     console.log(categories);
+
+    for(let i = 0; i < 3; i++){
+    const category = categories[i];
     const response = await fetch(`http://localhost:4000/restaurants`, { // apparently "localhost" makes the server host the phone instead of the computer
       method: "POST",
       mode: "cors",
@@ -112,14 +113,16 @@ const fetchCatData = async (latitude, longitude, radius, categories, priceLevel,
         latitude: latitude,
         longitude: longitude,
         radius: radius,
-        categories: categories,
+        categories: category,
         //priceLevel: priceLevel
       })
     }); 
     const result = await response.json();
-    console.log(categories, catData);
-    var obj = {[categories]: result};
-    setCatData([...catData, obj]);
+    console.log(category + " ->", result);
+    setCatData({...catData, [category]: result.data.businesses})
+  };
+    // var obj = {[categories]: result.data.businesses};
+    // setCatData([...catData, obj]);
   } catch (error) {
     console.error('Error fetching data:', error); // error handling here
   }
@@ -203,12 +206,11 @@ const fetchCatData = async (latitude, longitude, radius, categories, priceLevel,
           showsHorizontalScrollIndicator={false}
           style={{width: Dimensions.get('screen').width, paddingLeft: 40}}
           contentContainerStyle={{paddingRight: 42}}
-          data={[1, 2, 3]//catData.Italian.categories.data.businesses
-          }
-          renderItem={() => {
+          data={catData.Italian}
+          renderItem={({item}) => {
             return(
             <View style={styles.restaurantCard}>
-              <Text>{JSON.stringify(catData[0].Italian)}</Text>
+              <Text>{item.name}</Text>
             </View>
             )}}
         />
