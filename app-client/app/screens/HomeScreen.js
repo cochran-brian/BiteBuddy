@@ -46,7 +46,7 @@ export default function HomeScreen({ navigation }) {
 
       fetchData(location.coords.latitude, location.coords.longitude, "10000");
 
-      const categories = ["Italian, Breakfast, Japaneese"];
+      const categories = ["Italian", "Breakfast", "Japaneese"];
       categories.forEach(category => {
         fetchCatData(location.coords.latitude, location.coords.longitude, "10000", category);
       });
@@ -99,6 +99,7 @@ const fetchCatData = async (latitude, longitude, radius, categories, priceLevel,
   try {
     console.log(PORT, IP_ADDRESS)
     console.log("fetching data...")
+    console.log(categories);
     const response = await fetch(`http://localhost:4000/restaurants`, { // apparently "localhost" makes the server host the phone instead of the computer
       method: "POST",
       mode: "cors",
@@ -116,8 +117,9 @@ const fetchCatData = async (latitude, longitude, radius, categories, priceLevel,
       })
     }); 
     const result = await response.json();
-    console.log(result);
-    setCatData([...catData, {categories: result}]);
+    console.log(categories, catData);
+    var obj = {[categories]: result};
+    setCatData([...catData, obj]);
   } catch (error) {
     console.error('Error fetching data:', error); // error handling here
   }
@@ -201,11 +203,12 @@ const fetchCatData = async (latitude, longitude, radius, categories, priceLevel,
           showsHorizontalScrollIndicator={false}
           style={{width: Dimensions.get('screen').width, paddingLeft: 40}}
           contentContainerStyle={{paddingRight: 42}}
-          data={[1, 2, 3, 4, 5]}
+          data={[1, 2, 3]//catData.Italian.categories.data.businesses
+          }
           renderItem={() => {
             return(
             <View style={styles.restaurantCard}>
-              <Text>TEST Restaurant</Text>
+              <Text>{JSON.stringify(catData[0].Italian)}</Text>
             </View>
             )}}
         />
