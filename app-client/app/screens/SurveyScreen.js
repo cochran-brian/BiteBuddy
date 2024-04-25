@@ -125,7 +125,7 @@ const getIdToken = async (latitude, longitude, radius, categories, priceLevel) =
 };
 
 
-const storeRatings = async (ratings, docUID, token) => {
+const storeRatings = async (ratings, doc, token) => {
   try {
     console.log(docUID)
     const response = await fetch(`http://localhost:4000/survey`, { // apparently "localhost" makes the server host the phone instead of the computer
@@ -138,8 +138,8 @@ const storeRatings = async (ratings, docUID, token) => {
       },
       body: JSON.stringify({
         ratings: ratings,
-        docUid: docUID,
-        profileUid: auth.currentUser.uid
+        doc: doc,
+        uid: auth.currentUser.uid
       })
     }); 
     const result = await response.json();

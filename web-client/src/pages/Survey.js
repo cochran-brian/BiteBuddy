@@ -17,7 +17,7 @@ export default function Survey() {
   const navigate = useNavigate();
   const location = useLocation();
   const data = location.state.data;
-  console.log('Data:', data);
+  const name = location.state.name;
 
   const onYelpPress = (place) => {
       //window.location.replace(place.url);
@@ -39,9 +39,8 @@ export default function Survey() {
     }
   }
 
-  const storeRatings = async (ratings, docUID) => {
+  const storeRatings = async (ratings, doc) => {
     try {
-      console.log(docUID)
       const response = await fetch(`http://localhost:4000/survey`, { // apparently "localhost" makes the server host the phone instead of the computer
         method: "POST",
         mode: "cors",
@@ -52,8 +51,8 @@ export default function Survey() {
         },
         body: JSON.stringify({
           ratings: ratings,
-          docUid: docUID,
-          profileUid: "Guest" + Math.random() * 1000000
+          doc: doc,
+          guestName: name
         })
       }); 
       const result = await response.json();
