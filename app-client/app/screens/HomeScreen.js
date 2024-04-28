@@ -22,6 +22,8 @@ export default function HomeScreen({ navigation }) {
 
   const[carouselIndex, setCarouselIndex] = useState(0);
 
+  const categories = ["Italian", "Breakfast", "Japaneese"];
+
   // const[imgArray, setImgArray] = useState([]);
   // const [imgRefArray, setImgRefArray] = useState([]);
 
@@ -46,7 +48,6 @@ export default function HomeScreen({ navigation }) {
 
       fetchData(location.coords.latitude, location.coords.longitude, "10000");
       
-      const categories = ["Italian", "Breakfast", "Japaneese"];
       fetchCatData(location.coords.latitude, location.coords.longitude, "10000", categories);      
     })();
   }, []);
@@ -94,6 +95,7 @@ const fetchData = async (latitude, longitude, radius) => {
 }
 
 const fetchCatData = async (latitude, longitude, radius, categories, priceLevel, token) => {
+  var results = {};
   try {
     console.log(PORT, IP_ADDRESS)
     console.log("fetching data...")
@@ -118,9 +120,10 @@ const fetchCatData = async (latitude, longitude, radius, categories, priceLevel,
       })
     }); 
     const result = await response.json();
-    console.log(category + " ->", result);
-    setCatData({...catData, [category]: result.data.businesses})
+    results[category] = result
+    
   };
+  setCatData(results);
     // var obj = {[categories]: result.data.businesses};
     // setCatData([...catData, obj]);
   } catch (error) {
@@ -206,12 +209,14 @@ const fetchCatData = async (latitude, longitude, radius, categories, priceLevel,
           showsHorizontalScrollIndicator={false}
           style={{width: Dimensions.get('screen').width, paddingLeft: 40}}
           contentContainerStyle={{paddingRight: 42}}
-          data={catData.Italian}
+          data={catData[categories[0]].data.businesses}
           renderItem={({item}) => {
             return(
-            <View style={styles.restaurantCard}>
-              <Text>{item.name}</Text>
-            </View>
+              <VerticalPlaceView
+              name={item.name}
+              address={item.address}
+              imageUri={item.image_url}
+              rating={item.rating}/>
             )}}
         />
       </View>
@@ -229,12 +234,14 @@ const fetchCatData = async (latitude, longitude, radius, categories, priceLevel,
           showsHorizontalScrollIndicator={false}
           style={{width: Dimensions.get('screen').width, paddingLeft: 40}}
           contentContainerStyle={{paddingRight: 42}}
-          data={[1, 2, 3, 4, 5]}
+          data={catData[categories[1]].data.businesses}
           renderItem={() => {
             return(
-            <View style={styles.restaurantCard}>
-              <Text>TEST Restaurant</Text>
-            </View>
+              <VerticalPlaceView
+              name={item.name}
+              address={item.address}
+              imageUri={item.image_url}
+              rating={item.rating}/>
             )}}
         />
       </View>
@@ -252,7 +259,7 @@ const fetchCatData = async (latitude, longitude, radius, categories, priceLevel,
           showsHorizontalScrollIndicator={false}
           style={{width: Dimensions.get('screen').width, paddingLeft: 40}}
           contentContainerStyle={{paddingRight: 42}}
-          data={[1, 2, 3, 4, 5]}
+          data={catData[categories[2]].data.businesses}
           renderItem={() => {
             return(
             <View style={styles.restaurantCard}>
