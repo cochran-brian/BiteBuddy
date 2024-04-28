@@ -22,7 +22,8 @@ export default function HomeScreen({ navigation }) {
 
   const[carouselIndex, setCarouselIndex] = useState(0);
 
-  const categories = ["Italian", "Breakfast", "Japaneese"];
+  //This completely controls the home screen categories
+  const categories = ["Italian", "Mexican", "Japaneese"]; 
 
   // const[imgArray, setImgArray] = useState([]);
   // const [imgRefArray, setImgRefArray] = useState([]);
@@ -48,7 +49,7 @@ export default function HomeScreen({ navigation }) {
 
       fetchData(location.coords.latitude, location.coords.longitude, "10000");
       
-      fetchCatData(location.coords.latitude, location.coords.longitude, "10000", categories);      
+      fetchCatData(location.coords.latitude, location.coords.longitude, "30000", categories);      
     })();
   }, []);
 
@@ -63,9 +64,13 @@ export default function HomeScreen({ navigation }) {
 
   renderCarouselItem = ({item, index}) => {
     return (
-      <View style={styles.sponsorCard}>
-        <Text>TEST Sponsor</Text>
-      </View>
+      <SimplePlaceView 
+        name={item.name} 
+        rating={item.rating} 
+        address={item.location.address1} 
+        image_url={item.image_url}
+        numReviews={item.review_count}
+        yelp_url={item.url}/>
     );
 }
   
@@ -123,6 +128,7 @@ const fetchCatData = async (latitude, longitude, radius, categories, priceLevel,
     results[category] = result
     
   };
+  console.log(results);
   setCatData(results);
     // var obj = {[categories]: result.data.businesses};
     // setCatData([...catData, obj]);
@@ -134,11 +140,14 @@ const fetchCatData = async (latitude, longitude, radius, categories, priceLevel,
 
   return (
     <>
-    {data.length == 0 ?(
+    {catData[categories[2]] == null ?(
       <View 
         style={[styles.container, {justifyContent: 'center'}]}>
         <Text 
           style={[styles.header, {marginTop: 0}]}>BITE BUDDY</Text>
+        <Text style={{fontFamily: 'Open Sans SemiBold', fontSize: 18, color: colors.primaryLight}}>
+          Loading...</Text>
+          
       </View>
     ):(
    <View 
@@ -149,25 +158,7 @@ const fetchCatData = async (latitude, longitude, radius, categories, priceLevel,
      </SafeAreaView>
    <ScrollView showsVerticalScrollIndicator={false} width={'100%'}>
 
-   <View style={{height: 150, marginTop: 20}}>
-      <Carousel
-        ref={(c) => { this._carousel = c; }}
-        data={[1,2,3,4,5]}
-        renderItem={this.renderCarouselItem}
-        sliderWidth={400}
-        itemWidth={320}
-        containerCustomStyle={{flexGrow: 0}}
-        onSnapToItem={(index) => setCarouselIndex(index)}
-      />
-      <Pagination
-        containerStyle={{paddingVertical: 10}}
-        activeDotIndex={carouselIndex}
-        dotsLength={5} //TODO Change this to be length of data
-      />
-    </View>
-
-    <View 
-      style={[styles.recBox, {marginTop: 10}]}>
+   <View style={{height: 194, marginTop: 20}}>
         <View style={styles.sectionHeaderContainer}>
           <Text 
             style={{fontFamily: 'Open Sans', fontSize: 28}}>
@@ -177,6 +168,25 @@ const fetchCatData = async (latitude, longitude, radius, categories, priceLevel,
             style={{fontFamily: 'Open Sans SemiBold', fontSize: 20, color: colors.primaryLight}}>
               See All</Text>
         </View>
+      <Carousel
+        ref={(c) => { this._carousel = c; }}
+        data={data}
+        renderItem={this.renderCarouselItem}
+        sliderWidth={400}
+        itemWidth={320}
+        containerCustomStyle={{flexGrow: 0}}
+        onSnapToItem={(index) => setCarouselIndex(index)}
+      />
+      <Pagination
+        containerStyle={{paddingVertical: 10}}
+        activeDotIndex={carouselIndex}
+        dotsLength={data.length} //TODO Change this to be length of data
+      />
+    </View>
+
+    {/* <View 
+      style={[styles.recBox, {marginTop: 10}]}>
+        
 
       <View style={styles.listContainer}>
         <FlatList
@@ -191,17 +201,19 @@ const fetchCatData = async (latitude, longitude, radius, categories, priceLevel,
               name={item.name}
               address={item.address}
               imageUri={item.image_url}
-              rating={item.rating}/>
+              url={item.url}
+              rating={item.rating}
+              numReviews={item.review_count}/>
             )}}
         />
       </View>
-    </View>
+    </View> */}
 
     <View 
-      style={[styles.recBox, {marginTop: 58}]}>
+      style={[styles.recBox, {marginTop: 0}]}>
       <Text 
         style={{fontFamily: 'Open Sans', fontSize: 28}}>
-          Italian</Text>
+          {categories[0]}</Text>
 
       <View style={styles.listContainer}>
         <FlatList
@@ -215,8 +227,10 @@ const fetchCatData = async (latitude, longitude, radius, categories, priceLevel,
               <VerticalPlaceView
               name={item.name}
               address={item.address}
+              url={item.url}
               imageUri={item.image_url}
-              rating={item.rating}/>
+              rating={item.rating}
+              numReviews={item.review_count}/>
             )}}
         />
       </View>
@@ -226,7 +240,7 @@ const fetchCatData = async (latitude, longitude, radius, categories, priceLevel,
       style={[styles.recBox, {marginTop: 44}]}>
       <Text 
         style={{fontFamily: 'Open Sans', fontSize: 28}}>
-          Breakfast</Text>
+          {categories[1]}</Text>
 
       <View style={styles.listContainer}>
         <FlatList
@@ -235,13 +249,15 @@ const fetchCatData = async (latitude, longitude, radius, categories, priceLevel,
           style={{width: Dimensions.get('screen').width, paddingLeft: 40}}
           contentContainerStyle={{paddingRight: 42}}
           data={catData[categories[1]].data.businesses}
-          renderItem={() => {
+          renderItem={({item}) => {
             return(
               <VerticalPlaceView
               name={item.name}
               address={item.address}
+              url={item.url}
               imageUri={item.image_url}
-              rating={item.rating}/>
+              rating={item.rating}
+              numReviews={item.review_count}/>
             )}}
         />
       </View>
@@ -251,7 +267,7 @@ const fetchCatData = async (latitude, longitude, radius, categories, priceLevel,
       style={[styles.recBox, {marginTop: 44, height: 290}]}>
       <Text 
         style={{fontFamily: 'Open Sans', fontSize: 28}}>
-          Japaneese</Text>
+          {categories[2]}</Text>
 
       <View style={styles.listContainer}>
         <FlatList
@@ -260,11 +276,15 @@ const fetchCatData = async (latitude, longitude, radius, categories, priceLevel,
           style={{width: Dimensions.get('screen').width, paddingLeft: 40}}
           contentContainerStyle={{paddingRight: 42}}
           data={catData[categories[2]].data.businesses}
-          renderItem={() => {
+          renderItem={({item}) => {
             return(
-            <View style={styles.restaurantCard}>
-              <Text>TEST Restaurant</Text>
-            </View>
+              <VerticalPlaceView
+              name={item.name}
+              address={item.address}
+              url={item.url}
+              imageUri={item.image_url}
+              rating={item.rating}
+              numReviews={item.review_count}/>
             )}}
         />
       </View>
@@ -282,7 +302,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   header: {
-    color: 'black',
+    color: colors.primary,
     fontFamily: 'Open Sans',
     fontSize: 50,
     marginTop: 5,
@@ -319,6 +339,8 @@ const styles = StyleSheet.create({
     marginLeft: -40
   },
   sectionHeaderContainer:{
+    marginHorizontal: 40,
+    marginBottom: 14,
     flexDirection: 'row',
     alignItems: 'flex-end', 
     justifyContent: 'space-between'

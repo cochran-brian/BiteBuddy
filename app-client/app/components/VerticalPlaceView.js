@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { Text, StyleSheet, View, Image, TouchableHighlight } from 'react-native';
+import { Text, StyleSheet, View, Image, TouchableHighlight, Linking } from 'react-native';
 import { Rating } from '@kolking/react-native-rating';
 import { Feather } from '@expo/vector-icons';
 import colors from '../config/colors';
 import RatingStars from './RatingStars';
 
-function VerticalPlaceView({ imageUri, name, address, rating}){
+function VerticalPlaceView({ imageUri, name, address, rating, numReviews, url}){
 
     const onYelpPress = () => {
-        console.log("Yelp Pressed")
+        Linking.openURL(url)
     }
 
     return(
@@ -22,15 +22,15 @@ function VerticalPlaceView({ imageUri, name, address, rating}){
                 style={styles.textContainer}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <View 
-                    style={{marginLeft: 2}}>
+                    style={{marginLeft: 2, height: 50}}>
                     <Text 
-                        numberOfLines={1}
+                        numberOfLines={2}
                         style={styles.textTitle}>
                             {name}</Text>
-                    <Text 
+                    {/* <Text 
                         numberOfLines={1}
                         style={styles.textSubheader}>
-                            {address}</Text>
+                            {address}</Text> */}
                 </View>
                 </View>
                 <View 
@@ -51,7 +51,7 @@ function VerticalPlaceView({ imageUri, name, address, rating}){
                     </TouchableHighlight>
                 </View>
                 <Text style={styles.reviewCountText}>
-                    (523 reviews)</Text>
+                    {numReviews} reviews</Text>
             </View>
             
         </View>
@@ -100,7 +100,6 @@ const styles = StyleSheet.create({
         marginLeft: 4,  
         fontSize: 10, 
         marginBottom: 10,
-        marginTop: -10
     },
     ratingContainer: {
        

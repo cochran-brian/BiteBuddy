@@ -9,19 +9,19 @@ router.post("/", async (req, res) => {
     try {
         console.log(req.body.categories)
         console.log(req.body.priceLevel)
-        var categories = '';
-        if(req.body.categories){
-            console.log("categories exist")
-            for(let i = 0; i < req.body.categories.length; i++) {
-                if(i != req.body.categories.length - 1) {
-                    categories += req.body.categories[i] + ','
-                } else {
-                    categories += req.body.categories[i]
-                }
-            }
-        }
+        // var categories = '';
+        // if(req.body.categories){
+        //     console.log("categories exist")
+        //     for(let i = 0; i < req.body.categories.length; i++) {
+        //         if(i != req.body.categories.length - 1) {
+        //             categories += req.body.categories[i] + ','
+        //         } else {
+        //             categories += req.body.categories[i]
+        //         }
+        //     }
+        // }
         console.log("entering fetch")
-        const data = await fetchData(req.body.latitude, req.body.longitude, Math.floor(req.body.radius), categories, req.body.priceLevel);
+        const data = await fetchData(req.body.latitude, req.body.longitude, Math.floor(req.body.radius), req.body.categories, req.body.priceLevel);
         console.log(data)
         res.send({ data: data });
     } catch (error) {
@@ -85,7 +85,7 @@ const fetchData = async (latitude, longitude, radius, categories, priceLevel) =>
     console.log(categories)
     try {
         // var data = await fetch(`https://api.yelp.com/v3/businesses/search?latitude=${latitude}&longitude=${longitude}&radius=${radius}&sort_by=best_match&limit=10&term=restaurants${categories ? `&categories=${categories}` : ""}${priceLevel ? `&price=${priceLevel}` : ""}`, {
-        var data = await fetch(`https://api.yelp.com/v3/businesses/search?latitude=${latitude}&longitude=${longitude}&radius=${radius}&sort_by=best_match&limit=10&term=${categories}${priceLevel ? `&price=${priceLevel}` : ""}`, {    
+        var data = await fetch(`https://api.yelp.com/v3/businesses/search?latitude=${latitude}&longitude=${longitude}&radius=${radius}&sort_by=best_match&limit=10${categories ? `&term=${categories}` : ""}${priceLevel ? `&price=${priceLevel}` : ""}`, {    
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
