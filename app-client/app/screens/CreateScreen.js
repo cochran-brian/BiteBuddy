@@ -200,7 +200,7 @@ export default function CreateScreen({ navigation }) {
                   </View>
                 </View>
 
-                <View>
+                {/* <View>
                   <Text style={[styles.promptText, {marginTop: -8}]}>
                           Min Rating</Text>
                   <Rating
@@ -211,7 +211,7 @@ export default function CreateScreen({ navigation }) {
                         fillColor={colors.primary}
                         touchColor={colors.primary}
                         style={styles.ratingsStyle}/>
-                </View>
+                </View> */}
               </View>
             
               <View 
@@ -332,6 +332,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       marginHorizontal: 14,
       marginTop: 8,
+      marginBottom: 32,
     },
     plButton:{
       width: 100, 
