@@ -33,7 +33,11 @@ const getTopRestaurant = async (doc) => {
     var columnSums = new Array(ratingsArr[0].length).fill(0);
     for(let i = 0; i < ratingsArr[0].length; i++) {
         for(let j = 0; j < ratingsArr.length; j++) {
-            columnSums[i] += ratingsArr[j][i];
+            if(ratingsArr[j][i]) {
+                columnSums[i] += ratingsArr[j][i];
+            } else {
+                columnSums[i] += 0;
+            }
         }
     }
     console.log(columnSums)

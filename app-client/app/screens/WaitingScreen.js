@@ -30,7 +30,15 @@ export default function WaitingScreen({route, navigation}){
       eventSource.addEventListener('message', (event) => {
         const parsedData = JSON.parse(event.data);
         console.log(parsedData)
-        setEventData(parsedData.names);
+        console.log(parsedData.data)
+
+        var arr = [];
+        parsedData.data.forEach((doc) => {
+          console.log(doc)
+          arr.push(doc)
+        })
+
+        setEventData(arr)
       });
   
       // Event listener for handling errors
@@ -124,7 +132,7 @@ export default function WaitingScreen({route, navigation}){
 
       <FlatList
         data={eventData} 
-        renderItem={({item}) => <UserCard name={item} backgroundColor={"white"} imageUri={'https://x.dpstatic.com/d/avatars/l/987/987650.jpg?1643200221'} status={true}/>}
+        renderItem={({item}) => <UserCard name={item.name} backgroundColor={"white"} imageUri={item.profile_image ? item.profile_image : 'https://x.dpstatic.com/d/avatars/l/987/987650.jpg?1643200221'} status={true}/>}
         scrollEnabled={false}
         style={styles.flatList}
         ListFooterComponent={

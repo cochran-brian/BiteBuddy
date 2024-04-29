@@ -119,13 +119,17 @@ export default function ResultScreen({route, navigation}) {
               style={{margin: '10%', marginTop: 16, marginBottom: '7%', alignItems: 'center'}}>
             <Text 
               style={[styles.sectionTitle, {fontSize: 22}]}>SOMEWHERE SIMILAR</Text>
-              <SimplePlaceView
+              {recommendations.similarRestaurants[0] ? 
+                <SimplePlaceView
                 name={recommendations.similarRestaurants[0].name}
                 address={recommendations.similarRestaurants[0].location.address1}
                 rating={recommendations.similarRestaurants[0].rating}
                 image_url={recommendations.similarRestaurants[0].image_url}
                 yelp_url={recommendations.similarRestaurants[0].url}
-                numReviews={recommendations.similarRestaurants[0].review_count}/>
+                numReviews={recommendations.similarRestaurants[0].review_count}/> : 
+                <Text>No similar restaurants nearby</Text>
+              }
+              
             </View>
 
           <View 

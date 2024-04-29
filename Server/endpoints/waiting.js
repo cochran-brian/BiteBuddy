@@ -17,11 +17,11 @@ router.get("/", async (req, res) => {
   
       const unsubscribe = db.collection('bites').doc(req.query.doc).collection('ratings')
         .onSnapshot((querySnapshot) => {
-          var names = [];
+          var data = [];
           querySnapshot.forEach((doc) => {
-            names.push(doc.data().name);
+            data.push(doc.data());
           });
-          res.write(`data: ${JSON.stringify({ names })}\n\n`);
+          res.write(`data: ${JSON.stringify({ data })}\n\n`);
         });
   
       req.on('close', () => {
