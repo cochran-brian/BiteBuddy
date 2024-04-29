@@ -1,11 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const { db } = require('../firebase/config');
+const authenticateMiddleware = require("../middleware/authenticateMiddleware");
+
+router.use(authenticateMiddleware)
 
 router.post("/", async (req, res) => {
     console.log(req.body);
     try {
-        const topRestaurant = await getTopRestaurant(req.body.uid)
+        const topRestaurant = await getTopRestaurant(req.body.doc)
         console.log(topRestaurant)
         const similarRestaurants = await getSimilarRestaurants(topRestaurant, req.body.latitude, req.body.longitude, req.body.radius)
         console.log(similarRestaurants)
@@ -15,11 +18,11 @@ router.post("/", async (req, res) => {
     }
 })
 
-const getTopRestaurant = async (uid) => {
+const getTopRestaurant = async (doc) => {
     var ratingsArr = [];
     
     console.log("Getting ratings...")
-    const ratingsQuerySnapshot = await db.collection('bites').doc(uid).collection('ratings').get();
+    const ratingsQuerySnapshot = await db.collection('bites').doc(doc).collection('ratings').get();
     ratingsQuerySnapshot.forEach((doc) => {
         console.log(doc.data().ratings)
         ratingsArr.push(doc.data().ratings)
@@ -40,7 +43,7 @@ const getTopRestaurant = async (uid) => {
 
     var restaurantsArr = [];
 
-    const restaurantsQuerySnapshot = await db.collection('bites').doc(uid).collection('restaurants').get();
+    const restaurantsQuerySnapshot = await db.collection('bites').doc(doc).collection('restaurants').get();
     restaurantsQuerySnapshot.forEach((doc) => {
         restaurantsArr.push(doc.data())
     })

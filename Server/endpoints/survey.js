@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const admin = require('firebase-admin');
 const { db, auth } = require("../firebase/config");
+const authenticateMiddleware = require("../middleware/authenticateMiddleware");
 
 // router.post("/", async (req, res) => {
 //     try {      
@@ -28,14 +29,18 @@ const { db, auth } = require("../firebase/config");
 
 router.post("/", async (req, res) => {
   try {      
-    if(req.body.uid) {
-      const userSnapshot = await db.collection('users').doc(req.body.uid).get();
+    if(!req.body.guestName) {
+      const { authorization } = req.headers;
+      const idToken = authorization.split('Bearer ')[1];
+      const decodedToken = await auth.verifyIdToken(idToken);
+
+      const userSnapshot = await db.collection('users').doc(decodedToken.uid).get();
       const user = await userSnapshot.data()
-      const uid = await storeData(req.body.ratings, user.firstName, req.body.doc, user.profile_image);
-      return res.send({ uid: uid });
+      const doc = await storeData(req.body.ratings, user.firstName, req.body.doc, user.profile_image);
+      return res.send({ doc: doc });
     } else {
-      const uid = await storeData(req.body.ratings, req.body.guestName, req.body.doc, null);
-      return res.send({ uid: uid });
+      const doc = await storeData(req.body.ratings, req.body.guestName, req.body.doc, null);
+      return res.send({ doc: doc });
     } 
   } catch (error) {
       return res.status(500).send({ error: "Error storing data " + error });

@@ -2,33 +2,22 @@ const express = require("express");
 const router = express.Router();
 const admin = require('firebase-admin');
 const { db, auth } = require("../firebase/config");
+const authenticateMiddleware = require("../middleware/authenticateMiddleware");
+
+router.use(authenticateMiddleware)
 
 router.post("/", async (req, res) => {
     try {      
-        const { authorization } = req.headers;
-        if (authorization.startsWith('Bearer ')) {
-            const idToken = authorization.split('Bearer ')[1];
-            try {
-              const decodedToken = await admin.auth().verifyIdToken(idToken);
-              const doc = await db.collection('users').doc(decodedToken.uid).collection('bites').doc(Date.now().toString()).set({
-                topRestaurant: req.body.topRestaurant,
-                similarRestaurants: req.body.similarRestaurants,
-                timestamp: Date.now()
-              })
-            } catch (error) {
-              throw new Error(error);
-            }   
-        }
+      const doc = await db.collection('users').doc(req.user.uid).collection('bites').doc(Date.now().toString()).set({
+        topRestaurant: req.body.topRestaurant,
+        similarRestaurants: req.body.similarRestaurants,
+        timestamp: Date.now()
+      })
+      await deleteCollection(db, `bites/${req.body.doc}/ratings`, 40)
+      await deleteCollection(db, `bites/${req.body.doc}/restaurants`, 40)
+      await db.collection('bites').doc(req.body.doc).delete();
 
-        try {
-            await deleteCollection(db, `bites/${req.body.uid}/ratings`, 40)
-            await deleteCollection(db, `bites/${req.body.uid}/restaurants`, 40)
-            await db.collection('bites').doc(req.body.uid).delete();
-        } catch(error) {
-            throw new Error(error);
-        }
-
-        return res.send({ message: 'success' });
+      return res.send({ message: 'success' });
     } catch (error) {
         return res.status(500).send({ error: "Error storing data " + error });
     }

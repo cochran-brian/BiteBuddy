@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Dimensions, StyleSheet, Text, TouchableHighlight, View, Pressable, SafeAreaView } from 'react-native';
 import colors from '../config/colors';
 import { db, auth } from '../firebase/config';
-import { setDoc, doc, collection, getDocs } from "firebase/firestore"
+import { doc, collection, getDocs } from "firebase/firestore"
 import SurveyCard from '../components/SurveyCard';
 import Carousel from 'react-native-snap-carousel';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -13,7 +13,7 @@ export default function SurveySceen({ route, navigation }) {
 
   const { latitude, longitude, radius, categories, priceLevel } = route.params;
   const [data, setData] = useState([])
-  const [uid, setUid] = useState(null)
+  const [doc, setDoc] = useState(null)
   var ratings = [];
 
   renderItem = ({item, index}) => {
@@ -30,13 +30,34 @@ export default function SurveySceen({ route, navigation }) {
 }
 
 useEffect(() => {
-  getIdToken(latitude, longitude, radius, categories, priceLevel);
+  const handleData = async () => {
+    try {
+      const data = await fetchData(latitude, longitude, radius, categories, priceLevel);
+      const response = await storeData(data, latitude, longitude, radius);
+      setData(data.sort((a, b) => {
+        if(a.name < b.name) {
+          return -1;
+        } else if(a.name > b.name) {
+          return 1;
+        } else {
+          return 0;
+        }
+      }))
+      console.log(response);
+      setDoc(response.doc);
+    } catch (error) {
+      console.error("Error fetching or storing data: ", error);
+    }
+  }
+
+  handleData();
 }, [])
 
-const fetchData = async (latitude, longitude, radius, categories, priceLevel, token) => {
+const fetchData = async (latitude, longitude, radius, categories, priceLevel) => {
   try {
     console.log(PORT, IP_ADDRESS)
     console.log("fetching data...")
+    const token = await auth.currentUser.getIdToken();
     const response = await fetch(`http://localhost:4000/restaurants`, { // apparently "localhost" makes the server host the phone instead of the computer
       method: "POST",
       mode: "cors",
@@ -60,9 +81,10 @@ const fetchData = async (latitude, longitude, radius, categories, priceLevel, to
   }
 }
 
-const storeData = async (data, latitude, longitude, radius, token) => {
+const storeData = async (data, latitude, longitude, radius) => {
   try {
     console.log("Storing data...")
+    const token = await auth.currentUser.getIdToken();
     const response = await fetch(`http://localhost:4000/storage`, { // apparently "localhost" makes the server host the phone instead of the computer
       method: "POST",
       mode: "cors",
@@ -79,62 +101,63 @@ const storeData = async (data, latitude, longitude, radius, token) => {
       })
     }); 
     const result = await response.json();
+    console.log(result)
     return result;
   } catch (error) {
     console.error('Error fetching data:', error); // error handling here
   }
 }
 
-const getIdToken = async (latitude, longitude, radius, categories, priceLevel) => {
-  try {
-    console.log("getting ID token...")
-    const idToken = await AsyncStorage.getItem('idToken');
-    console.log("ID token found", idToken);
-    if (idToken) {
-      try {
-        const data = await fetchData(latitude, longitude, radius, categories, priceLevel, idToken);
-        console.log(data)
-        const response = await storeData(data, latitude, longitude, radius, idToken);
-        setData(data.sort((a, b) => {
-          if(a.name < b.name) {
-            return -1;
-          } else if(a.name > b.name) {
-            return 1;
-          } else {
-            return 0;
-          }
-        }))
-        // console.log(data.sort((a, b) => {
-        //   if(a.name < b.name) {
-        //     return -1;
-        //   } else if(a.name > b.name) {
-        //     return 1;
-        //   } else {
-        //     return 0;
-        //   }
-        // }))
-        console.log(response);
-        setUid(response.uid);
-      } catch (error) {
-        console.error("Error fetching or storing data: ", error);
-      }
-    }
-  } catch (error) {
-    console.error('Error retrieving custom token:', error);
-  }
-};
+// const getIdToken = async (latitude, longitude, radius, categories, priceLevel) => {
+//   try {
+//     console.log("getting ID token...")
+//     const idToken = await AsyncStorage.getItem('idToken');
+//     console.log("ID token found", idToken);
+//     if (idToken) {
+//       try {
+//         const data = await fetchData(latitude, longitude, radius, categories, priceLevel, idToken);
+//         console.log(data)
+//         const response = await storeData(data, latitude, longitude, radius, idToken);
+//         setData(data.sort((a, b) => {
+//           if(a.name < b.name) {
+//             return -1;
+//           } else if(a.name > b.name) {
+//             return 1;
+//           } else {
+//             return 0;
+//           }
+//         }))
+//         // console.log(data.sort((a, b) => {
+//         //   if(a.name < b.name) {
+//         //     return -1;
+//         //   } else if(a.name > b.name) {
+//         //     return 1;
+//         //   } else {
+//         //     return 0;
+//         //   }
+//         // }))
+//         console.log(response);
+//         setUid(response.uid);
+//       } catch (error) {
+//         console.error("Error fetching or storing data: ", error);
+//       }
+//     }
+//   } catch (error) {
+//     console.error('Error retrieving custom token:', error);
+//   }
+// };
 
 
-const storeRatings = async (ratings, doc, token) => {
+const storeRatings = async (ratings, doc) => {
   try {
-    console.log(docUID)
+    const token = await auth.currentUser.getIdToken();
     const response = await fetch(`http://localhost:4000/survey`, { // apparently "localhost" makes the server host the phone instead of the computer
       method: "POST",
       mode: "cors",
       credentials: "same-origin",
       headers: {
         "Content-Type": "application/json",
-        // Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`
       },
       body: JSON.stringify({
         ratings: ratings,
@@ -154,13 +177,12 @@ const rating = async (rating) => {
   ratings.push(rating);
   if(this._carousel.currentIndex >= data.length - 1) { // LAST CARD
 
-    const idToken = await AsyncStorage.getItem('idToken');
-    console.log(uid)
-    await storeRatings(ratings, uid, idToken); // RIGHT NOW ONLY AUTHENTICATED USERS WILL HAVE NAME
-    // NEED TO CHANGE THIS WHEN WE MAKE THE WEBSITE
+    const token = await auth.currentUser.getIdToken();
+    console.log(doc)
+    await storeRatings(ratings, doc, token); 
 
     navigation.navigate('Waiting', {
-      uid: uid,
+      doc: doc,
       latitude: latitude,
       longitude: longitude,
       radius: radius

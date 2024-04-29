@@ -7,12 +7,8 @@ router.use(authenticateMiddleware)
 
 router.post("/", async (req, res) => {
     try {
-        console.log(req.body.data)
-        const { authorization } = req.headers;
-        const idToken = authorization.split('Bearer ')[1];
-        const decodedToken = await auth.verifyIdToken(idToken);
-        const uid = await storeData(req.body.data, req.body.latitude, req.body.longitude, req.body.radius, decodedToken.uid);
-        return res.send({ uid: uid });
+        const doc = await storeData(req.body.data, req.body.latitude, req.body.longitude, req.body.radius, req.user.uid);
+        return res.send({ doc: doc });
     } catch (error) {
         return res.status(500).send({ error: "Error storing data " + error });
     }

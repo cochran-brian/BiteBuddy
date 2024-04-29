@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, SafeAreaView, Dimensions, FlatList } from 'reac
 import colors from '../config/colors';
 import SimplePlaceView from '../components/SimplePlaceView';
 import { useEffect, useState } from 'react';
+import { auth } from '../firebase/config';
 
 export default function NearbyScreen({ navigation }) {
 
@@ -21,13 +22,14 @@ export default function NearbyScreen({ navigation }) {
   const fetchData = async (latitude, longitude, radius) => {
     try {
       console.log("fetching data...")
+      const token = await auth.currentUser.getIdToken();
       const response = await fetch(`http://localhost:4000/restaurants`, { // apparently "localhost" makes the server host the phone instead of the computer
         method: "POST",
         mode: "cors",
         credentials: "same-origin",
         headers: {
           "Content-Type": "application/json",
-          // Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({
           latitude: latitude,

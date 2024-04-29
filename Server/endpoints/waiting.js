@@ -1,9 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const { db } = require("../firebase/config");
+const authenticateMiddleware = require("../middleware/authenticateMiddleware");
+
+// router.use(authenticateMiddleware)
 
 router.get("/", async (req, res) => {
     try {
+      console.log(req.query.doc)
       res.setHeader('Content-Type', 'text/event-stream');
       res.setHeader('Cache-Control', 'no-cache');
       res.setHeader('Connection', 'keep-alive');
@@ -11,7 +15,7 @@ router.get("/", async (req, res) => {
       // Send a comment to keep the connection open
       res.write(':ok\n\n');
   
-      const unsubscribe = db.collection('bites').doc(req.query.uid).collection('ratings')
+      const unsubscribe = db.collection('bites').doc(req.query.doc).collection('ratings')
         .onSnapshot((querySnapshot) => {
           var names = [];
           querySnapshot.forEach((doc) => {

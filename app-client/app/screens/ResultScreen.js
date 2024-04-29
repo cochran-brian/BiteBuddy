@@ -4,11 +4,12 @@ import colors from '../config/colors';
 import { Feather } from '@expo/vector-icons';
 import SimplePlaceView from '../components/SimplePlaceView';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { auth } from '../firebase/config';
 
 
 export default function ResultScreen({route, navigation}) {
 
-  const { uid, latitude, longitude, radius } = route.params;
+  const { doc, latitude, longitude, radius } = route.params;
   const [recommendations, setRecommendations] = useState(null);
 
   useEffect(() => {
@@ -18,16 +19,17 @@ export default function ResultScreen({route, navigation}) {
   const getRecommendation = async () => {
     try {
       console.log("fetching recommendation...")
+      const token = await auth.currentUser.getIdToken();
       const response = await fetch(`http://localhost:4000/results`, { // apparently "localhost" makes the server host the phone instead of the computer
         method: "POST",
         mode: "cors",
         credentials: "same-origin",
         headers: {
           "Content-Type": "application/json",
-          // Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({
-          uid: uid,
+          doc: doc,
           latitude: latitude,
           longitude: longitude,
           radius: radius
@@ -53,39 +55,32 @@ export default function ResultScreen({route, navigation}) {
   }
 
     const handleExit = async () => {
-      const idToken = await AsyncStorage.getItem('idToken');
-      console.log("ID token found", idToken);
-      if (idToken) {
       try {
         console.log("exiting...")
+        const token = await auth.currentUser.getIdToken();
         const response = await fetch(`http://localhost:4000/exit`, { // apparently "localhost" makes the server host the phone instead of the computer
           method: "POST",
           mode: "cors",
           credentials: "same-origin",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${idToken}`
+            Authorization: `Bearer ${token}`
           },
           body: JSON.stringify({
-            uid: uid,
+            doc: doc,
             topRestaurant: recommendations.topRestaurant,
             similarRestaurants: recommendations.similarRestaurants,
           })
         }); 
         const result = await response.json();
         console.log(result);
+        navigation.navigate('Home')
     } catch (error) {
       console.error('Error fetching data:', error); // error handling here
     }
   }
 
-      // store the results with the user profile
-
-      // authenticated host only deletes bite?
-      // delete storage endpoint and include in more unique endpoints?
-      // delete the bite
-      navigation.navigate('Home')
-    }
+      
     
 
     return(
@@ -158,7 +153,8 @@ export default function ResultScreen({route, navigation}) {
         </View>
       )}</>
     )
-}
+      }
+
 
 
 const styles = StyleSheet.create({

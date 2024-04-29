@@ -8,22 +8,23 @@ import RNEventSource from 'react-native-sse';
 import UserView from "../components/UserView";
 import colors from "../config/colors";
 import UserCard from "../components/UserCard";
+import { getCurrentPositionAsync } from "expo-location";
 
 export default function WaitingScreen({route, navigation}){
 
     const [eventData, setEventData] = useState(null);
-    const { uid, latitude, longitude, radius } = route.params;
+    const { doc, latitude, longitude, radius } = route.params;
 
-    console.log('localhost:3000/join/' + uid);
+    const joinLink = 'localhost:3000/join/' + doc;
 
     const onInvitePress = async() => {
       const result = await Share.share({
-        url: 'https://www.imdb.com/title/tt1823672/' //Put the link to join the survey here
+        url: joinLink //Put the link to join the survey here
       });
     }
 
     useEffect(() => {
-      const eventSource = new RNEventSource(`http://localhost:4000/waiting?uid=${uid}`);
+      const eventSource = new RNEventSource(`http://localhost:4000/waiting?doc=${doc}`);
   
       // Event listener for receiving SSE messages
       eventSource.addEventListener('message', (event) => {
@@ -141,7 +142,7 @@ export default function WaitingScreen({route, navigation}){
               style= {styles.bottomButton} 
               onPress={() => {
                 navigation.navigate('Result', { 
-                  uid: uid,
+                  doc: doc,
                   latitude: latitude,
                   longitude: longitude,
                   radius: radius 

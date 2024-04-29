@@ -22,13 +22,14 @@ export default function ProfileScreen({ navigation }) {
   useEffect(() => {
     const getProfileImage = async () => {
       console.log(user)
+      const token = await auth.currentUser.getIdToken();
       const response = await fetch(`http://localhost:4000/profile/${user.uid}`, { // apparently "localhost" makes the server host the phone instead of the computer
         method: "GET",
         mode: "cors",
         credentials: "same-origin",
         headers: {
           "Content-Type": "application/json",
-          //Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`
         },
       }); 
       const result = await response.json();
@@ -94,6 +95,7 @@ export default function ProfileScreen({ navigation }) {
           const img = await response.blob()
           
           const storageRef = ref(storage, user.uid + "/profilePicture/" + img.data.name); // change to unique id?
+          const token = await auth.currentUser.getIdToken();
           uploadBytes(storageRef, img).then(async (snapshot) => {
             console.log('Uploaded a blob or file!');
             console.log(snapshot)
@@ -103,7 +105,7 @@ export default function ProfileScreen({ navigation }) {
               credentials: "same-origin",
               headers: {
                 "Content-Type": "application/json",
-                //Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${token}`
               },
               body: JSON.stringify({
                 filePath: user.uid + "/profilePicture/" + img.data.name,

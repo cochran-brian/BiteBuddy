@@ -77,13 +77,14 @@ export default function HomeScreen({ navigation }) {
 const fetchData = async (latitude, longitude, radius) => {
   try {
     console.log("fetching data...")
+    const token = auth.currentUser.getIdToken()
     const response = await fetch(`http://localhost:4000/restaurants`, { // apparently "localhost" makes the server host the phone instead of the computer
       method: "POST",
       mode: "cors",
       credentials: "same-origin",
       headers: {
         "Content-Type": "application/json",
-        //Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`
       },
       body: JSON.stringify({
         latitude: latitude,

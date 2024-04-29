@@ -2,16 +2,13 @@ const express = require("express");
 const router = express.Router();
 const admin = require('firebase-admin');
 const { db, auth } = require("../firebase/config");
+const authenticateMiddleware = require("../middleware/authenticateMiddleware");
+
+router.use(authenticateMiddleware)
 
 router.get("/", async (req, res) => {
     try {
-      console.log("in recents")
-      const { authorization } = req.headers;
-      console.log(authorization)
-      const token = authorization.split('Bearer ')[1];
-      const user = await auth.verifyIdToken(token)
-      console.log(user)
-      const recentsQuerySnapshot = await db.collection('users').doc(user.uid).collection("bites").get(); // needs to be uid not email
+      const recentsQuerySnapshot = await db.collection('users').doc(req.user.uid).collection("bites").get(); // needs to be uid not email
       var recents = [];
       recentsQuerySnapshot.forEach((doc) => {
         recents.push(doc.data());
