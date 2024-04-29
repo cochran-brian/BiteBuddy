@@ -23,7 +23,7 @@ export default function HomeScreen({ navigation }) {
   const[carouselIndex, setCarouselIndex] = useState(0);
 
   //This completely controls the home screen categories
-  const categories = ["Italian", "Mexican", "Japaneese"]; 
+  const categories = ["Italian", "Mexican", "Japanese"]; 
 
   // const[imgArray, setImgArray] = useState([]);
   // const [imgRefArray, setImgRefArray] = useState([]);
