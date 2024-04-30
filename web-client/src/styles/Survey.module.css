@@ -73,33 +73,38 @@
     display: flex;
     flex-direction: column;
     align-self: center;
-    
   }
 
   .baseText {
     font-family: 'Open Sans Medium';
+    align-self: center;
+    text-align: left;
     font-size: 12px;
-    width: 210px;
-    color: 'grey';
+    width: 310px;
+    color: rgb(108, 108, 108);
   }
 
   .yelpButton {
+    width: 120px;
     height: 36px;
     background-color: white;
     border-width: 0px;
   }
 
   .yelpLogo {
-    width: 80px;
-    height: 30px;
+    width: 96px;
+    height: 36px;
     align-self: 'center';
   }
 
   .emojiButton {
-    font-size: 90px;
-    width: 110px; 
+    display: flex;
+    justify-content: center;
+    font-size: 80px;
+    padding: 0 12px;
+    width: auto;
     height: 90px; 
-    margin-top: 20px;
+    margin-top: 10px;
     background: none;
     border: none;
     text-align: center; 

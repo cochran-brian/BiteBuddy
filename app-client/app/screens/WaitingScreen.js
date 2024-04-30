@@ -132,7 +132,7 @@ export default function WaitingScreen({route, navigation}){
 
       <FlatList
         data={eventData} 
-        renderItem={({item}) => <UserCard name={item.name} backgroundColor={"white"} imageUri={item.profile_image ? item.profile_image : 'https://x.dpstatic.com/d/avatars/l/987/987650.jpg?1643200221'} status={true}/>}
+        renderItem={({item}) => <UserCard name={item.name} backgroundColor={"white"} imageUri={item.profile_image ? item.profile_image : 'https://www.asiamediajournal.com/wp-content/uploads/2022/11/Default-PFP.jpg'} status={true}/>}
         scrollEnabled={false}
         style={styles.flatList}
         ListFooterComponent={

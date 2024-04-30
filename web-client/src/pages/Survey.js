@@ -76,17 +76,17 @@ export default function Survey() {
           <div className={styles.textSubheader}>{'$ • ' + place.categories[0].title}</div>
           <div className={styles.textSubheader}>{place.location.address1 + ' ' + place.location.city + ', ' + place.location.state}</div>
         </div>
-        <div className={styles.ratingsStyle}>
-          <div style={{flexDirection: 'row'}}>
+        <span className={styles.ratingsStyle}>
+          <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
             <RatingStars rating={place.rating}/>
             <button onClick={ () => onYelpPress(place)} 
               className={styles.yelpButton}>
               <img src={require('../assets/yelp_logo.png')} className={styles.yelpLogo} alt="Yelp Logo" />
             </button>
           </div>
-            <div className={styles.baseText}>Based on 235 reviews</div>
+            <div className={styles.baseText}>Based on {place.review_count} reviews</div>
           
-        </div>
+        </span>
       </div>
 
     )
@@ -98,7 +98,7 @@ export default function Survey() {
       <Carousel width={374} selectedItem={curSlide} swipeable={false} showArrows={false} showIndicators={false} showStatus={false} showThumbs={false}>
         {comps}
       </Carousel>
-      <span style={{display: 'flex', width: 374, justifyContent: 'center'}}>
+      <span style={{display: 'flex', width: "100%", justifyContent: 'center'}}>
         <button className={styles.emojiButton} onClick={() => {
           rating(0);
           if(curSlide <= 8){

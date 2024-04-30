@@ -25,6 +25,7 @@ export default function SurveySceen({ route, navigation }) {
             address={item.location.city + ', ' + item.location.state}
             rating={item.rating}
             category={item.categories[0].title}
+            num_reviews={item.review_count}
         />
     );
 }

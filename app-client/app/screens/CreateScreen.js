@@ -15,7 +15,7 @@ export default function CreateScreen({ navigation }) {
   const [searchedLocation, setSearchedLocation] = useState(''); // String entered by user
   const [dropDownPicked, setDropDownPicked] = useState([]) // Array of the values from dropdown selections
   const [plPicked, setPlPicked] = useState(0) // 0-None Selected, 1-$, 2-$$, 3-$$$,
-  const [rating, setRating] = useState(0) //Rating selected on stars (/5)
+  // const [rating, setRating] = useState(0) //Rating selected on stars (/5)
 
   const [showAutofillModal, setAutofillModal] = useState(false);
   const [autofillDropdownPicked, setAutofillDropdownPicked] = useState('none');
@@ -47,7 +47,11 @@ export default function CreateScreen({ navigation }) {
   }, []);
 
   const onPlPress = (num) => {
-    setPlPicked(num);
+    if(plPicked != num){
+      setPlPicked(num)
+    }else{
+      setPlPicked(0)
+    }
   }
 
   const autoFill = async (input) => {
@@ -165,7 +169,7 @@ export default function CreateScreen({ navigation }) {
                   renderThumbComponent={() => <View style={styles.sliderThumb}/>}
                   renderBelowThumbComponent={() => 
                     <Text style={styles.sliderText}>{slideValue} miles</Text>}
-                  trackStyle={{height: 8}}
+                  trackStyle={{height: 8, borderRadius: 8}}
                   trackClickable={false}
                 />
                 </View>
@@ -214,6 +218,11 @@ export default function CreateScreen({ navigation }) {
                 </View> */}
               </View>
             
+              {searchedLocation == "" ? 
+              <Text style={styles.bottomWarningText}>Your current location will be used</Text>
+            :
+              <View style={{height: 19}}/>}  
+
               <View 
                 style={styles.buttonContainer}>
               <TouchableHighlight 
@@ -227,7 +236,7 @@ export default function CreateScreen({ navigation }) {
                   CREATE BITE</Text>
             </TouchableHighlight>
               </View>
-           
+            
           </View>
           </TouchableWithoutFeedback>
       )
@@ -291,22 +300,23 @@ const styles = StyleSheet.create({
       alignItems: 'center',
     },
     inputContent:{
-      fontFamily: 'Open Sans',
+      fontFamily: 'Open Sans SemiBold',
       width: Dimensions.get('screen').width * 0.65,
       height: 52,
       fontSize: 18,
       marginLeft: 18
     },
     promptText:{
-      fontFamily: 'Open Sans SemiBold',
+      fontFamily: 'Open Sans',
       fontSize: 20,
       width: 375,
-      textAlign: 'left'
+      textAlign: 'left',
+      marginLeft: 8
     },
     sliderText: {
       alignSelf: 'center',
-      marginLeft: -Dimensions.get("screen").width * 0.05,
-      fontFamily: 'Open Sans', 
+      marginLeft: -Dimensions.get("screen").width * 0.035,
+      fontFamily: 'Open Sans SemiBold', 
       fontSize: 18
     },
     sliderThumb:{
@@ -322,7 +332,7 @@ const styles = StyleSheet.create({
       borderRadius: 28,
     },
     dropDownText:{
-      fontFamily: 'Open Sans',
+      fontFamily: 'Open Sans SemiBold',
       fontSize: 16,
       color: colors.primary,
     },
@@ -339,7 +349,7 @@ const styles = StyleSheet.create({
       height: 74,
       borderRadius: 26,
       borderColor: colors.primary,
-      borderWidth: 4,
+      borderWidth: 2,
       justifyContent: 'center',
       alignItems: 'center'
     },
@@ -361,7 +371,8 @@ const styles = StyleSheet.create({
       fontFamily: 'Open Sans',
       color: 'white'
     },
-    ratingsStyle:{
-      alignSelf:"center",
-    },
+    bottomWarningText:{
+      fontFamily: 'Open Sans',
+      color: 'grey'
+    }
 });

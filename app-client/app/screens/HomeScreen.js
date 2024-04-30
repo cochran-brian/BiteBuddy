@@ -179,7 +179,7 @@ const fetchCatData = async (latitude, longitude, radius, categories, priceLevel,
         onSnapToItem={(index) => setCarouselIndex(index)}
       />
       <Pagination
-        containerStyle={{paddingVertical: 10}}
+        containerStyle={{paddingVertical: 12}}
         activeDotIndex={carouselIndex}
         dotsLength={data.length} //TODO Change this to be length of data
       />

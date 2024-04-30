@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
   contentContainer:{
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: Dimensions.get('screen').height * 0.05
+    marginTop: Dimensions.get('screen').height * 0.125
     
   },
   header:{

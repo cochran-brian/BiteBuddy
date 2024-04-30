@@ -47,7 +47,7 @@ export default function ResultScreen({route, navigation}) {
     try {
       const result = await Share.share({
         message: "Check out our group's favorite restaurant!",
-        url: recommendations?.topRestaurant?.website
+        url: recommendations.topRestaurant.url
       })
     } catch(error) {
       console.error(error);

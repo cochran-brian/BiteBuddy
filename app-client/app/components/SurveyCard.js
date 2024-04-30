@@ -4,7 +4,7 @@ import { Rating } from '@kolking/react-native-rating';
 import colors from '../config/colors';
 import RatingStars from './RatingStars';
 
-function SurveyCard({ imageUri, name, address, rating, category, date, yelp_url }){
+function SurveyCard({ imageUri, name, address, rating, num_reviews, category, date, yelp_url }){
 
     const onYelpPress = () => {
         console.log("Yelp Pressed");
@@ -41,7 +41,7 @@ function SurveyCard({ imageUri, name, address, rating, category, date, yelp_url 
                 width={160}
                 height={30}
              />
-             <Text style={styles.baseText}>Based on 235 reviews</Text>
+             <Text style={styles.baseText}>Based on {num_reviews} reviews</Text>
              </View>
              <TouchableHighlight 
                 onPress={onYelpPress} 
